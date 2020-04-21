@@ -211,6 +211,7 @@ if __name__ == "__main__":
                                             main_with_runtime_folder,
                                          "python_path": python_path,
                                      })
+    # runtime_cmd_list stores main_with_runtime input arguments
     runtime_cmd_list = ['%(main_runtime_filename)s '
                         '--data_dir %(data_dir)s '
                         '--master_addr %(master_addr)s --module %(module)s '

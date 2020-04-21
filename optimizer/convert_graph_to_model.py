@@ -449,13 +449,15 @@ if __name__ == '__main__':
     full_graph = graph.Graph.from_str(open(args.profile_filename, 'r').read())
     initialize_weights = (args.arch == "vgg16" or args.arch == "resnet50")
     input_node.stage_id = 0
-    sinks = full_graph.sinks()
+    sinks = full_graph.sinks() # all end layers
     # Remove all unneeded sinks that are not used, makes code generation easier.
     for sink in sinks:
         if sink.node_desc.startswith("__getitem__"):
             full_graph.remove_node(sink)
+    # split model into group of layers based on partitions
     subgraphs = full_graph.partition_graph()
 
+    # generate pytorch model files
     for i, subgraph in enumerate(subgraphs):
         module_name = "Stage%d" % i
         module_filename = "stage%d.py" % i
@@ -505,6 +507,7 @@ if __name__ == '__main__':
         }
         f1.write(init)
 
+    # in one stage replicate to do data parallel
     if args.stage_to_num_ranks_map is not None:
         stage_to_num_ranks_map = args.stage_to_num_ranks_map.split(",")
         stage_to_num_ranks_map = [(int(x.split(":")[0]), int(x.split(":")[1]))

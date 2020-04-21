@@ -277,8 +277,9 @@ def main(all_num_machines, profile_filename, network_bandwidths, memory_size,
         parameter_sizes.append(parameter_sizes_row)
 
     counter = 1
-    all_As = []
+    all_As = [] # all levels' A
     num_machines_in_machine = 1
+    # for each level
     for num_machines, network_bandwidth in zip(all_num_machines, network_bandwidths):
         print("Solving optimization problem with %d machines with inter-machine bandwidth of %.2f GB/s" % (num_machines, network_bandwidth / 10**9))
         import numpy as np
@@ -298,13 +299,16 @@ def main(all_num_machines, profile_filename, network_bandwidths, memory_size,
 
     splits = [(0, len(states))]
     i = len(all_As) - 1
+    # from highest to lowest level, assign stage id for each layer
     while i >= 0:
         print("======================================")
         print("Level %d" % (i+1))
         print("======================================")
         new_splits = []
         stage_id = 0
+        # for each available group of layers in current level
         for (start, end) in splits:
+            # for one component in current level, find sub-split
             partial_splits = \
                 analyze_partitioning(all_As[i], states, start, end,
                                      network_bandwidths[i], all_num_machines[i],
@@ -336,6 +340,7 @@ def main(all_num_machines, profile_filename, network_bandwidths, memory_size,
             source.stage_id = 0
             gr.add_edge(source, out_node)
 
+    # write partition to file
     if output_directory is not None:
         total_num_machines = 1
         for num_machines in all_num_machines:

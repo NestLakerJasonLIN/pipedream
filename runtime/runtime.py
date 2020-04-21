@@ -40,7 +40,7 @@ class ModulesWithDependencies:
                 return True
         return False
 
-
+# manage module training, forward, send, backward, send
 class StageRuntime:
     def __init__(self, model, distributed_backend, fp16, loss_scale,
                  training_tensor_shapes, eval_tensor_shapes,
