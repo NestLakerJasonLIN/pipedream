@@ -1,0 +1,17 @@
+'log_directory': '/home/ubuntu/pipedream/output_logs'
+'module': 'models.vgg16.gpus=2'
+'data_dir': '/home/ubuntu/data/imagenet/'
+'config_file': 'models/vgg16/gpus=2/mp_conf.json'
+'container': 'nvcr.io/nvidia/pytorch:19.05-py3'
+'machines': ['localhost:0', '172.31.14.150:1']
+'batch_size': 64
+'learning_rate': 0.01
+'weight_decay': 0.0005
+'epochs': 60
+'print_frequency': 10
+'verbose_frequency': 10
+'compress_activations': False
+'compress_in_gpu': False
+'learning_rate_policy': 'polynomial'
+'model_type': 'image_classification'
+'distributed_backend': 'gloo'
