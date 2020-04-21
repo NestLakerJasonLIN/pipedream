@@ -14,7 +14,9 @@ IMAGE_CLASSIFICATION = "image_classification"
 TRANSLATION = "translation"
 SPEECH_TO_TEXT = "speech_to_text"
 
-
+# modules_with_dependencies:
+# [(stage_class_instance, input_var_name, output_var_name), ...]
+# e.g. [(Stage0(), ["input0"], ["out0"]), ...]
 class ModulesWithDependencies:
     def __init__(self, modules_with_dependencies):
         self._modules = []
