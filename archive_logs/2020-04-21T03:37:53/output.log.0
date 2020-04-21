@@ -1,0 +1,16 @@
+Enter CommunicationHandler.__init__
+172.31.14.215 12345
+Hit B
+Finished initializing process group; backend: gloo, rank: 0, world_size: 2
+Send ranks:  {'out0': [1], 'target': [1]}
+Receive ranks:  {}
+Letting in 1 warm-up minibatches
+Running training for 20018 minibatches
+Forward Stats:
+	 compute_time 0.000 seconds
+	 receive_tensors 0.000 seconds
+	 receive_tensors_size 0.000 bytes
+	 send_tensors 0.000 seconds
+	 send_tensors_size 411042304.000 bytes
+Epoch: 0 Step 0 	Learning rate: 0.010000
+Epoch: [0][0/20018]	Memory: 6.323 (8.313)
