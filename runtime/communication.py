@@ -583,6 +583,7 @@ class CommunicationHandler(object):
     def recv(self, tensor_name, forward_minibatch_id,
              backward_minibatch_id, backward=False):
         if backward:
+            # TODO: what is index?
             index = (backward_minibatch_id + self.rank_in_stage) % \
                 len(self.backward_receive_queues[tensor_name])
             tensor = self.backward_receive_queues[tensor_name][
@@ -590,6 +591,7 @@ class CommunicationHandler(object):
             return tensor
         else:
             index = self.get_messaging_index(sending=False)
+            # block if queue empty
             tensor = self.forward_receive_queues[tensor_name][
                 index].remove()
             if tensor.dtype == torch.float32:

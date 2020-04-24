@@ -82,7 +82,12 @@ class StageRuntime:
     def initialize(self, model, inputs_module_destinations,
                    configuration_maps, master_addr, rank,
                    local_rank, num_ranks_in_server):
+        # e.g. self.send_ranks["out3"] = 5
+        #   an tensor output with name out3 will be sent to 
+        #   the downstream GPU with ID 5 
         self.send_ranks = {}
+        # e.g. self.receive_ranks["out3"] = 4
+        #   The upstream GPU with ID 4 produces an tensor output with name out3
         self.receive_ranks = {}
         self.rank = rank
         self.local_rank = local_rank
@@ -191,15 +196,20 @@ class StageRuntime:
                 fp16=self.fp16,
                 backend=self.distributed_backend)
 
+            # For each stage, model[i] = (stagei, inputi, outi)
             for i in range(len(model)):
                 for j in range(i+1, len(model)):
                     for tensor_name in model[i][2]:
+                        # current stage's output appear in next stage's input
                         if tensor_name in model[j][1]:
+                            # current stage and next stage in different machine
                             if module_to_stage_map[i] == \
                                 module_to_stage_map[j]:
                                 continue
                             # For now, assume that each stage is served by only
                             # a single machine.
+                            # stage_to_rank_map[module_to_stage_map[i]]: 
+                            #   the GPU rank running module i
                             if module_to_stage_map[j] == self.stage:
                                 self.receive_ranks[tensor_name] = \
                                     stage_to_rank_map[module_to_stage_map[i]]
@@ -375,11 +385,14 @@ class StageRuntime:
         else:
             self.loader_iter = None
 
+    # recv forward output tensor from upstream GPU
     def receive_tensors_forward(self):
         if self.forward_only and len(self.tensors) > 0:
             self.tensors.pop(0)
         self.tensors.append({})
+        # Stage0 (there is a dataloader)
         if self.loader_iter is not None:
+            # input: a minibatch
             input = next(self.loader_iter)
             if self.model_type == TRANSLATION:
                 (input, target) = input
@@ -408,8 +421,10 @@ class StageRuntime:
                 self.tensors[-1]["target"] = target.cuda(non_blocking=True)
                 self.tensors[-1]["target_length"] = target_sizes.cuda(
                     non_blocking=True)
+        # Other Stages (there is no dataloader)
         else:
-            # Receive all required tensors from upstream machines.
+            # Receive all required tensors from upstream GPU.
+            # TODO: why recv does not need rank?
             for input_name in self.receive_ranks:
                 if input_name == "ack":
                     continue
