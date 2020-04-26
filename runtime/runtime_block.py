@@ -75,6 +75,8 @@ class StageRuntime:
         # computed from the forward pass for the backward pass.
         self.enable_recompute = enable_recompute
 
+        self.prefix = "[stage={}] ".format(self.stage)
+
         # Disable recomputation for the last stage.
         if rank == num_ranks_in_server - 1:
             self.enable_recompute = False
@@ -423,6 +425,7 @@ class StageRuntime:
                     non_blocking=True)
         # Other Stages (there is no dataloader)
         else:
+            print(self.prefix + "pass receive_tensors_forward")
             pass
             # # Receive all required tensors from upstream GPU.
             # # TODO: why recv does not need rank?
@@ -506,6 +509,7 @@ class StageRuntime:
     def run_forward(self, recompute_step=False):
         """Run forward pass.
         """
+        print(self.prefix + "enter run_forward")
         # Receive tensors from previous worker.
         self.receive_tensors_forward()
         tensors = self.tensors[-1]
@@ -521,6 +525,7 @@ class StageRuntime:
         self.forward_minibatch_id += 1
 
     def _run_forward(self, tensors):
+        print(self.prefix + "enter _run_forward")
         # Perform forward pass through model (self.modules_with_dependencies already
         # has modules in topological order).
         modules = self.modules_with_dependencies.modules()
@@ -549,6 +554,7 @@ class StageRuntime:
                 
                 # stage 0
                 if self.loader_iter is not None:
+                    print(self.prefix + "pass tensor into module: " + module)
                     module_outputs = module(*[tensors[input_name]
                                           for input_name in input_names],
                                           forward_minibatch_id=self.forward_minibatch_id, 
@@ -556,6 +562,7 @@ class StageRuntime:
                                           comm_handler=self.comm_handler)
                 # other stages
                 else:
+                    print(self.prefix + "enter into module: " + module)
                     module_outputs = module(forward_minibatch_id=self.forward_minibatch_id, 
                                           backward_minibatch_id=self.backward_minibatch_id, 
                                           comm_handler=self.comm_handler)
@@ -564,6 +571,8 @@ class StageRuntime:
                     module_outputs = (module_outputs,)
                 module_outputs = list(module_outputs)
 
+            # TODO: may lead to error
+            print(self.prefix + "output_names:", output_names, "module_outputs: ", module_outputs)
             for (output_name, module_output) in zip(output_names, module_outputs):
                 tensors[output_name] = module_output
 

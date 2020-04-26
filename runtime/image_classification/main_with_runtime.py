@@ -23,7 +23,7 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 
 sys.path.append("..")
-import runtime
+import runtime_block as runtime
 import sgd
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')

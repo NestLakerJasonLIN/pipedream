@@ -92,6 +92,7 @@ class Stage1(torch.nn.Module):
 class Downstream_Head(torch.nn.Module):
     def __init__(self, inplace):
         super(Downstream_Head, self).__init__()
+        print("initialize downstream head module")
         self.relu = torch.nn.ReLU(inplace=inplace)
              
     def forward(self, forward_minibatch_id, backward_minibatch_id, comm_handler):

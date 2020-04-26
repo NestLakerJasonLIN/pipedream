@@ -46,6 +46,7 @@ class Stage0(torch.nn.Module):
 class Upstream_Tail(torch.nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size, stride, padding):
         super(Upstream_Tail, self).__init__()
+        print("initialize upstream tail module")
         self.orig_padding = padding
         self.kernel_size = kernel_size[0]
         self.conv2d = torch.nn.Conv2d(in_channels=in_channels, 
