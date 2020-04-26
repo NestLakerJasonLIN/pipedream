@@ -279,6 +279,7 @@ class CommunicationHandler(object):
 
             for i in range(len(self.receive_ranks[input_name])):
                 if not forward_only:
+                    # training step will also send gradient back to upstream
                     self.start_helper_thread(
                         self.send_helper_thread_args,
                         send_helper_thread,
@@ -311,6 +312,7 @@ class CommunicationHandler(object):
                     [output_name, i, False],
                     num_iterations_for_forward_threads)
 
+        # TODO: what is target_tensor_name ?
         for target_tensor_name in self.target_tensor_names:
             if self.num_ranks_in_previous_stage > 0:
                 for i in range(len(self.receive_ranks[target_tensor_name])):
@@ -608,6 +610,22 @@ class CommunicationHandler(object):
             index = (forward_minibatch_id + self.rank_in_stage) % \
                 len(self.send_ranks[tensor_name])
             self.forward_send_queues[tensor_name][index].add(tensor)
+
+    def recv_block(self, forward_minibatch_id, backward_minibatch_id):
+        index = self.get_messaging_index(sending=False)
+        # block if queue empty
+        tensor_name = "out0"
+        tensor = self.forward_receive_queues[tensor_name][
+            index].remove()
+        if tensor.dtype == torch.float32:
+            tensor = tensor.requires_grad_()
+        return tensor
+
+    def send_block(self, tensor, forward_minibatch_id, backward_minibatch_id):
+        tensor_name = "out0"
+        index = (forward_minibatch_id + self.rank_in_stage) % \
+                len(self.send_ranks[tensor_name])
+        self.forward_send_queues[tensor_name][index].add(tensor)
 
 def recv_helper_thread(queue, counter, local_rank, tensor_name,
                        src_rank, tag, tensor_shape, dtype,

@@ -7,7 +7,7 @@ import torch
 class Stage1(torch.nn.Module):
     def __init__(self):
         super(Stage1, self).__init__()
-        self.layer1 = torch.nn.ReLU(inplace=True)
+        self.downstream_head = Downstream_Head(inplace=True)
         self.layer2 = torch.nn.MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
         self.layer3 = torch.nn.Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
         self.layer4 = torch.nn.ReLU(inplace=True)
@@ -40,8 +40,8 @@ class Stage1(torch.nn.Module):
 
         self._initialize_weights()
 
-    def forward(self, input0):
-        out0 = input0.clone()
+    def forward(self, forward_minibatch_id, backward_minibatch_id, comm_handler):
+        out0 = self.downstream_head(forward_minibatch_id, backward_minibatch_id, comm_handler)
         out1 = self.layer1(out0)
         out2 = self.layer2(out1)
         out3 = self.layer3(out2)
@@ -88,3 +88,33 @@ class Stage1(torch.nn.Module):
             elif isinstance(m, torch.nn.Linear):
                 torch.nn.init.normal_(m.weight, 0, 0.01)
                 torch.nn.init.constant_(m.bias, 0)
+
+class Downstream_Head(torch.nn.Module):
+    def __init__(self, inplace):
+        super(Downstream_Head, self).__init__()
+        self.relu = torch.nn.ReLU(inplace=inplace)
+             
+    def forward(self, forward_minibatch_id, backward_minibatch_id, comm_handler):
+        print("Start downstream head layer")
+
+        block_num = 4
+        block_out_relu = []
+        
+        for block_id in range(block_num):
+            block_inp_relu = self.comm_handler.recv_block(forward_minibatch_id, backward_minibatch_id)
+            block_out_relu.append(self.relu(block_inp_relu))
+
+            # Used to track where to receive forward from.
+            comm_handler.increment_messaging_index(
+                sending=False)
+        
+        relu_out = self._combine(block_out_relu)
+
+        return relu_out
+
+    def _combine(self, block_list):
+        block_upper = torch.cat((block_list[0], block_list[1]), dim=3)
+        block_lower = torch.cat((block_list[2], block_list[3]), dim=3)
+        combined_inp = torch.cat((block_upper, block_lower), dim=2)
+
+        return combined_inp  
