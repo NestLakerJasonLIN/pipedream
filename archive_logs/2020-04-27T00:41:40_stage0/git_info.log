@@ -1,0 +1,429 @@
+f0c5eae2f25ed9f00ed9d9064082782423441296
+diff --git a/runtime/communication.py b/runtime/communication.py
+index 18743e7..c856875 100644
+--- a/runtime/communication.py
++++ b/runtime/communication.py
+@@ -67,8 +67,6 @@ class CommunicationHandler(object):
+         assert len(self.ranks_in_server) == num_ranks_in_server - 1, \
+             self.ranks_in_server
+ 
+-        self.prefix = "[rank={}] ".format(self.rank)
+-
+     def is_gpu_to_gpu_comm(self, connected_rank):
+         if connected_rank in self.ranks_in_server:
+             return True
+@@ -614,7 +612,7 @@ class CommunicationHandler(object):
+             self.forward_send_queues[tensor_name][index].add(tensor)
+ 
+     def recv_block(self, forward_minibatch_id, backward_minibatch_id):
+-        print(self.prefix + "enter recv_block", "f_mini-b_mini:", forward_minibatch_id, "-",backward_minibatch_id)
++        print("enter recv_block", "f_mini-b_mini:", forward_minibatch_id, "-",backward_minibatch_id)
+         index = self.get_messaging_index(sending=False)
+         # block if queue empty
+         tensor_name = "out0"
+@@ -625,7 +623,7 @@ class CommunicationHandler(object):
+         return tensor
+ 
+     def send_block(self, tensor, forward_minibatch_id, backward_minibatch_id):
+-        print(self.prefix + "enter send_block", "f_mini-b_mini:", forward_minibatch_id, "-",backward_minibatch_id)
++        print("enter send_block", "f_mini-b_mini:", forward_minibatch_id, "-",backward_minibatch_id)
+         tensor_name = "out0"
+         index = (forward_minibatch_id + self.rank_in_stage) % \
+                 len(self.send_ranks[tensor_name])
+diff --git a/runtime/driver.py b/runtime/driver.py
+index 3b691c7..f28b945 100644
+--- a/runtime/driver.py
++++ b/runtime/driver.py
+@@ -47,8 +47,12 @@ Remaining TODOs:
+     3) Support non-NFS checkpoint directories.
+ '''
+ 
++# for remote machine
++# rm -rf pipedream.bak
++# mv pipedream pipedream.bak
++# scp pipedream ~/
+ 
+-def create_output_folder(conf):
++def create_output_folder(conf, workers=[]):
+     output_folder_path = os.path.join(
+         conf[LOG_DIR], datetime.datetime.now().isoformat().split('.')[0])
+     sys.stdout.write('Creating output folder: %s\n' % output_folder_path)
+@@ -57,6 +61,23 @@ def create_output_folder(conf):
+         os.makedirs(output_folder_path)
+     except OSError:
+         raise OSError
++    
++    # copy whole code to remote machines
++    for rank, worker in enumerate(workers):
++        if (rank == 0):
++            continue
++        print("rank:", rank, "worker:", worker)
++
++        shell_cmd = "rm -rf /home/ubuntu/pipedream.bak && mv /home/ubuntu/pipedream /home/ubuntu/pipedream.bak"
++        ssh_cmd = 'ssh -n %s -o StrictHostKeyChecking=no \"%s\"' % (worker.ip, shell_cmd)
++        subprocess.check_output(ssh_cmd, shell=True)
++
++        print("executed:", ssh_cmd)
++
++        scp_cmd = 'scp -r ~/pipedream %s:~/' % (worker.ip)
++        subprocess.check_output(scp_cmd, shell=True)
++
++        print("executed:", scp_cmd)            
+ 
+     return output_folder_path
+ 
+@@ -155,7 +176,7 @@ if __name__ == "__main__":
+     assert len(workers) == len(configurations[MACHINES])
+ 
+     # Create output directory.
+-    output_dir = create_output_folder(conf=configurations)
++    output_dir = create_output_folder(conf=configurations, workers=workers)
+ 
+     # Copy configuration file to output folder.
+     copy_command = 'cp %s %s' % (args.config_file, output_dir)
+diff --git a/runtime/image_classification/driver_configs/vgg16_2mp_exp.yml b/runtime/image_classification/driver_configs/vgg16_2mp_exp.yml
+index 32ad5c1..4d9ce0b 100644
+--- a/runtime/image_classification/driver_configs/vgg16_2mp_exp.yml
++++ b/runtime/image_classification/driver_configs/vgg16_2mp_exp.yml
+@@ -1,9 +1,9 @@
+ 'log_directory': '/home/ubuntu/pipedream/output_logs'
+ 'module': 'models.vgg16.gpus=2'
+-'data_dir': '/home/ubuntu/data/imagenet/'
++'data_dir': '/home/ubuntu/data/imagenet_tiny/'
+ 'config_file': 'models/vgg16/gpus=2/mp_conf.json'
+ 'container': 'nvcr.io/nvidia/pytorch:19.05-py3'
+-'machines': ['localhost:0', '172.31.14.150:1']
++'machines': ['172.31.15.10:0', '172.31.12.252:1']
+ 'batch_size': 64
+ 'learning_rate': 0.01
+ 'weight_decay': 0.0005
+diff --git a/runtime/image_classification/main_with_runtime.py b/runtime/image_classification/main_with_runtime.py
+index 08ee54e..fa91289 100644
+--- a/runtime/image_classification/main_with_runtime.py
++++ b/runtime/image_classification/main_with_runtime.py
+@@ -135,31 +135,36 @@ def main():
+         input_size = [args.batch_size, 3, 299, 299]
+     else:
+         input_size = [args.batch_size, 3, 224, 224]
+-    training_tensor_shapes = {"input0": input_size, "target": [args.batch_size]}
+-    dtypes = {"input0": torch.int64, "target": torch.int64}
++    # training_tensor_shapes = {"input0": input_size, "target": [args.batch_size]}
++    # dtypes = {"input0": torch.int64, "target": torch.int64}
+     inputs_module_destinations = {"input": 0}
+     target_tensor_names = {"target"}
++    
++    training_tensor_shapes = {'input0': (64, 3, 224, 224), 'target': (64,), 'out0': (64, 128, 112, 112), 'out1': (64, 1000)}
++    eval_tensor_shapes = {'input0': (100, 3, 224, 224), 'target': (100,), 'out0': (100, 128, 112, 112), 'out1': (100, 1000)}
++    dtypes = {'input0': torch.int64, 'target': torch.int64, 'out0': torch.float32, 'out1': torch.float32}
++
+     for (stage, inputs, outputs) in model[:-1]:  # Skip last layer (loss).
+         input_tensors = []
+         for input in inputs:
+             input_tensor = torch.zeros(tuple(training_tensor_shapes[input]),
+                                        dtype=torch.float32)
+             input_tensors.append(input_tensor)
+-        with torch.no_grad():
+-            output_tensors = stage(*tuple(input_tensors))
+-        if not type(output_tensors) is tuple:
+-            output_tensors = [output_tensors]
+-        for output, output_tensor in zip(outputs,
+-                                         list(output_tensors)):
+-            training_tensor_shapes[output] = list(output_tensor.size())
+-            dtypes[output] = output_tensor.dtype
+-
+-    eval_tensor_shapes = {}
+-    for key in training_tensor_shapes:
+-        eval_tensor_shapes[key] = tuple(
+-            [args.eval_batch_size] + training_tensor_shapes[key][1:])
+-        training_tensor_shapes[key] = tuple(
+-            training_tensor_shapes[key])
++        # with torch.no_grad():
++        #     output_tensors = stage(*tuple(input_tensors))
++        # if not type(output_tensors) is tuple:
++        #     output_tensors = [output_tensors]
++        # for output, output_tensor in zip(outputs,
++        #                                  list(output_tensors)):
++        #     training_tensor_shapes[output] = list(output_tensor.size())
++        #     dtypes[output] = output_tensor.dtype
++
++    # eval_tensor_shapes = {}
++    # for key in training_tensor_shapes:
++    #     eval_tensor_shapes[key] = tuple(
++    #         [args.eval_batch_size] + training_tensor_shapes[key][1:])
++    #     training_tensor_shapes[key] = tuple(
++    #         training_tensor_shapes[key])
+ 
+     configuration_maps = {
+         'module_to_stage_map': None,
+diff --git a/runtime/image_classification/models/vgg16/gpus=2/stage0.py b/runtime/image_classification/models/vgg16/gpus=2/stage0.py
+index 454081e..3111298 100644
+--- a/runtime/image_classification/models/vgg16/gpus=2/stage0.py
++++ b/runtime/image_classification/models/vgg16/gpus=2/stage0.py
+@@ -27,8 +27,8 @@ class Stage0(torch.nn.Module):
+         out6 = self.layer6(out5)
+         out7 = self.layer7(out6)
+         out8 = self.layer8(out7)
+-        self.upstream_tail(out8, forward_minibatch_id, backward_minibatch_id, comm_handler)
+-        return None
++        out9 = self.upstream_tail(out8, forward_minibatch_id, backward_minibatch_id, comm_handler)
++        return out9
+ 
+     def _initialize_weights(self):
+         for m in self.modules():
+@@ -59,6 +59,7 @@ class Upstream_Tail(torch.nn.Module):
+     def forward(self, inp, forward_minibatch_id, backward_minibatch_id, comm_handler):
+         print("Start upstream tail layer")
+         
++        block_out_list = []
+         block_num = 4
+         
+         batch_size, c_in = inp.shape[0], inp.shape[1]
+@@ -75,6 +76,7 @@ class Upstream_Tail(torch.nn.Module):
+         block_inp = inp[:, :, h_start:h_end, w_start:w_end]
+         
+         block_out = self.conv2d(block_inp)
++        block_out_list.append(block_out)
+         
+         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
+                                      backward_minibatch_id=backward_minibatch_id)
+@@ -88,6 +90,7 @@ class Upstream_Tail(torch.nn.Module):
+         block_inp = inp[:, :, h_start:h_end, w_start:w_end]
+ 
+         block_out = self.conv2d(block_inp)
++        block_out_list.append(block_out)
+ 
+         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
+                                      backward_minibatch_id=backward_minibatch_id)
+@@ -101,6 +104,7 @@ class Upstream_Tail(torch.nn.Module):
+         block_inp = inp[:, :, h_start:h_end, w_start:w_end]
+ 
+         block_out = self.conv2d(block_inp)
++        block_out_list.append(block_out)
+ 
+         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
+                              backward_minibatch_id=backward_minibatch_id)
+@@ -114,10 +118,18 @@ class Upstream_Tail(torch.nn.Module):
+         block_inp = inp[:, :, h_start:h_end, w_start:w_end]
+ 
+         block_out = self.conv2d(block_inp)
++        block_out_list.append(block_out)
+ 
+         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
+                                      backward_minibatch_id=backward_minibatch_id)
+ 
+         print("block3:", "inp:", block_inp.shape, "out:", block_out.shape)
+ 
+-        return None
+\ No newline at end of file
++        return self._combine(block_out_list)
++    
++    def _combine(self, block_list):
++        block_upper = torch.cat((block_list[0], block_list[1]), dim=3)
++        block_lower = torch.cat((block_list[2], block_list[3]), dim=3)
++        combined_inp = torch.cat((block_upper, block_lower), dim=2)
++
++        return combined_inp  
+\ No newline at end of file
+diff --git a/runtime/image_classification/models/vgg16/gpus=2/stage1.py b/runtime/image_classification/models/vgg16/gpus=2/stage1.py
+index e06f4c9..29e8ea6 100644
+--- a/runtime/image_classification/models/vgg16/gpus=2/stage1.py
++++ b/runtime/image_classification/models/vgg16/gpus=2/stage1.py
+@@ -40,9 +40,8 @@ class Stage1(torch.nn.Module):
+ 
+         self._initialize_weights()
+ 
+-    def forward(self, forward_minibatch_id, backward_minibatch_id, comm_handler):
+-        out0 = self.downstream_head(forward_minibatch_id, backward_minibatch_id, comm_handler)
+-        out1 = self.layer1(out0)
++    def forward(self, forward_minibatch_id, backward_minibatch_id, r):
++        out1 = self.downstream_head(forward_minibatch_id, backward_minibatch_id, r)
+         out2 = self.layer2(out1)
+         out3 = self.layer3(out2)
+         out4 = self.layer4(out3)
+@@ -95,22 +94,41 @@ class Downstream_Head(torch.nn.Module):
+         print("initialize downstream head module")
+         self.relu = torch.nn.ReLU(inplace=inplace)
+              
+-    def forward(self, forward_minibatch_id, backward_minibatch_id, comm_handler):
++    def forward(self, forward_minibatch_id, backward_minibatch_id, r):
+         print("Start downstream head layer")
+ 
+         block_num = 4
++        block_buffer = torch.zeros(64, 128, 112, 112).to("cuda")
+         block_out_relu = []
+         
+         for block_id in range(block_num):
+-            block_inp_relu = self.comm_handler.recv_block(forward_minibatch_id, backward_minibatch_id)
+-            block_out_relu.append(self.relu(block_inp_relu))
++            block_inp_relu = r.comm_handler.recv_block(forward_minibatch_id, backward_minibatch_id)
++            print("recv: tensor:", block_inp_relu.shape)
++            # store block_inp_relu into buffer
++            # slice and clone buffer and pass into ReLU
++            # return buffer as input_tensor
++            if (block_id == 0):
++                block_buffer[:, :, :57, :57] = block_inp_relu
++                block_out_relu.append(self.relu(block_buffer[:, :, :57, :57].clone()))
++            elif (block_id == 1):
++                block_buffer[:, :, :57, 57:] = block_inp_relu
++                block_out_relu.append(self.relu(block_buffer[:, :, :57, 57:].clone()))
++            elif(block_id == 2):
++                block_buffer[:, :, 57:, :57] = block_inp_relu
++                block_out_relu.append(self.relu(block_buffer[:, :, 57:, :57].clone()))
++            else:
++                block_buffer[:, :, 57:, 57:] = block_inp_relu
++                block_out_relu.append(self.relu(block_buffer[:, :, 57:, 57:].clone()))
+ 
+-            # Used to track where to receive forward from.
+-            comm_handler.increment_messaging_index(
+-                sending=False)
++
++        # Used to track where to receive forward from.
++        r.comm_handler.increment_messaging_index(
++            sending=False)
+         
+         relu_out = self._combine(block_out_relu)
+ 
++        r.tensors[-1]["out0"] = block_buffer
++
+         return relu_out
+ 
+     def _combine(self, block_list):
+diff --git a/runtime/runtime_block.py b/runtime/runtime_block.py
+index 6f5b0db..3e26f06 100644
+--- a/runtime/runtime_block.py
++++ b/runtime/runtime_block.py
+@@ -75,8 +75,6 @@ class StageRuntime:
+         # computed from the forward pass for the backward pass.
+         self.enable_recompute = enable_recompute
+ 
+-        self.prefix = "[stage={}] ".format(self.stage)
+-
+         # Disable recomputation for the last stage.
+         if rank == num_ranks_in_server - 1:
+             self.enable_recompute = False
+@@ -425,24 +423,25 @@ class StageRuntime:
+                     non_blocking=True)
+         # Other Stages (there is no dataloader)
+         else:
+-            print(self.prefix + "pass receive_tensors_forward")
+-            pass
+-            # # Receive all required tensors from upstream GPU.
+-            # # TODO: why recv does not need rank?
+-            # for input_name in self.receive_ranks:
+-            #     if input_name == "ack":
+-            #         continue
+-
+-            #     self.tensors[-1][input_name] = \
+-            #         self.comm_handler.recv(
+-            #             input_name,
+-            #             forward_minibatch_id=self.forward_minibatch_id,
+-            #             backward_minibatch_id=self.backward_minibatch_id,
+-            #             backward=False)
+-
+-            #     self.forward_stats.stats['receive_tensors_size'] += \
+-            #         (self.tensors[-1][input_name].element_size() *
+-            #          self.tensors[-1][input_name].nelement())
++            # Receive all required tensors from upstream GPU.
++            # TODO: why recv does not need rank?
++            for input_name in self.receive_ranks:
++                if input_name == "ack" or input_name == "out0":
++                    print("skip recv:", input_name)
++                    continue
++
++                print("try recv:", input_name)
++                self.tensors[-1][input_name] = \
++                    self.comm_handler.recv(
++                        input_name,
++                        forward_minibatch_id=self.forward_minibatch_id,
++                        backward_minibatch_id=self.backward_minibatch_id,
++                        backward=False)
++
++                print("recv:", input_name)
++                self.forward_stats.stats['receive_tensors_size'] += \
++                    (self.tensors[-1][input_name].element_size() *
++                     self.tensors[-1][input_name].nelement())
+ 
+             # # Used to track where to receive forward from.
+             # self.comm_handler.increment_messaging_index(
+@@ -451,9 +450,11 @@ class StageRuntime:
+     def send_tensors_forward(self):
+         # Send all required tensors downstream.
+         for output_name in self.send_ranks:
+-            if output_name == "ack":
++            if output_name == "ack" or output_name == "out0":
++                print("skip send:", output_name)
+                 continue
+ 
++            print("try send:", output_name)
+             self.comm_handler.send(
+                 output_name,
+                 self.tensors[-1][output_name],
+@@ -461,6 +462,7 @@ class StageRuntime:
+                 backward_minibatch_id=self.backward_minibatch_id,
+                 backward=False)
+ 
++            print("sent:", output_name)
+             self.forward_stats.stats['send_tensors_size'] += \
+                 (self.tensors[-1][output_name].element_size() *
+                  self.tensors[-1][output_name].nelement())
+@@ -509,7 +511,7 @@ class StageRuntime:
+     def run_forward(self, recompute_step=False):
+         """Run forward pass.
+         """
+-        print(self.prefix + "enter run_forward")
++        print("enter run_forward")
+         # Receive tensors from previous worker.
+         self.receive_tensors_forward()
+         tensors = self.tensors[-1]
+@@ -518,14 +520,14 @@ class StageRuntime:
+         self._run_forward(tensors)
+ 
+         # Send tensors forward.
+-        # self.send_tensors_forward()
++        self.send_tensors_forward()
+         # if self.verbose_freq > 0 and self.forward_minibatch_id % self.verbose_freq == 0:
+         #     self.forward_stats.print_stats()
+         # self.forward_stats.reset_stats()
+         self.forward_minibatch_id += 1
+ 
+     def _run_forward(self, tensors):
+-        print(self.prefix + "enter _run_forward")
++        print("enter _run_forward")
+         # Perform forward pass through model (self.modules_with_dependencies already
+         # has modules in topological order).
+         modules = self.modules_with_dependencies.modules()
+@@ -549,12 +551,11 @@ class StageRuntime:
+                     module_outputs = [sum(module_outputs)]
+             else:
+                 # If layer is non-criterion.
+-                module_outputs = module(*[tensors[input_name]
+-                                          for input_name in input_names])
++                # module_outputs = module(*[tensors[input_name]
++                #                           for input_name in input_names])
+                 
+                 # stage 0
+                 if self.loader_iter is not None:
+-                    print(self.prefix + "pass tensor into module: " + module)
+                     module_outputs = module(*[tensors[input_name]
+                                           for input_name in input_names],
+                                           forward_minibatch_id=self.forward_minibatch_id, 
+@@ -562,17 +563,15 @@ class StageRuntime:
+                                           comm_handler=self.comm_handler)
+                 # other stages
+                 else:
+-                    print(self.prefix + "enter into module: " + module)
+                     module_outputs = module(forward_minibatch_id=self.forward_minibatch_id, 
+                                           backward_minibatch_id=self.backward_minibatch_id, 
+-                                          comm_handler=self.comm_handler)
++                                          r=self)
+                 
+                 if not isinstance(module_outputs, tuple):
+                     module_outputs = (module_outputs,)
+                 module_outputs = list(module_outputs)
+ 
+-            # TODO: may lead to error
+-            print(self.prefix + "output_names:", output_names, "module_outputs: ", module_outputs)
++
+             for (output_name, module_output) in zip(output_names, module_outputs):
+                 tensors[output_name] = module_output
+ 
