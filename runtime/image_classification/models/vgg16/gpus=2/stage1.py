@@ -98,7 +98,6 @@ class Downstream_Head(torch.nn.Module):
         print("Start downstream head layer")
 
         block_num = 4
-        block_buffer = torch.zeros(64, 128, 112, 112).to("cuda")
         block_out_relu = []
         
         for block_id in range(block_num):
@@ -108,6 +107,10 @@ class Downstream_Head(torch.nn.Module):
             # slice and clone buffer and pass into ReLU
             # return buffer as input_tensor
             if (block_id == 0):
+                # infer shape from the first recv block
+                batch_size, channel_size = block_inp_relu.size(0), block_inp_relu.size(1)
+                block_buffer = torch.zeros(batch_size, channel_size, 112, 112).to("cuda")
+
                 block_buffer[:, :, :57, :57] = block_inp_relu
                 block_out_relu.append(self.relu(block_buffer[:, :, :57, :57].clone()))
             elif (block_id == 1):
