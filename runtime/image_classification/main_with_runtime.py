@@ -135,31 +135,36 @@ def main():
         input_size = [args.batch_size, 3, 299, 299]
     else:
         input_size = [args.batch_size, 3, 224, 224]
-    training_tensor_shapes = {"input0": input_size, "target": [args.batch_size]}
-    dtypes = {"input0": torch.int64, "target": torch.int64}
+    # training_tensor_shapes = {"input0": input_size, "target": [args.batch_size]}
+    # dtypes = {"input0": torch.int64, "target": torch.int64}
     inputs_module_destinations = {"input": 0}
     target_tensor_names = {"target"}
+    
+    training_tensor_shapes = {'input0': (64, 3, 224, 224), 'target': (64,), 'out0': (64, 128, 112, 112), 'out1': (64, 1000)}
+    eval_tensor_shapes = {'input0': (100, 3, 224, 224), 'target': (100,), 'out0': (100, 128, 112, 112), 'out1': (100, 1000)}
+    dtypes = {'input0': torch.int64, 'target': torch.int64, 'out0': torch.float32, 'out1': torch.float32}
+
     for (stage, inputs, outputs) in model[:-1]:  # Skip last layer (loss).
         input_tensors = []
         for input in inputs:
             input_tensor = torch.zeros(tuple(training_tensor_shapes[input]),
                                        dtype=torch.float32)
             input_tensors.append(input_tensor)
-        with torch.no_grad():
-            output_tensors = stage(*tuple(input_tensors))
-        if not type(output_tensors) is tuple:
-            output_tensors = [output_tensors]
-        for output, output_tensor in zip(outputs,
-                                         list(output_tensors)):
-            training_tensor_shapes[output] = list(output_tensor.size())
-            dtypes[output] = output_tensor.dtype
+        # with torch.no_grad():
+        #     output_tensors = stage(*tuple(input_tensors))
+        # if not type(output_tensors) is tuple:
+        #     output_tensors = [output_tensors]
+        # for output, output_tensor in zip(outputs,
+        #                                  list(output_tensors)):
+        #     training_tensor_shapes[output] = list(output_tensor.size())
+        #     dtypes[output] = output_tensor.dtype
 
-    eval_tensor_shapes = {}
-    for key in training_tensor_shapes:
-        eval_tensor_shapes[key] = tuple(
-            [args.eval_batch_size] + training_tensor_shapes[key][1:])
-        training_tensor_shapes[key] = tuple(
-            training_tensor_shapes[key])
+    # eval_tensor_shapes = {}
+    # for key in training_tensor_shapes:
+    #     eval_tensor_shapes[key] = tuple(
+    #         [args.eval_batch_size] + training_tensor_shapes[key][1:])
+    #     training_tensor_shapes[key] = tuple(
+    #         training_tensor_shapes[key])
 
     configuration_maps = {
         'module_to_stage_map': None,

@@ -27,8 +27,8 @@ class Stage0(torch.nn.Module):
         out6 = self.layer6(out5)
         out7 = self.layer7(out6)
         out8 = self.layer8(out7)
-        self.upstream_tail(out8, forward_minibatch_id, backward_minibatch_id, comm_handler)
-        return None
+        out9 = self.upstream_tail(out8, forward_minibatch_id, backward_minibatch_id, comm_handler)
+        return out9
 
     def _initialize_weights(self):
         for m in self.modules():
@@ -59,6 +59,7 @@ class Upstream_Tail(torch.nn.Module):
     def forward(self, inp, forward_minibatch_id, backward_minibatch_id, comm_handler):
         print("Start upstream tail layer")
         
+        block_out_list = []
         block_num = 4
         
         batch_size, c_in = inp.shape[0], inp.shape[1]
@@ -75,6 +76,7 @@ class Upstream_Tail(torch.nn.Module):
         block_inp = inp[:, :, h_start:h_end, w_start:w_end]
         
         block_out = self.conv2d(block_inp)
+        block_out_list.append(block_out)
         
         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
                                      backward_minibatch_id=backward_minibatch_id)
@@ -88,6 +90,7 @@ class Upstream_Tail(torch.nn.Module):
         block_inp = inp[:, :, h_start:h_end, w_start:w_end]
 
         block_out = self.conv2d(block_inp)
+        block_out_list.append(block_out)
 
         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
                                      backward_minibatch_id=backward_minibatch_id)
@@ -101,6 +104,7 @@ class Upstream_Tail(torch.nn.Module):
         block_inp = inp[:, :, h_start:h_end, w_start:w_end]
 
         block_out = self.conv2d(block_inp)
+        block_out_list.append(block_out)
 
         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
                              backward_minibatch_id=backward_minibatch_id)
@@ -114,10 +118,18 @@ class Upstream_Tail(torch.nn.Module):
         block_inp = inp[:, :, h_start:h_end, w_start:w_end]
 
         block_out = self.conv2d(block_inp)
+        block_out_list.append(block_out)
 
         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
                                      backward_minibatch_id=backward_minibatch_id)
 
         print("block3:", "inp:", block_inp.shape, "out:", block_out.shape)
 
-        return None
+        return self._combine(block_out_list)
+    
+    def _combine(self, block_list):
+        block_upper = torch.cat((block_list[0], block_list[1]), dim=3)
+        block_lower = torch.cat((block_list[2], block_list[3]), dim=3)
+        combined_inp = torch.cat((block_upper, block_lower), dim=2)
+
+        return combined_inp  

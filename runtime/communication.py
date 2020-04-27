@@ -67,8 +67,6 @@ class CommunicationHandler(object):
         assert len(self.ranks_in_server) == num_ranks_in_server - 1, \
             self.ranks_in_server
 
-        self.prefix = "[rank={}] ".format(self.rank)
-
     def is_gpu_to_gpu_comm(self, connected_rank):
         if connected_rank in self.ranks_in_server:
             return True
@@ -614,7 +612,7 @@ class CommunicationHandler(object):
             self.forward_send_queues[tensor_name][index].add(tensor)
 
     def recv_block(self, forward_minibatch_id, backward_minibatch_id):
-        print(self.prefix + "enter recv_block", "f_mini-b_mini:", forward_minibatch_id, "-",backward_minibatch_id)
+        print("enter recv_block", "f_mini-b_mini:", forward_minibatch_id, "-",backward_minibatch_id)
         index = self.get_messaging_index(sending=False)
         # block if queue empty
         tensor_name = "out0"
@@ -625,7 +623,7 @@ class CommunicationHandler(object):
         return tensor
 
     def send_block(self, tensor, forward_minibatch_id, backward_minibatch_id):
-        print(self.prefix + "enter send_block", "f_mini-b_mini:", forward_minibatch_id, "-",backward_minibatch_id)
+        print("enter send_block", "f_mini-b_mini:", forward_minibatch_id, "-",backward_minibatch_id)
         tensor_name = "out0"
         index = (forward_minibatch_id + self.rank_in_stage) % \
                 len(self.send_ranks[tensor_name])

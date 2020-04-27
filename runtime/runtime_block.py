@@ -75,8 +75,6 @@ class StageRuntime:
         # computed from the forward pass for the backward pass.
         self.enable_recompute = enable_recompute
 
-        self.prefix = "[stage={}] ".format(self.stage)
-
         # Disable recomputation for the last stage.
         if rank == num_ranks_in_server - 1:
             self.enable_recompute = False
@@ -425,24 +423,25 @@ class StageRuntime:
                     non_blocking=True)
         # Other Stages (there is no dataloader)
         else:
-            print(self.prefix + "pass receive_tensors_forward")
-            pass
-            # # Receive all required tensors from upstream GPU.
-            # # TODO: why recv does not need rank?
-            # for input_name in self.receive_ranks:
-            #     if input_name == "ack":
-            #         continue
+            # Receive all required tensors from upstream GPU.
+            # TODO: why recv does not need rank?
+            for input_name in self.receive_ranks:
+                if input_name == "ack" or input_name == "out0":
+                    print("skip recv:", input_name)
+                    continue
 
-            #     self.tensors[-1][input_name] = \
-            #         self.comm_handler.recv(
-            #             input_name,
-            #             forward_minibatch_id=self.forward_minibatch_id,
-            #             backward_minibatch_id=self.backward_minibatch_id,
-            #             backward=False)
+                print("try recv:", input_name)
+                self.tensors[-1][input_name] = \
+                    self.comm_handler.recv(
+                        input_name,
+                        forward_minibatch_id=self.forward_minibatch_id,
+                        backward_minibatch_id=self.backward_minibatch_id,
+                        backward=False)
 
-            #     self.forward_stats.stats['receive_tensors_size'] += \
-            #         (self.tensors[-1][input_name].element_size() *
-            #          self.tensors[-1][input_name].nelement())
+                print("recv:", input_name)
+                self.forward_stats.stats['receive_tensors_size'] += \
+                    (self.tensors[-1][input_name].element_size() *
+                     self.tensors[-1][input_name].nelement())
 
             # # Used to track where to receive forward from.
             # self.comm_handler.increment_messaging_index(
@@ -451,9 +450,11 @@ class StageRuntime:
     def send_tensors_forward(self):
         # Send all required tensors downstream.
         for output_name in self.send_ranks:
-            if output_name == "ack":
+            if output_name == "ack" or output_name == "out0":
+                print("skip send:", output_name)
                 continue
 
+            print("try send:", output_name)
             self.comm_handler.send(
                 output_name,
                 self.tensors[-1][output_name],
@@ -461,6 +462,7 @@ class StageRuntime:
                 backward_minibatch_id=self.backward_minibatch_id,
                 backward=False)
 
+            print("sent:", output_name)
             self.forward_stats.stats['send_tensors_size'] += \
                 (self.tensors[-1][output_name].element_size() *
                  self.tensors[-1][output_name].nelement())
@@ -509,7 +511,7 @@ class StageRuntime:
     def run_forward(self, recompute_step=False):
         """Run forward pass.
         """
-        print(self.prefix + "enter run_forward")
+        print("enter run_forward")
         # Receive tensors from previous worker.
         self.receive_tensors_forward()
         tensors = self.tensors[-1]
@@ -518,14 +520,14 @@ class StageRuntime:
         self._run_forward(tensors)
 
         # Send tensors forward.
-        # self.send_tensors_forward()
+        self.send_tensors_forward()
         # if self.verbose_freq > 0 and self.forward_minibatch_id % self.verbose_freq == 0:
         #     self.forward_stats.print_stats()
         # self.forward_stats.reset_stats()
         self.forward_minibatch_id += 1
 
     def _run_forward(self, tensors):
-        print(self.prefix + "enter _run_forward")
+        print("enter _run_forward")
         # Perform forward pass through model (self.modules_with_dependencies already
         # has modules in topological order).
         modules = self.modules_with_dependencies.modules()
@@ -549,12 +551,11 @@ class StageRuntime:
                     module_outputs = [sum(module_outputs)]
             else:
                 # If layer is non-criterion.
-                module_outputs = module(*[tensors[input_name]
-                                          for input_name in input_names])
+                # module_outputs = module(*[tensors[input_name]
+                #                           for input_name in input_names])
                 
                 # stage 0
                 if self.loader_iter is not None:
-                    print(self.prefix + "pass tensor into module: " + module)
                     module_outputs = module(*[tensors[input_name]
                                           for input_name in input_names],
                                           forward_minibatch_id=self.forward_minibatch_id, 
@@ -562,17 +563,15 @@ class StageRuntime:
                                           comm_handler=self.comm_handler)
                 # other stages
                 else:
-                    print(self.prefix + "enter into module: " + module)
                     module_outputs = module(forward_minibatch_id=self.forward_minibatch_id, 
                                           backward_minibatch_id=self.backward_minibatch_id, 
-                                          comm_handler=self.comm_handler)
+                                          r=self)
                 
                 if not isinstance(module_outputs, tuple):
                     module_outputs = (module_outputs,)
                 module_outputs = list(module_outputs)
 
-            # TODO: may lead to error
-            print(self.prefix + "output_names:", output_names, "module_outputs: ", module_outputs)
+
             for (output_name, module_output) in zip(output_names, module_outputs):
                 tensors[output_name] = module_output
 

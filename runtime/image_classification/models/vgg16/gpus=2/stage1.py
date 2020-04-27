@@ -40,9 +40,8 @@ class Stage1(torch.nn.Module):
 
         self._initialize_weights()
 
-    def forward(self, forward_minibatch_id, backward_minibatch_id, comm_handler):
-        out0 = self.downstream_head(forward_minibatch_id, backward_minibatch_id, comm_handler)
-        out1 = self.layer1(out0)
+    def forward(self, forward_minibatch_id, backward_minibatch_id, r):
+        out1 = self.downstream_head(forward_minibatch_id, backward_minibatch_id, r)
         out2 = self.layer2(out1)
         out3 = self.layer3(out2)
         out4 = self.layer4(out3)
@@ -95,21 +94,40 @@ class Downstream_Head(torch.nn.Module):
         print("initialize downstream head module")
         self.relu = torch.nn.ReLU(inplace=inplace)
              
-    def forward(self, forward_minibatch_id, backward_minibatch_id, comm_handler):
+    def forward(self, forward_minibatch_id, backward_minibatch_id, r):
         print("Start downstream head layer")
 
         block_num = 4
+        block_buffer = torch.zeros(64, 128, 112, 112).to("cuda")
         block_out_relu = []
         
         for block_id in range(block_num):
-            block_inp_relu = self.comm_handler.recv_block(forward_minibatch_id, backward_minibatch_id)
-            block_out_relu.append(self.relu(block_inp_relu))
+            block_inp_relu = r.comm_handler.recv_block(forward_minibatch_id, backward_minibatch_id)
+            print("recv: tensor:", block_inp_relu.shape)
+            # store block_inp_relu into buffer
+            # slice and clone buffer and pass into ReLU
+            # return buffer as input_tensor
+            if (block_id == 0):
+                block_buffer[:, :, :57, :57] = block_inp_relu
+                block_out_relu.append(self.relu(block_buffer[:, :, :57, :57].clone()))
+            elif (block_id == 1):
+                block_buffer[:, :, :57, 57:] = block_inp_relu
+                block_out_relu.append(self.relu(block_buffer[:, :, :57, 57:].clone()))
+            elif(block_id == 2):
+                block_buffer[:, :, 57:, :57] = block_inp_relu
+                block_out_relu.append(self.relu(block_buffer[:, :, 57:, :57].clone()))
+            else:
+                block_buffer[:, :, 57:, 57:] = block_inp_relu
+                block_out_relu.append(self.relu(block_buffer[:, :, 57:, 57:].clone()))
 
-            # Used to track where to receive forward from.
-            comm_handler.increment_messaging_index(
-                sending=False)
+
+        # Used to track where to receive forward from.
+        r.comm_handler.increment_messaging_index(
+            sending=False)
         
         relu_out = self._combine(block_out_relu)
+
+        r.tensors[-1]["out0"] = block_buffer
 
         return relu_out
 

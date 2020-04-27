@@ -47,8 +47,12 @@ Remaining TODOs:
     3) Support non-NFS checkpoint directories.
 '''
 
+# for remote machine
+# rm -rf pipedream.bak
+# mv pipedream pipedream.bak
+# scp pipedream ~/
 
-def create_output_folder(conf):
+def create_output_folder(conf, workers=[]):
     output_folder_path = os.path.join(
         conf[LOG_DIR], datetime.datetime.now().isoformat().split('.')[0])
     sys.stdout.write('Creating output folder: %s\n' % output_folder_path)
@@ -57,6 +61,23 @@ def create_output_folder(conf):
         os.makedirs(output_folder_path)
     except OSError:
         raise OSError
+    
+    # copy whole code to remote machines
+    for rank, worker in enumerate(workers):
+        if (rank == 0):
+            continue
+        print("rank:", rank, "worker:", worker)
+
+        shell_cmd = "rm -rf /home/ubuntu/pipedream.bak && mv /home/ubuntu/pipedream /home/ubuntu/pipedream.bak"
+        ssh_cmd = 'ssh -n %s -o StrictHostKeyChecking=no \"%s\"' % (worker.ip, shell_cmd)
+        subprocess.check_output(ssh_cmd, shell=True)
+
+        print("executed:", ssh_cmd)
+
+        scp_cmd = 'scp -r ~/pipedream %s:~/' % (worker.ip)
+        subprocess.check_output(scp_cmd, shell=True)
+
+        print("executed:", scp_cmd)            
 
     return output_folder_path
 
@@ -155,7 +176,7 @@ if __name__ == "__main__":
     assert len(workers) == len(configurations[MACHINES])
 
     # Create output directory.
-    output_dir = create_output_folder(conf=configurations)
+    output_dir = create_output_folder(conf=configurations, workers=workers)
 
     # Copy configuration file to output folder.
     copy_command = 'cp %s %s' % (args.config_file, output_dir)
