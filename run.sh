@@ -4,6 +4,9 @@ ROOT=/home/ubuntu/pipedream/runtime
 YAML_FILE=vgg16_2mp_exp.yml
 
 
+sed -i "s/HOST0/$LOCAL_IP/g" $ROOT/image_classification/driver_configs/$YAML_FILE
+sed -i "s/HOST1/$REMOTE_IP/g" $ROOT/image_classification/driver_configs/$YAML_FILE
+
 # start
 if [ "$1" = "start" ]; then
     cd $ROOT
@@ -37,6 +40,5 @@ fi
 # check remote log
 if [ "$1" = "rlog" ]; then
     cd $LOG_DIRNAME
-    ssh -n 172.31.74.148 -o StrictHostKeyChecking=no "cd $LOG_DIRNAME && tail -f output.log.1"
+    ssh -n $REMOTE_IP -o StrictHostKeyChecking=no "cd $LOG_DIRNAME && tail -f output.log.1"
 fi
-

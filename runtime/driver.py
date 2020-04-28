@@ -74,10 +74,15 @@ def create_output_folder(conf, workers=[]):
 
         print("executed:", ssh_cmd)
 
-        scp_cmd = 'scp -r ~/pipedream %s:~/' % (worker.ip)
+        scp_cmd = "rsync -arv -e ssh --exclude='2020-*' ~/pipedream %s:~/" % (worker.ip)
         subprocess.check_output(scp_cmd, shell=True)
 
-        print("executed:", scp_cmd)            
+        print("executed:", scp_cmd)
+
+        mkdir_cmd = 'ssh -n %s -o StrictHostKeyChecking=no \"%s\"' % (worker.ip, "mkdir %s" % output_folder_path)
+        subprocess.check_output(mkdir_cmd, shell=True)
+
+        print("executed:", mkdir_cmd)
 
     return output_folder_path
 
