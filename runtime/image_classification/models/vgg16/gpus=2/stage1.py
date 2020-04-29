@@ -91,18 +91,15 @@ class Stage1(torch.nn.Module):
 class Downstream_Head(torch.nn.Module):
     def __init__(self, inplace):
         super(Downstream_Head, self).__init__()
-        print("initialize downstream head module")
         self.relu = torch.nn.ReLU(inplace=inplace)
              
     def forward(self, forward_minibatch_id, backward_minibatch_id, r):
-        print("Start downstream head layer")
 
         block_num = 4
         block_out_relu = []
         
         for block_id in range(block_num):
             block_inp_relu = r.comm_handler.recv_block(forward_minibatch_id, backward_minibatch_id)
-            print("recv: tensor:", block_inp_relu.shape)
             # store block_inp_relu into buffer
             # slice and clone buffer and pass into ReLU
             # return buffer as input_tensor

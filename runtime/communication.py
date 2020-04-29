@@ -613,9 +613,7 @@ class CommunicationHandler(object):
             self.forward_send_queues[tensor_name][index].add(tensor)
 
     def recv_block(self, forward_minibatch_id, backward_minibatch_id):
-        print("enter recv_block", "f_mini-b_mini:", forward_minibatch_id, "-",backward_minibatch_id)
         index = self.get_messaging_index(sending=False)
-        print("recv message index:", index)
         # block if queue empty
         tensor_name = "out0"
         tensor = self.forward_receive_queues[tensor_name][
@@ -625,11 +623,9 @@ class CommunicationHandler(object):
         return tensor
 
     def send_block(self, tensor, forward_minibatch_id, backward_minibatch_id):
-        print("enter send_block", "f_mini-b_mini:", forward_minibatch_id, "-",backward_minibatch_id)
         tensor_name = "out0"
         index = (forward_minibatch_id + self.rank_in_stage) % \
                 len(self.send_ranks[tensor_name])
-        print("send message index:", index)
         self.forward_send_queues[tensor_name][index].add(tensor)
 
 def recv_helper_thread(queue, counter, local_rank, tensor_name,
@@ -639,7 +635,6 @@ def recv_helper_thread(queue, counter, local_rank, tensor_name,
     # This method is to be executed from a helper daemon thread.
     # Only 4 times sending if downstream out0 recv from upstream
     if tensor_name == "out0" and src_rank == 0:
-        print("src_rank:", src_rank)
         num_iterations = num_iterations*4
 
     for i in range(num_iterations):
@@ -647,7 +642,6 @@ def recv_helper_thread(queue, counter, local_rank, tensor_name,
             tensor_name, src_rank, tensor_shape=tensor_shape,
             dtype=dtype, tag=tag,
             sub_process_group=sub_process_group)
-        print("i=", i, "num_iterations:",num_iterations, "tensor:", tensor.shape, "tensor name:", tensor_name, "recv and push into queue")
         queue.add(tensor)
     counter.decrement()
 
@@ -658,7 +652,6 @@ def send_helper_thread(queue, counter, local_rank, tensor_name,
     # This method is to be executed from a helper daemon thread.
     # Only 4 times sending if upstream out0 send to downstream
     if tensor_name == "out0" and src_rank < dst_rank:
-        print("src_rank:", src_rank, "dst_rank:", dst_rank)
         num_iterations = num_iterations*4
 
     for i in range(num_iterations):
@@ -666,7 +659,6 @@ def send_helper_thread(queue, counter, local_rank, tensor_name,
         _send(tensor, tensor_name, src_rank, dst_rank,
               tag=tag,
               sub_process_group=sub_process_group)
-        print("i=", i, "num_iterations:",num_iterations, "tensor:", tensor.shape, "tensor name:", tensor_name, "pop and send into peer")
     counter.decrement()
 
 def _recv(tensor_name, src_rank, tensor_shape=None, dtype=torch.float32,

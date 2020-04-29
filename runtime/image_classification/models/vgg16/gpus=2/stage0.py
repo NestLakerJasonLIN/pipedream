@@ -46,7 +46,6 @@ class Stage0(torch.nn.Module):
 class Upstream_Tail(torch.nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size, stride, padding):
         super(Upstream_Tail, self).__init__()
-        print("initialize upstream tail module")
         self.orig_padding = padding
         self.kernel_size = kernel_size[0]
         self.conv2d = torch.nn.Conv2d(in_channels=in_channels, 
@@ -57,7 +56,6 @@ class Upstream_Tail(torch.nn.Module):
         self.padder = torch.nn.ZeroPad2d(padding[0])
     
     def forward(self, inp, forward_minibatch_id, backward_minibatch_id, comm_handler):
-        print("Start upstream tail layer")
         
         block_out_list = []
         block_num = 4
@@ -81,8 +79,6 @@ class Upstream_Tail(torch.nn.Module):
         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
                                      backward_minibatch_id=backward_minibatch_id)
 
-        print("block0:", "inp:", block_inp.shape, "out:", block_out.shape)
-
         # block_1
         h_start, h_end = 0, block_height + self.kernel_size-1
         w_start, w_end = block_width, w_pad
@@ -94,8 +90,6 @@ class Upstream_Tail(torch.nn.Module):
 
         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
                                      backward_minibatch_id=backward_minibatch_id)
-
-        print("block1:", "inp:", block_inp.shape, "out:", block_out.shape)
 
         # block_2
         h_start, h_end = block_height, h_pad
@@ -109,8 +103,6 @@ class Upstream_Tail(torch.nn.Module):
         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
                              backward_minibatch_id=backward_minibatch_id)
         
-        print("block2:", "inp:", block_inp.shape, "out:", block_out.shape)
-
         # block_3
         h_start, h_end = block_height, h_pad
         w_start, w_end = block_width, w_pad
@@ -122,8 +114,6 @@ class Upstream_Tail(torch.nn.Module):
 
         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
                                      backward_minibatch_id=backward_minibatch_id)
-
-        print("block3:", "inp:", block_inp.shape, "out:", block_out.shape)
 
         return self._combine(block_out_list)
     

@@ -427,10 +427,8 @@ class StageRuntime:
             # TODO: why recv does not need rank?
             for input_name in self.receive_ranks:
                 if input_name == "ack" or input_name == "out0":
-                    print("skip recv:", input_name)
                     continue
 
-                print("try recv:", input_name)
                 self.tensors[-1][input_name] = \
                     self.comm_handler.recv(
                         input_name,
@@ -438,7 +436,6 @@ class StageRuntime:
                         backward_minibatch_id=self.backward_minibatch_id,
                         backward=False)
 
-                print("recv:", input_name)
                 self.forward_stats.stats['receive_tensors_size'] += \
                     (self.tensors[-1][input_name].element_size() *
                      self.tensors[-1][input_name].nelement())
@@ -451,10 +448,8 @@ class StageRuntime:
         # Send all required tensors downstream.
         for output_name in self.send_ranks:
             if output_name == "ack" or output_name == "out0":
-                print("skip send:", output_name)
                 continue
 
-            print("try send:", output_name)
             self.comm_handler.send(
                 output_name,
                 self.tensors[-1][output_name],
@@ -462,7 +457,6 @@ class StageRuntime:
                 backward_minibatch_id=self.backward_minibatch_id,
                 backward=False)
 
-            print("sent:", output_name)
             self.forward_stats.stats['send_tensors_size'] += \
                 (self.tensors[-1][output_name].element_size() *
                  self.tensors[-1][output_name].nelement())
@@ -511,8 +505,8 @@ class StageRuntime:
     def run_forward(self, recompute_step=False):
         """Run forward pass.
         """
-        print("enter run_forward")
         # Receive tensors from previous worker.
+        start_time = time.time()
         self.receive_tensors_forward()
         tensors = self.tensors[-1]
 
@@ -524,10 +518,13 @@ class StageRuntime:
         # if self.verbose_freq > 0 and self.forward_minibatch_id % self.verbose_freq == 0:
         #     self.forward_stats.print_stats()
         # self.forward_stats.reset_stats()
+
+        elapsed = time.time() - start_time
+        print("forward_minibatch_id", self.forward_minibatch_id, "run_forward elapsed:", "%.20f" % elapsed)
+
         self.forward_minibatch_id += 1
 
     def _run_forward(self, tensors):
-        print("enter _run_forward")
         # Perform forward pass through model (self.modules_with_dependencies already
         # has modules in topological order).
         modules = self.modules_with_dependencies.modules()
