@@ -3,7 +3,7 @@
 
 import torch
 import concurrent.futures
-from datetime import datetime
+import time
 
 
 class Stage1(torch.nn.Module):
@@ -102,17 +102,18 @@ class Stage1(torch.nn.Module):
         self._initialize_weights()
 
     def forward(self, forward_minibatch_id, backward_minibatch_id, r):
-        start_time = datetime.now()
+        start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
 
         out1 = self.downstream_head(
             forward_minibatch_id, backward_minibatch_id, r)
 
-        dt = datetime.now() - start_time
         elapsed = (
-            dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+            time.clock_gettime(
+                time.CLOCK_THREAD_CPUTIME_ID) - start_time) * 1000
+
         print(" -> Stage1 1st layer:", "%.20fms" % elapsed)
 
-        start_time = datetime.now()
+        start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
         out2 = self.layer2(out1)
         out3 = self.layer3(out2)
         out4 = self.layer4(out3)
@@ -145,9 +146,10 @@ class Stage1(torch.nn.Module):
         out31 = self.layer31(out30)
         out32 = self.layer32(out31)
 
-        dt = datetime.now() - start_time
         elapsed = (
-            dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+            time.clock_gettime(
+                time.CLOCK_THREAD_CPUTIME_ID) - start_time) * 1000
+
         print(" -> Stage1 other layers:", "%.20fms" % elapsed)
 
         return out32
@@ -176,7 +178,7 @@ class Downstream_Head(torch.nn.Module):
 
         print(" -> Stage1 Downstream_Head:")
 
-        start_time = datetime.now()
+        start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
             b0 = executor.submit(self.thread_function, "out0_b0",
@@ -193,16 +195,17 @@ class Downstream_Head(torch.nn.Module):
             block2_out = b2.result()
             block3_out = b3.result()
 
-        dt = datetime.now() - start_time
         elapsed = (
-            dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+            time.clock_gettime(
+                time.CLOCK_THREAD_CPUTIME_ID) - start_time) * 1000
+
         print("  -> time elapsed:", "%.20fms" % elapsed)
 
         # Used to track where to receive forward from.
         r.comm_handler.increment_messaging_index(
             sending=False)
 
-        start_time = datetime.now()
+        start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
 
         relu_out = self._combine(
             block0_out,
@@ -210,9 +213,10 @@ class Downstream_Head(torch.nn.Module):
             block2_out,
             block3_out)
 
-        dt = datetime.now() - start_time
         elapsed = (
-            dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+            time.clock_gettime(
+                time.CLOCK_THREAD_CPUTIME_ID) - start_time) * 1000
+
         print("  ->_combine elapsed:", "%.20fms" % elapsed)
 
         return relu_out

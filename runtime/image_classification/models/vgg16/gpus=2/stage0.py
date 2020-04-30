@@ -3,7 +3,7 @@
 
 import torch
 import concurrent.futures
-from datetime import datetime
+import time
 
 
 class Stage0(torch.nn.Module):
@@ -48,7 +48,7 @@ class Stage0(torch.nn.Module):
             backward_minibatch_id,
             comm_handler):
 
-        start_time = datetime.now()
+        start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
         out0 = input0.clone()
         out2 = self.layer2(out0)
         out3 = self.layer3(out2)
@@ -58,12 +58,12 @@ class Stage0(torch.nn.Module):
         out7 = self.layer7(out6)
         out8 = self.layer8(out7)
 
-        dt = datetime.now() - start_time
         elapsed = (
-            dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-        print("Stage0 before last layer:", "%.20fms" % elapsed)
+            time.clock_gettime(
+                time.CLOCK_THREAD_CPUTIME_ID) - start_time) * 1000
+        print(" -> Stage0 before last layer:", "%.20fms" % elapsed)
 
-        start_time = datetime.now()
+        start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
 
         out9 = self.upstream_tail(
             out8,
@@ -71,10 +71,11 @@ class Stage0(torch.nn.Module):
             backward_minibatch_id,
             comm_handler)
 
-        dt = datetime.now() - start_time
         elapsed = (
-            dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-        print("Stage0 last layer:", "%.20fms" % elapsed)
+            time.clock_gettime(
+                time.CLOCK_THREAD_CPUTIME_ID) - start_time) * 1000
+
+        print(" -> Stage0 last layer:", "%.20fms" % elapsed)
 
         return out9
 
@@ -118,8 +119,8 @@ class Upstream_Tail(torch.nn.Module):
             backward_minibatch_id,
             comm_handler):
 
-        print("Stage0 Upstream_Tail:")
-        start_time = datetime.now()
+        print(" -> Stage0 Upstream_Tail:")
+        start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
 
         inp = self.padder(inp)
         h_pad, w_pad = inp.size(2), inp.size(3)
@@ -174,10 +175,11 @@ class Upstream_Tail(torch.nn.Module):
             block2_out = b2.result()
             block3_out = b3.result()
 
-            dt = datetime.now() - start_time
             elapsed = (
-                dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-            print(" -> time elapsed:", "%.20fms" % elapsed)
+                time.clock_gettime(
+                    time.CLOCK_THREAD_CPUTIME_ID) - start_time) * 1000
+
+            print("  -> time elapsed:", "%.20fms" % elapsed)
 
             return [block0_out, block1_out, block2_out, block3_out]
 

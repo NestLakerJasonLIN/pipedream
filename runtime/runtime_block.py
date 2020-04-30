@@ -17,12 +17,17 @@ SPEECH_TO_TEXT = "speech_to_text"
 # modules_with_dependencies:
 # [(stage_class_instance, input_var_name, output_var_name), ...]
 # e.g. [(Stage0(), ["input0"], ["out0"]), ...]
+
+
 class ModulesWithDependencies:
     def __init__(self, modules_with_dependencies):
         self._modules = []
         self._all_input_names = []
         self._all_output_names = []
-        for (module, input_names, output_names) in modules_with_dependencies:
+        for (
+            module,
+            input_names,
+                output_names) in modules_with_dependencies:
             self._modules.append(module)
             self._all_input_names.append(input_names)
             self._all_output_names.append(output_names)
@@ -43,6 +48,8 @@ class ModulesWithDependencies:
         return False
 
 # manage module training, forward, send, backward, send
+
+
 class StageRuntime:
     def __init__(self, model, distributed_backend, fp16, loss_scale,
                  training_tensor_shapes, eval_tensor_shapes,
@@ -62,8 +69,14 @@ class StageRuntime:
         self.model_type = model_type
         self.target_tensor_names = target_tensor_names
 
-        self.initialize(model, inputs_module_destinations, configuration_maps,
-                        master_addr, rank, local_rank, num_ranks_in_server)
+        self.initialize(
+            model,
+            inputs_module_destinations,
+            configuration_maps,
+            master_addr,
+            rank,
+            local_rank,
+            num_ranks_in_server)
 
         self.verbose_freq = verbose_freq
         self.forward_only = False
@@ -83,11 +96,12 @@ class StageRuntime:
                    configuration_maps, master_addr, rank,
                    local_rank, num_ranks_in_server):
         # e.g. self.send_ranks["out3"] = 5
-        #   an tensor output with name out3 will be sent to 
-        #   the downstream GPU with ID 5 
+        #   an tensor output with name out3 will be sent to
+        #   the downstream GPU with ID 5
         self.send_ranks = {}
         # e.g. self.receive_ranks["out3"] = 4
-        #   The upstream GPU with ID 4 produces an tensor output with name out3
+        # The upstream GPU with ID 4 produces an tensor output with name
+        # out3
         self.receive_ranks = {}
         self.rank = rank
         self.local_rank = local_rank
@@ -138,7 +152,8 @@ class StageRuntime:
 
             stage_to_module_map = collections.defaultdict(list)
             for module in range(len(module_to_stage_map)):
-                stage_to_module_map[module_to_stage_map[module]].append(module)
+                stage_to_module_map[module_to_stage_map[module]].append(
+                    module)
 
             rank_to_stage_map = {}
             for stage in stage_to_rank_map:
@@ -151,7 +166,8 @@ class StageRuntime:
             self.num_ranks = len(rank_to_stage_map)
             self.num_stages = len(stage_to_module_map)
             self.stage = rank_to_stage_map[self.rank]
-            self.rank_in_stage = stage_to_rank_map[self.stage].index(self.rank)
+            self.rank_in_stage = stage_to_rank_map[self.stage].index(
+                self.rank)
             self.num_ranks_in_stage = len(stage_to_rank_map[self.stage])
             self.num_ranks_in_first_stage = len(stage_to_rank_map[0])
             self.num_ranks_in_previous_stage = 0
@@ -198,17 +214,19 @@ class StageRuntime:
 
             # For each stage, model[i] = (stagei, inputi, outi)
             for i in range(len(model)):
-                for j in range(i+1, len(model)):
+                for j in range(i + 1, len(model)):
                     for tensor_name in model[i][2]:
-                        # current stage's output appear in next stage's input
+                        # current stage's output appear in next stage's
+                        # input
                         if tensor_name in model[j][1]:
-                            # current stage and next stage in different machine
+                            # current stage and next stage in different
+                            # machine
                             if module_to_stage_map[i] == \
-                                module_to_stage_map[j]:
+                                    module_to_stage_map[j]:
                                 continue
                             # For now, assume that each stage is served by only
                             # a single machine.
-                            # stage_to_rank_map[module_to_stage_map[i]]: 
+                            # stage_to_rank_map[module_to_stage_map[i]]:
                             #   the GPU rank running module i
                             if module_to_stage_map[j] == self.stage:
                                 self.receive_ranks[tensor_name] = \
@@ -261,8 +279,8 @@ class StageRuntime:
         num_parameters = 0
         for i in range(len(modules)):
             if group is not None:
-                if ((i < (len(modules)-1) and self.is_criterion)
-                    or not self.is_criterion):
+                if ((i < (len(modules) - 1) and self.is_criterion)
+                        or not self.is_criterion):
                     num_parameters += \
                         sum(x.size()[0] * x.size()[1]
                             if len(x.size()) > 1 else x.size()[0]
@@ -317,19 +335,21 @@ class StageRuntime:
 
     def state_dict(self):
         state_dict = collections.OrderedDict()
-        for i, module in enumerate(self.modules_with_dependencies.modules()):
+        for i, module in enumerate(
+                self.modules_with_dependencies.modules()):
             state_dict["module%d" % i] = module.state_dict()
         if self.fp16:
             state_dict["master_parameters"] = self.master_parameters
         return state_dict
 
     def load_state_dict(self, state_dict):
-        for i, module in enumerate(self.modules_with_dependencies.modules()):
+        for i, module in enumerate(
+                self.modules_with_dependencies.modules()):
             module.load_state_dict(state_dict["module%d" % i])
         if self.fp16:
             saved_master_parameters = state_dict["master_parameters"]
             for master_parameter, saved_master_parameter in zip(
-                self.master_parameters, saved_master_parameters):
+                    self.master_parameters, saved_master_parameters):
                 master_parameter.data.copy_(saved_master_parameter.data)
 
     def cuda(self):
@@ -400,9 +420,10 @@ class StageRuntime:
                 tgt, tgt_length = target
 
                 self.tensors[-1]["input0"] = src.cuda(non_blocking=True)
-                self.tensors[-1]["input1"] = torch.LongTensor(src_length).cuda(
+                self.tensors[-1]["input1"] = torch.LongTensor(
+                    src_length).cuda(non_blocking=True)
+                self.tensors[-1]["input2"] = tgt[:-1].cuda(
                     non_blocking=True)
-                self.tensors[-1]["input2"] = tgt[:-1].cuda(non_blocking=True)
                 self.tensors[-1]["target"] = tgt[1:].cuda().contiguous().view(-1)
                 self.tensors[-1]["target_length"] = \
                     torch.tensor([int(sum(torch.LongTensor(tgt_length) - 1))],
@@ -415,9 +436,11 @@ class StageRuntime:
                 self.tensors[-1]["target"] = target.cuda(non_blocking=True)
             elif self.model_type == SPEECH_TO_TEXT:
                 input, target, input_percentages, target_sizes = input
-                input_sizes = input_percentages.mul_(int(input.size(3))).int()
+                input_sizes = input_percentages.mul_(
+                    int(input.size(3))).int()
                 self.tensors[-1]["input0"] = input.cuda(non_blocking=True)
-                self.tensors[-1]["input1"] = input_sizes.cuda(non_blocking=True)
+                self.tensors[-1]["input1"] = input_sizes.cuda(
+                    non_blocking=True)
                 self.tensors[-1]["target"] = target.cuda(non_blocking=True)
                 self.tensors[-1]["target_length"] = target_sizes.cuda(
                     non_blocking=True)
@@ -465,19 +488,19 @@ class StageRuntime:
         # Receive all required gradients from downstream
         # machines.
         for output_name in self.send_ranks:
-             if output_name in self.target_tensor_names:
+            if output_name in self.target_tensor_names:
                 continue
 
-             self.gradients[output_name] = \
+            self.gradients[output_name] = \
                 self.comm_handler.recv(
-                    output_name,
-                    forward_minibatch_id=self.forward_minibatch_id,
-                    backward_minibatch_id=self.backward_minibatch_id,
-                    backward=True)
+                output_name,
+                forward_minibatch_id=self.forward_minibatch_id,
+                backward_minibatch_id=self.backward_minibatch_id,
+                backward=True)
 
-             self.backward_stats.stats['receive_tensors_size'] += \
-                 (self.gradients[output_name].element_size() *
-                  self.gradients[output_name].nelement())
+            self.backward_stats.stats['receive_tensors_size'] += \
+                (self.gradients[output_name].element_size() *
+                 self.gradients[output_name].nelement())
 
     def send_tensors_backward(self):
         # Send all required gradients upstream.
@@ -506,25 +529,29 @@ class StageRuntime:
         """Run forward pass.
         """
         # Receive tensors from previous worker.
-        from datetime import datetime
+        import time
 
         print("forward_minibatch_id", self.forward_minibatch_id)
 
-        start_time = datetime.now()
+        start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
         self.receive_tensors_forward()
         tensors = self.tensors[-1]
 
-        dt = datetime.now() - start_time
-        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+        elapsed = (
+            time.clock_gettime(
+                time.CLOCK_THREAD_CPUTIME_ID) - start_time) * 1000
+
         print(" -> recv elapsed:", "%.20fms" % elapsed)
 
-        start_time = datetime.now()
+        start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
 
         # Run forward pass.
         self._run_forward(tensors)
 
-        dt = datetime.now() - start_time
-        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+        elapsed = (
+            time.clock_gettime(
+                time.CLOCK_THREAD_CPUTIME_ID) - start_time) * 1000
+
         print(" -> _run_forward elapsed:", "%.20fms" % elapsed)
         print("")
 
@@ -552,7 +579,13 @@ class StageRuntime:
                     target = tensors["target"].cpu()
                     target_sizes = tensors["target_length"].cpu()
                     input0_size = tensors["input0_size"].cpu()
-                    module_outputs = [module(output, target, output_sizes, target_sizes) / input0_size[0]]
+                    module_outputs = [
+                        module(
+                            output,
+                            target,
+                            output_sizes,
+                            target_sizes) /
+                        input0_size[0]]
                 else:
                     module_outputs = [module(tensors[input_name],
                                              tensors["target"])
@@ -562,32 +595,38 @@ class StageRuntime:
                 # If layer is non-criterion.
                 # module_outputs = module(*[tensors[input_name]
                 #                           for input_name in input_names])
-                
+
                 # stage 0
                 if self.loader_iter is not None:
-                    module_outputs = module(*[tensors[input_name]
-                                          for input_name in input_names],
-                                          forward_minibatch_id=self.forward_minibatch_id, 
-                                          backward_minibatch_id=self.backward_minibatch_id, 
-                                          comm_handler=self.comm_handler)
+                    module_outputs = module(
+                        *
+                        [tensors[input_name] for input_name in input_names],
+                        forward_minibatch_id=self.forward_minibatch_id,
+                        backward_minibatch_id=self.backward_minibatch_id,
+                        comm_handler=self.comm_handler)
                 # other stages
                 else:
-                    module_outputs = module(forward_minibatch_id=self.forward_minibatch_id, 
-                                          backward_minibatch_id=self.backward_minibatch_id, 
-                                          r=self)
-                
+                    module_outputs = module(
+                        forward_minibatch_id=self.forward_minibatch_id,
+                        backward_minibatch_id=self.backward_minibatch_id,
+                        r=self)
+
                 if not isinstance(module_outputs, tuple):
                     module_outputs = (module_outputs,)
                 module_outputs = list(module_outputs)
-
-
-            for (output_name, module_output) in zip(output_names, module_outputs):
+            for (
+                    output_name,
+                    module_output) in zip(
+                    output_names,
+                    module_outputs):
                 tensors[output_name] = module_output
 
         self.output = tensors[input_names[0]]
         if self.is_criterion and self.model_type == TRANSLATION:
-            loss_per_batch = tensors[output_names[0]] * tensors[self.criterion_input_name].size(1)
-            loss_per_token = loss_per_batch / tensors["target_length"][0].item()
+            loss_per_batch = tensors[output_names[0]
+                                     ] * tensors[self.criterion_input_name].size(1)
+            loss_per_token = loss_per_batch / \
+                tensors["target_length"][0].item()
             self.loss = loss_per_token
         elif self.is_criterion:
             self.loss = tensors[output_names[0]]
@@ -611,7 +650,11 @@ class StageRuntime:
         all_input_names = self.modules_with_dependencies.all_input_names()
         all_output_names = self.modules_with_dependencies.all_output_names()
 
-        for (input_names, output_names) in zip(all_input_names, all_output_names):
+        for (
+                input_names,
+                output_names) in zip(
+                all_input_names,
+                all_output_names):
             for input_name in input_names:
                 all_input_names_set.add(input_name)
             for output_name in output_names:
@@ -623,8 +666,13 @@ class StageRuntime:
         # other modules in this stage.
         # Similarly, only set inputs for tensors that are not outputs of other
         # modules in this stage.
-        for (module, input_names, output_names) in \
-            zip(reversed(modules), reversed(all_input_names), reversed(all_output_names)):
+        for (
+                module,
+                input_names,
+                output_names) in zip(
+                reversed(modules),
+                reversed(all_input_names),
+                reversed(all_output_names)):
             for output_name in output_names:
                 if output_name not in all_input_names_set:
                     if output_name not in self.gradients:
@@ -652,9 +700,13 @@ class StageRuntime:
             outputs["loss"] *= self.loss_scale
 
         # Perform backward pass.
-        torch.autograd.backward(tuple([outputs[output_name] for output_name in outputs]),
-                                grad_tensors=tuple([output_gradients[output_name]
-                                                    for output_name in outputs]))
+        torch.autograd.backward(
+            tuple(
+                [outputs[output_name]
+                 for output_name in outputs]),
+            grad_tensors=tuple(
+                [output_gradients[output_name]
+                 for output_name in outputs]))
 
         # Input tensors don't need gradients.
         for input_name in inputs:
@@ -681,7 +733,7 @@ class StageRuntime:
             return
 
         # Receive ack from next stage. Send ack to previous stage.
-        if self.stage < (self.num_stages-1):
+        if self.stage < (self.num_stages - 1):
             self.comm_handler.recv(
                 "ack",
                 forward_minibatch_id=self.forward_minibatch_id,
@@ -724,6 +776,6 @@ class StageRuntime:
             return base_lr
 
         adjusted_lr = float(base_lr) * float(self.num_ranks_in_stage) \
-                      / float(self.num_ranks_in_first_stage)
+            / float(self.num_ranks_in_first_stage)
 
         return adjusted_lr
