@@ -1,0 +1,14 @@
+d84603340e6373bc3ebff548cbdff4ca37149605
+diff --git a/runtime/image_classification/driver_configs/vgg16_2mp_exp.yml b/runtime/image_classification/driver_configs/vgg16_2mp_exp.yml
+index 9071b4a..e2428dc 100644
+--- a/runtime/image_classification/driver_configs/vgg16_2mp_exp.yml
++++ b/runtime/image_classification/driver_configs/vgg16_2mp_exp.yml
+@@ -3,7 +3,7 @@
+ 'data_dir': '/home/ubuntu/data/imagenet_tiny/'
+ 'config_file': 'models/vgg16/gpus=2/mp_conf.json'
+ 'container': 'nvcr.io/nvidia/pytorch:19.05-py3'
+-'machines': ['HOST0:0', 'HOST1:1']
++'machines': ['172.31.65.131:0', '172.31.76.4:1']
+ 'batch_size': 64
+ 'learning_rate': 0.01
+ 'weight_decay': 0.0005
