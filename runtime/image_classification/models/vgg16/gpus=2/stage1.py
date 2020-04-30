@@ -2,7 +2,7 @@
 # Licensed under the MIT license.
 
 import torch
-
+from datetime import datetime
 
 class Stage1(torch.nn.Module):
     def __init__(self):
@@ -41,7 +41,15 @@ class Stage1(torch.nn.Module):
         self._initialize_weights()
 
     def forward(self, forward_minibatch_id, backward_minibatch_id, r):
+        start_time = datetime.now()
+        
         out1 = self.downstream_head(forward_minibatch_id, backward_minibatch_id, r)
+        
+        dt = datetime.now() - start_time
+        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+        print("Stage1 1st layer:", "%.20fms" % elapsed)
+
+        start_time = datetime.now()
         out2 = self.layer2(out1)
         out3 = self.layer3(out2)
         out4 = self.layer4(out3)
@@ -73,6 +81,11 @@ class Stage1(torch.nn.Module):
         out30 = self.layer30(out29)
         out31 = self.layer31(out30)
         out32 = self.layer32(out31)
+
+        dt = datetime.now() - start_time
+        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+        print("Stage1 other layers:", "%.20fms" % elapsed)
+
         return out32
 
     def _initialize_weights(self):
@@ -99,14 +112,21 @@ class Downstream_Head(torch.nn.Module):
         block_out_relu = []
         
         for block_id in range(block_num):
+            start_time = datetime.now()
             block_inp_relu = r.comm_handler.recv_block(forward_minibatch_id, backward_minibatch_id)
+            dt = datetime.now() - start_time
+            elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+            print(" ->bid:", block_id, "recv elapsed:", "%.20fms" % elapsed)
+
             # store block_inp_relu into buffer
             # slice and clone buffer and pass into ReLU
             # return buffer as input_tensor
+
+            start_time = datetime.now()
             if (block_id == 0):
                 # infer shape from the first recv block
                 batch_size, channel_size = block_inp_relu.size(0), block_inp_relu.size(1)
-                block_buffer = torch.zeros(batch_size, channel_size, 112, 112).to("cuda")
+                block_buffer = torch.cuda.FloatTensor(batch_size, channel_size, 112, 112).fill_(0)
 
                 block_buffer[:, :, :57, :57] = block_inp_relu
                 block_out_relu.append(self.relu(block_buffer[:, :, :57, :57].clone()))
@@ -119,13 +139,20 @@ class Downstream_Head(torch.nn.Module):
             else:
                 block_buffer[:, :, 57:, 57:] = block_inp_relu
                 block_out_relu.append(self.relu(block_buffer[:, :, 57:, 57:].clone()))
+            dt = datetime.now() - start_time
+            elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+            print(" ->bid:", block_id, "fill elapsed:", "%.20fms" % elapsed)
 
 
         # Used to track where to receive forward from.
         r.comm_handler.increment_messaging_index(
             sending=False)
         
+        start_time = datetime.now()
         relu_out = self._combine(block_out_relu)
+        dt = datetime.now() - start_time
+        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+        print(" ->_combine elapsed:", "%.20fms" % elapsed)
 
         r.tensors[-1]["out0"] = block_buffer
 

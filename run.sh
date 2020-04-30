@@ -42,3 +42,12 @@ if [ "$1" = "rlog" ]; then
     cd $LOG_DIRNAME
     ssh -n $REMOTE_IP -o StrictHostKeyChecking=no "cd $LOG_DIRNAME && tail -f output.log.1"
 fi
+
+# retrieve remote log
+if [ "$1" = "get_rlog" ]; then
+    cd $LOG_DIRNAME
+    scp -o StrictHostKeyChecking=no $REMOTE_IP:$LOG_DIRNAME/output.log.1 $LOG_DIRNAME
+fi
+
+sed -i "s/$LOCAL_IP/HOST0/g" $ROOT/image_classification/driver_configs/$YAML_FILE
+sed -i "s/$REMOTE_IP/HOST1/g" $ROOT/image_classification/driver_configs/$YAML_FILE

@@ -2,7 +2,7 @@
 # Licensed under the MIT license.
 
 import torch
-
+from datetime import datetime
 
 class Stage0(torch.nn.Module):
     def __init__(self):
@@ -19,6 +19,8 @@ class Stage0(torch.nn.Module):
         self._initialize_weights()
 
     def forward(self, input0, forward_minibatch_id, backward_minibatch_id, comm_handler):
+        start_time = datetime.now()
+    
         out0 = input0.clone()
         out2 = self.layer2(out0)
         out3 = self.layer3(out2)
@@ -27,7 +29,19 @@ class Stage0(torch.nn.Module):
         out6 = self.layer6(out5)
         out7 = self.layer7(out6)
         out8 = self.layer8(out7)
+
+        dt = datetime.now() - start_time
+        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+        print("Stage0 before last layer:", "%.20fms" % elapsed)
+
+        start_time = datetime.now()
+        
         out9 = self.upstream_tail(out8, forward_minibatch_id, backward_minibatch_id, comm_handler)
+        
+        dt = datetime.now() - start_time
+        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+        print("Stage0 last layer:", "%.20fms" % elapsed)
+        
         return out9
 
     def _initialize_weights(self):
@@ -58,16 +72,14 @@ class Upstream_Tail(torch.nn.Module):
     def forward(self, inp, forward_minibatch_id, backward_minibatch_id, comm_handler):
         
         block_out_list = []
-        block_num = 4
-        
-        batch_size, c_in = inp.shape[0], inp.shape[1]
-        h_i, w_i = inp.shape[2], inp.shape[3]
-        
+                
         inp = self.padder(inp)
         h_pad, w_pad = inp.size(2), inp.size(3)
         block_height, block_width = h_pad // 2,  w_pad // 2
         
         # block_0
+        start_time = datetime.now()
+
         h_start, h_end = 0, block_height + self.kernel_size-1
         w_start, w_end = 0, block_width + self.kernel_size-1
 
@@ -79,7 +91,13 @@ class Upstream_Tail(torch.nn.Module):
         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
                                      backward_minibatch_id=backward_minibatch_id)
 
+        dt = datetime.now() - start_time
+        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+        print(" ->block 0 time:", "%.20fms" % elapsed)
+
         # block_1
+        start_time = datetime.now()
+
         h_start, h_end = 0, block_height + self.kernel_size-1
         w_start, w_end = block_width, w_pad
 
@@ -91,7 +109,13 @@ class Upstream_Tail(torch.nn.Module):
         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
                                      backward_minibatch_id=backward_minibatch_id)
 
+        dt = datetime.now() - start_time
+        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+        print(" ->block 1 time:", "%.20fms" % elapsed)
+
         # block_2
+        start_time = datetime.now()
+
         h_start, h_end = block_height, h_pad
         w_start, w_end = 0, block_width + self.kernel_size-1
 
@@ -103,7 +127,13 @@ class Upstream_Tail(torch.nn.Module):
         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
                              backward_minibatch_id=backward_minibatch_id)
         
+        dt = datetime.now() - start_time
+        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+        print(" ->block 2 time:", "%.20fms" % elapsed)
+
         # block_3
+        start_time = datetime.now()
+
         h_start, h_end = block_height, h_pad
         w_start, w_end = block_width, w_pad
 
@@ -114,6 +144,10 @@ class Upstream_Tail(torch.nn.Module):
 
         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
                                      backward_minibatch_id=backward_minibatch_id)
+
+        dt = datetime.now() - start_time
+        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+        print(" ->block 3 time:", "%.20fms" % elapsed)
 
         return self._combine(block_out_list)
     
