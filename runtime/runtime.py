@@ -491,6 +491,8 @@ class StageRuntime:
         # Receive tensors from previous worker.
         from datetime import datetime
 
+        print("forward_minibatch_id", self.forward_minibatch_id)
+
         start_time = datetime.now()
         
         self.receive_tensors_forward()
@@ -498,7 +500,7 @@ class StageRuntime:
 
         dt = datetime.now() - start_time
         elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-        print("forward only:", self.forward_only, "forward_minibatch_id", self.forward_minibatch_id, "recv elapsed:", "%.20fms" % elapsed)
+        print(" -> receive_tensors_forward elapsed:", "%.20fms" % elapsed)
 
         # Run forward pass.
         start_time = datetime.now()
@@ -507,8 +509,9 @@ class StageRuntime:
 
         dt = datetime.now() - start_time
         elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-        print("forward only:", self.forward_only, "forward_minibatch_id", self.forward_minibatch_id, "_run_forward elapsed:", "%.20fms" % elapsed)
+        print(" -> _run_forward elapsed:", "%.20fms" % elapsed)
         
+
         # Send tensors forward.
         start_time = datetime.now()
 
@@ -519,7 +522,9 @@ class StageRuntime:
 
         dt = datetime.now() - start_time
         elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-        print("forward only:", self.forward_only, "forward_minibatch_id", self.forward_minibatch_id, "send elapsed:", "%.20fms" % elapsed)
+        print(" -> send_tensors_forward elapsed:", "%.20fms" % elapsed)
+
+        print("")
 
         self.forward_minibatch_id += 1
 
