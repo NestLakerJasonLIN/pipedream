@@ -19,6 +19,7 @@ class Stage0(torch.nn.Module):
         self._initialize_weights()
 
     def forward(self, input0):
+        start_time = datetime.now()
         out0 = input0.clone()
         out2 = self.layer2(out0)
         out3 = self.layer3(out2)
@@ -27,7 +28,19 @@ class Stage0(torch.nn.Module):
         out6 = self.layer6(out5)
         out7 = self.layer7(out6)
         out8 = self.layer8(out7)
+
+        dt = datetime.now() - start_time
+        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+        print("Stage0 before last layer:", "%.20fms" % elapsed)
+
+        start_time = datetime.now()
+
         out9 = self.layer9(out8)
+
+        dt = datetime.now() - start_time
+        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+        print("Stage0 last layer:", "%.20fms" % elapsed)
+        
         return out9
 
     def _initialize_weights(self):
