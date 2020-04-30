@@ -1,0 +1,2226 @@
+Finished initializing process group; backend: gloo, rank: 0, world_size: 2
+Send ranks:  {'out0': [1], 'target': [1]}
+Receive ranks:  {}
+Letting in 1 warm-up minibatches
+Running training for 1562 minibatches
+forward_minibatch_id 0
+ -> recv elapsed: 6262.60499999999956344254ms
+Stage0 before last layer: 57445.26099999999860301614ms
+ ->block 0 time: 140.08699999999998908606ms
+ ->block 1 time: 182.14300000000000068212ms
+ ->block 2 time: 187.89199999999999590727ms
+ ->block 3 time: 173.96600000000000818545ms
+Stage0 last layer: 691.83299999999996998667ms
+ -> _run_forward elapsed: 58137.33099999999831197783ms
+
+forward_minibatch_id 1
+ -> recv elapsed: 0.27200000000000001954ms
+Stage0 before last layer: 30.96999999999999886313ms
+ ->block 0 time: 1.07000000000000006217ms
+ ->block 1 time: 1.00899999999999989697ms
+ ->block 2 time: 0.20300000000000001377ms
+ ->block 3 time: 0.92200000000000004174ms
+Stage0 last layer: 5.01700000000000034817ms
+ -> _run_forward elapsed: 36.11899999999999977263ms
+
+Epoch: 0 Step 0 	Learning rate: 0.010000
+Epoch: [0][0/1562]	Memory: 7.818 (9.299)
+Backward Stats:
+	 compute_time 0.000 seconds
+	 receive_tensors 0.000 seconds
+	 receive_tensors_size 411041792.000 bytes
+	 send_tensors 0.000 seconds
+	 send_tensors_size 0.000 bytes
+Optimizer step took: 0.002
+forward_minibatch_id 2
+ -> recv elapsed: 0.33900000000000002354ms
+Stage0 before last layer: 5.33300000000000018474ms
+ ->block 0 time: 3.18699999999999983302ms
+ ->block 1 time: 213.41499999999999204192ms
+ ->block 2 time: 0.63300000000000000711ms
+ ->block 3 time: 0.50900000000000000799ms
+Stage0 last layer: 226.69200000000000727596ms
+ -> _run_forward elapsed: 232.19499999999999317879ms
+
+forward_minibatch_id 3
+ -> recv elapsed: 0.17100000000000001310ms
+Stage0 before last layer: 0.77500000000000002220ms
+ ->block 0 time: 0.28299999999999997380ms
+ ->block 1 time: 0.24899999999999999911ms
+ ->block 2 time: 0.24399999999999999467ms
+ ->block 3 time: 0.23000000000000000999ms
+Stage0 last layer: 1.47700000000000009059ms
+ -> _run_forward elapsed: 2.37699999999999977973ms
+
+forward_minibatch_id 4
+ -> recv elapsed: 0.23599999999999998757ms
+Stage0 before last layer: 0.49899999999999999911ms
+ ->block 0 time: 0.18599999999999999867ms
+ ->block 1 time: 292.86900000000002819434ms
+ ->block 2 time: 0.19900000000000001021ms
+ ->block 3 time: 0.11100000000000000144ms
+Stage0 last layer: 293.83899999999999863576ms
+ -> _run_forward elapsed: 294.42300000000000181899ms
+
+forward_minibatch_id 5
+ -> recv elapsed: 0.28000000000000002665ms
+Stage0 before last layer: 0.49899999999999999911ms
+ ->block 0 time: 0.14899999999999999356ms
+ ->block 1 time: 0.18699999999999999956ms
+ ->block 2 time: 0.18199999999999999512ms
+ ->block 3 time: 0.22600000000000000644ms
+Stage0 last layer: 1.18300000000000005151ms
+ -> _run_forward elapsed: 1.77499999999999991118ms
+
+forward_minibatch_id 6
+ -> recv elapsed: 0.23000000000000000999ms
+Stage0 before last layer: 0.48699999999999998845ms
+ ->block 0 time: 0.17299999999999998712ms
+ ->block 1 time: 0.11100000000000000144ms
+ ->block 2 time: 0.09800000000000000377ms
+ ->block 3 time: 0.09800000000000000377ms
+Stage0 last layer: 0.74699999999999999734ms
+ -> _run_forward elapsed: 1.31299999999999994493ms
+
+forward_minibatch_id 7
+ -> recv elapsed: 0.17899999999999999245ms
+Stage0 before last layer: 453.95499999999998408384ms
+ ->block 0 time: 0.16300000000000000600ms
+ ->block 1 time: 0.16100000000000000422ms
+ ->block 2 time: 0.10799999999999999878ms
+ ->block 3 time: 0.10100000000000000644ms
+Stage0 last layer: 0.83899999999999996803ms
+ -> _run_forward elapsed: 454.91199999999997771738ms
+
+forward_minibatch_id 8
+ -> recv elapsed: 0.56399999999999994582ms
+Stage0 before last layer: 534.67100000000004911271ms
+ ->block 0 time: 0.19900000000000001021ms
+ ->block 1 time: 0.17100000000000001310ms
+ ->block 2 time: 0.16400000000000000688ms
+ ->block 3 time: 0.16900000000000001132ms
+Stage0 last layer: 1.17900000000000004796ms
+ -> _run_forward elapsed: 536.22400000000004638423ms
+
+forward_minibatch_id 9
+ -> recv elapsed: 0.40799999999999997380ms
+Stage0 before last layer: 448.79300000000000636646ms
+ ->block 0 time: 0.27700000000000002398ms
+ ->block 1 time: 0.26500000000000001332ms
+ ->block 2 time: 0.23300000000000001266ms
+ ->block 3 time: 0.23000000000000000999ms
+Stage0 last layer: 1.58099999999999996092ms
+ -> _run_forward elapsed: 450.74900000000002364686ms
+
+forward_minibatch_id 10
+ -> recv elapsed: 0.27100000000000001865ms
+Stage0 before last layer: 1.02499999999999991118ms
+ ->block 0 time: 0.63200000000000000622ms
+ ->block 1 time: 0.81299999999999994493ms
+ ->block 2 time: 0.76700000000000001510ms
+ ->block 3 time: 0.73899999999999999023ms
+Stage0 last layer: 4.04100000000000036948ms
+ -> _run_forward elapsed: 5.19000000000000039080ms
+
+forward_minibatch_id 11
+ -> recv elapsed: 0.26000000000000000888ms
+Stage0 before last layer: 0.78700000000000003286ms
+ ->block 0 time: 0.22900000000000000910ms
+ ->block 1 time: 0.21299999999999999489ms
+ ->block 2 time: 0.21399999999999999578ms
+ ->block 3 time: 0.20599999999999998868ms
+Stage0 last layer: 1.26800000000000001599ms
+ -> _run_forward elapsed: 2.15600000000000013856ms
+
+Epoch: [0][10/1562]	Memory: 8.167 (13.724)
+Backward Stats:
+	 compute_time 0.000 seconds
+	 receive_tensors 0.000 seconds
+	 receive_tensors_size 411041792.000 bytes
+	 send_tensors 0.000 seconds
+	 send_tensors_size 0.000 bytes
+Optimizer step took: 0.431
+forward_minibatch_id 12
+ -> recv elapsed: 0.26200000000000001066ms
+Stage0 before last layer: 0.80000000000000004441ms
+ ->block 0 time: 0.20100000000000001199ms
+ ->block 1 time: 0.13700000000000001066ms
+ ->block 2 time: 0.14000000000000001332ms
+ ->block 3 time: 0.12800000000000000266ms
+Stage0 last layer: 0.89000000000000001332ms
+ -> _run_forward elapsed: 1.77800000000000002487ms
+
+forward_minibatch_id 13
+ -> recv elapsed: 0.25300000000000000266ms
+Stage0 before last layer: 0.87299999999999999822ms
+ ->block 0 time: 0.27300000000000002043ms
+ ->block 1 time: 0.61699999999999999289ms
+ ->block 2 time: 0.77700000000000002398ms
+ ->block 3 time: 0.63300000000000000711ms
+Stage0 last layer: 3.23300000000000009592ms
+ -> _run_forward elapsed: 4.74199999999999999289ms
+
+forward_minibatch_id 14
+ -> recv elapsed: 0.28399999999999997469ms
+Stage0 before last layer: 0.73199999999999998401ms
+ ->block 0 time: 0.15499999999999999889ms
+ ->block 1 time: 0.11899999999999999467ms
+ ->block 2 time: 0.11000000000000000056ms
+ ->block 3 time: 0.10799999999999999878ms
+Stage0 last layer: 0.74899999999999999911ms
+ -> _run_forward elapsed: 1.55899999999999994138ms
+
+forward_minibatch_id 15
+ -> recv elapsed: 0.32100000000000000755ms
+Stage0 before last layer: 0.96899999999999997247ms
+ ->block 0 time: 0.20000000000000001110ms
+ ->block 1 time: 0.20999999999999999223ms
+ ->block 2 time: 0.17999999999999999334ms
+ ->block 3 time: 0.17699999999999999067ms
+Stage0 last layer: 1.19599999999999995204ms
+ -> _run_forward elapsed: 2.26799999999999979394ms
+
+forward_minibatch_id 16
+ -> recv elapsed: 0.64700000000000001954ms
+Stage0 before last layer: 0.52000000000000001776ms
+ ->block 0 time: 0.12600000000000000089ms
+ ->block 1 time: 0.10299999999999999434ms
+ ->block 2 time: 0.09500000000000000111ms
+ ->block 3 time: 0.09199999999999999845ms
+Stage0 last layer: 0.64100000000000001421ms
+ -> _run_forward elapsed: 1.23700000000000009948ms
+
+forward_minibatch_id 17
+ -> recv elapsed: 0.29899999999999998801ms
+Stage0 before last layer: 0.56799999999999994937ms
+ ->block 0 time: 0.19200000000000000400ms
+ ->block 1 time: 0.17299999999999998712ms
+ ->block 2 time: 0.15700000000000000067ms
+ ->block 3 time: 0.15499999999999999889ms
+Stage0 last layer: 0.99599999999999999645ms
+ -> _run_forward elapsed: 1.65799999999999991829ms
+
+forward_minibatch_id 18
+ -> recv elapsed: 0.18800000000000000044ms
+Stage0 before last layer: 0.61599999999999999201ms
+ ->block 0 time: 0.17899999999999999245ms
+ ->block 1 time: 0.17299999999999998712ms
+ ->block 2 time: 0.16600000000000000866ms
+ ->block 3 time: 0.16100000000000000422ms
+Stage0 last layer: 1.02000000000000001776ms
+ -> _run_forward elapsed: 1.72599999999999997868ms
+
+forward_minibatch_id 19
+ -> recv elapsed: 0.56200000000000005507ms
+Stage0 before last layer: 0.67400000000000004352ms
+ ->block 0 time: 0.20399999999999998690ms
+ ->block 1 time: 0.19900000000000001021ms
+ ->block 2 time: 0.13000000000000000444ms
+ ->block 3 time: 0.11400000000000000411ms
+Stage0 last layer: 2.04400000000000003908ms
+ -> _run_forward elapsed: 2.80500000000000015987ms
+
+forward_minibatch_id 20
+ -> recv elapsed: 0.74699999999999999734ms
+Stage0 before last layer: 0.61499999999999999112ms
+ ->block 0 time: 0.20799999999999999045ms
+ ->block 1 time: 0.16400000000000000688ms
+ ->block 2 time: 0.15199999999999999623ms
+ ->block 3 time: 0.16900000000000001132ms
+Stage0 last layer: 1.03499999999999992006ms
+ -> _run_forward elapsed: 1.75000000000000000000ms
+
+forward_minibatch_id 21
+ -> recv elapsed: 0.83899999999999996803ms
+Stage0 before last layer: 2.32200000000000006395ms
+ ->block 0 time: 0.69699999999999995293ms
+ ->block 1 time: 0.88500000000000000888ms
+ ->block 2 time: 0.63400000000000000799ms
+ ->block 3 time: 0.83299999999999996270ms
+Stage0 last layer: 4.46999999999999975131ms
+ -> _run_forward elapsed: 7.12699999999999977973ms
+
+Epoch: [0][20/1562]	Memory: 8.269 (13.724)
+Backward Stats:
+	 compute_time 0.000 seconds
+	 receive_tensors 0.000 seconds
+	 receive_tensors_size 411041792.000 bytes
+	 send_tensors 0.000 seconds
+	 send_tensors_size 0.000 bytes
+Optimizer step took: 0.437
+forward_minibatch_id 22
+ -> recv elapsed: 0.34599999999999997424ms
+Stage0 before last layer: 0.76700000000000001510ms
+ ->block 0 time: 0.15399999999999999800ms
+ ->block 1 time: 0.22000000000000000111ms
+ ->block 2 time: 0.21799999999999999933ms
+ ->block 3 time: 0.20699999999999998956ms
+Stage0 last layer: 1.23300000000000009592ms
+ -> _run_forward elapsed: 2.25999999999999978684ms
+
+forward_minibatch_id 23
+ -> recv elapsed: 0.31700000000000000400ms
+Stage0 before last layer: 0.67400000000000004352ms
+ ->block 0 time: 0.21599999999999999756ms
+ ->block 1 time: 0.23799999999999998934ms
+ ->block 2 time: 0.19100000000000000311ms
+ ->block 3 time: 0.17299999999999998712ms
+Stage0 last layer: 1.16599999999999992539ms
+ -> _run_forward elapsed: 1.92799999999999993605ms
+
+forward_minibatch_id 24
+ -> recv elapsed: 0.19400000000000000577ms
+Stage0 before last layer: 0.93799999999999994493ms
+ ->block 0 time: 0.24699999999999999734ms
+ ->block 1 time: 0.17100000000000001310ms
+ ->block 2 time: 0.17199999999999998623ms
+ ->block 3 time: 0.16600000000000000866ms
+Stage0 last layer: 1.24100000000000010303ms
+ -> _run_forward elapsed: 2.40799999999999991829ms
+
+forward_minibatch_id 25
+ -> recv elapsed: 0.26900000000000001688ms
+Stage0 before last layer: 0.47499999999999997780ms
+ ->block 0 time: 0.14899999999999999356ms
+ ->block 1 time: 0.26200000000000001066ms
+ ->block 2 time: 0.14299999999999998823ms
+ ->block 3 time: 0.11200000000000000233ms
+Stage0 last layer: 0.96399999999999996803ms
+ -> _run_forward elapsed: 1.51899999999999990585ms
+
+forward_minibatch_id 26
+ -> recv elapsed: 0.77400000000000002132ms
+Stage0 before last layer: 529.25499999999999545253ms
+ ->block 0 time: 0.27900000000000002576ms
+ ->block 1 time: 0.22200000000000000289ms
+ ->block 2 time: 0.19100000000000000311ms
+ ->block 3 time: 0.19600000000000000755ms
+Stage0 last layer: 1.46700000000000008171ms
+ -> _run_forward elapsed: 530.93600000000003547029ms
+
+forward_minibatch_id 27
+ -> recv elapsed: 0.31099999999999999867ms
+Stage0 before last layer: 0.84699999999999997513ms
+ ->block 0 time: 0.19600000000000000755ms
+ ->block 1 time: 0.23699999999999998845ms
+ ->block 2 time: 0.19600000000000000755ms
+ ->block 3 time: 0.23000000000000000999ms
+Stage0 last layer: 1.22700000000000009059ms
+ -> _run_forward elapsed: 2.17899999999999982592ms
+
+forward_minibatch_id 28
+ -> recv elapsed: 2.04099999999999992539ms
+Stage0 before last layer: 432.81999999999999317879ms
+ ->block 0 time: 0.20599999999999998868ms
+ ->block 1 time: 0.19000000000000000222ms
+ ->block 2 time: 0.19500000000000000666ms
+ ->block 3 time: 0.19700000000000000844ms
+Stage0 last layer: 1.15900000000000003020ms
+ -> _run_forward elapsed: 434.09300000000001773515ms
+
+forward_minibatch_id 29
+ -> recv elapsed: 0.19000000000000000222ms
+Stage0 before last layer: 0.54300000000000003819ms
+ ->block 0 time: 0.15700000000000000067ms
+ ->block 1 time: 0.16400000000000000688ms
+ ->block 2 time: 0.15499999999999999889ms
+ ->block 3 time: 0.14399999999999998912ms
+Stage0 last layer: 0.92500000000000004441ms
+ -> _run_forward elapsed: 1.55499999999999993783ms
+
+forward_minibatch_id 30
+ -> recv elapsed: 0.68100000000000004974ms
+Stage0 before last layer: 2.04499999999999992895ms
+ ->block 0 time: 0.44800000000000000933ms
+ ->block 1 time: 1.05299999999999993605ms
+ ->block 2 time: 0.59099999999999996980ms
+ ->block 3 time: 0.98699999999999998845ms
+Stage0 last layer: 5.50699999999999967315ms
+ -> _run_forward elapsed: 7.87899999999999955946ms
+
+forward_minibatch_id 31
+ -> recv elapsed: 0.21099999999999999312ms
+Stage0 before last layer: 0.89400000000000001688ms
+ ->block 0 time: 0.14299999999999998823ms
+ ->block 1 time: 0.13500000000000000888ms
+ ->block 2 time: 0.12700000000000000178ms
+ ->block 3 time: 0.12399999999999999911ms
+Stage0 last layer: 0.82999999999999996003ms
+ -> _run_forward elapsed: 1.82099999999999995204ms
+
+Epoch: [0][30/1562]	Memory: 8.167 (13.724)
+Backward Stats:
+	 compute_time 0.000 seconds
+	 receive_tensors 0.000 seconds
+	 receive_tensors_size 411041792.000 bytes
+	 send_tensors 0.000 seconds
+	 send_tensors_size 0.000 bytes
+Optimizer step took: 0.001
+forward_minibatch_id 32
+ -> recv elapsed: 0.29899999999999998801ms
+Stage0 before last layer: 0.83999999999999996891ms
+ ->block 0 time: 0.23000000000000000999ms
+ ->block 1 time: 0.21399999999999999578ms
+ ->block 2 time: 0.24899999999999999911ms
+ ->block 3 time: 0.24299999999999999378ms
+Stage0 last layer: 1.79000000000000003553ms
+ -> _run_forward elapsed: 2.88600000000000012079ms
+
+forward_minibatch_id 33
+ -> recv elapsed: 0.15299999999999999711ms
+Stage0 before last layer: 0.51600000000000001421ms
+ ->block 0 time: 0.18599999999999999867ms
+ ->block 1 time: 0.19800000000000000933ms
+ ->block 2 time: 0.14599999999999999090ms
+ ->block 3 time: 0.16800000000000001044ms
+Stage0 last layer: 1.04600000000000004086ms
+ -> _run_forward elapsed: 1.63100000000000000533ms
+
+forward_minibatch_id 34
+ -> recv elapsed: 0.17100000000000001310ms
+Stage0 before last layer: 505.42700000000002091838ms
+ ->block 0 time: 0.21299999999999999489ms
+ ->block 1 time: 0.18499999999999999778ms
+ ->block 2 time: 0.16900000000000001132ms
+ ->block 3 time: 0.18699999999999999956ms
+Stage0 last layer: 1.14900000000000002132ms
+ -> _run_forward elapsed: 506.69400000000001682565ms
+
+forward_minibatch_id 35
+ -> recv elapsed: 0.24599999999999999645ms
+Stage0 before last layer: 0.55000000000000004441ms
+ ->block 0 time: 0.18099999999999999423ms
+ ->block 1 time: 0.16200000000000000511ms
+ ->block 2 time: 0.15499999999999999889ms
+ ->block 3 time: 0.17299999999999998712ms
+Stage0 last layer: 0.99099999999999999201ms
+ -> _run_forward elapsed: 1.62900000000000000355ms
+
+forward_minibatch_id 36
+ -> recv elapsed: 0.30999999999999999778ms
+Stage0 before last layer: 0.84699999999999997513ms
+ ->block 0 time: 0.24099999999999999201ms
+ ->block 1 time: 0.23000000000000000999ms
+ ->block 2 time: 0.22500000000000000555ms
+ ->block 3 time: 0.22200000000000000289ms
+Stage0 last layer: 1.37200000000000010836ms
+ -> _run_forward elapsed: 2.37599999999999988987ms
+
+forward_minibatch_id 37
+ -> recv elapsed: 0.29699999999999998623ms
+Stage0 before last layer: 0.67600000000000004530ms
+ ->block 0 time: 0.18399999999999999689ms
+ ->block 1 time: 0.15800000000000000155ms
+ ->block 2 time: 0.14799999999999999267ms
+ ->block 3 time: 0.18199999999999999512ms
+Stage0 last layer: 0.98599999999999998757ms
+ -> _run_forward elapsed: 1.75099999999999988987ms
+
+forward_minibatch_id 38
+ -> recv elapsed: 0.31199999999999999956ms
+Stage0 before last layer: 0.69199999999999994849ms
+ ->block 0 time: 0.22900000000000000910ms
+ ->block 1 time: 0.23000000000000000999ms
+ ->block 2 time: 0.20599999999999998868ms
+ ->block 3 time: 0.22500000000000000555ms
+Stage0 last layer: 1.31699999999999994849ms
+ -> _run_forward elapsed: 2.11600000000000010303ms
+
+forward_minibatch_id 39
+ -> recv elapsed: 0.29599999999999998535ms
+Stage0 before last layer: 0.61299999999999998934ms
+ ->block 0 time: 0.22800000000000000822ms
+ ->block 1 time: 0.20699999999999998956ms
+ ->block 2 time: 0.20799999999999999045ms
+ ->block 3 time: 0.19800000000000000933ms
+Stage0 last layer: 1.30000000000000004441ms
+ -> _run_forward elapsed: 2.02599999999999980105ms
+
+forward_minibatch_id 40
+ -> recv elapsed: 1.01699999999999990408ms
+Stage0 before last layer: 0.59499999999999997335ms
+ ->block 0 time: 4.41199999999999992184ms
+ ->block 1 time: 550.43600000000003547029ms
+ ->block 2 time: 0.20799999999999999045ms
+ ->block 3 time: 0.15299999999999999711ms
+Stage0 last layer: 555.59000000000003183231ms
+ -> _run_forward elapsed: 556.27099999999995816324ms
+
+forward_minibatch_id 41
+ -> recv elapsed: 0.75500000000000000444ms
+Stage0 before last layer: 0.72199999999999997513ms
+ ->block 0 time: 0.23499999999999998668ms
+ ->block 1 time: 0.18599999999999999867ms
+ ->block 2 time: 0.16800000000000001044ms
+ ->block 3 time: 0.17999999999999999334ms
+Stage0 last layer: 1.14799999999999990941ms
+ -> _run_forward elapsed: 1.98399999999999998579ms
+
+Epoch: [0][40/1562]	Memory: 8.269 (13.724)
+Backward Stats:
+	 compute_time 0.000 seconds
+	 receive_tensors 0.000 seconds
+	 receive_tensors_size 411041792.000 bytes
+	 send_tensors 0.000 seconds
+	 send_tensors_size 0.000 bytes
+Optimizer step took: 0.003
+forward_minibatch_id 42
+ -> recv elapsed: 437.11000000000001364242ms
+Stage0 before last layer: 0.52500000000000002220ms
+ ->block 0 time: 0.24399999999999999467ms
+ ->block 1 time: 0.21099999999999999312ms
+ ->block 2 time: 0.19400000000000000577ms
+ ->block 3 time: 0.18900000000000000133ms
+Stage0 last layer: 1.21500000000000007994ms
+ -> _run_forward elapsed: 1.84899999999999997691ms
+
+forward_minibatch_id 43
+ -> recv elapsed: 0.22800000000000000822ms
+Stage0 before last layer: 0.68999999999999994671ms
+ ->block 0 time: 0.33100000000000001643ms
+ ->block 1 time: 0.20300000000000001377ms
+ ->block 2 time: 0.20499999999999998779ms
+ ->block 3 time: 0.14599999999999999090ms
+Stage0 last layer: 1.25299999999999989164ms
+ -> _run_forward elapsed: 2.02599999999999980105ms
+
+forward_minibatch_id 44
+ -> recv elapsed: 0.20100000000000001199ms
+Stage0 before last layer: 0.88800000000000001155ms
+ ->block 0 time: 0.20100000000000001199ms
+ ->block 1 time: 0.17499999999999998890ms
+ ->block 2 time: 0.15599999999999999978ms
+ ->block 3 time: 0.15399999999999999800ms
+Stage0 last layer: 1.01299999999999990052ms
+ -> _run_forward elapsed: 1.99199999999999999289ms
+
+forward_minibatch_id 45
+ -> recv elapsed: 0.30799999999999999600ms
+Stage0 before last layer: 0.53200000000000002842ms
+ ->block 0 time: 0.19500000000000000666ms
+ ->block 1 time: 0.17999999999999999334ms
+ ->block 2 time: 0.17100000000000001310ms
+ ->block 3 time: 0.16600000000000000866ms
+Stage0 last layer: 1.05800000000000005151ms
+ -> _run_forward elapsed: 1.68100000000000004974ms
+
+forward_minibatch_id 46
+ -> recv elapsed: 1.21900000000000008349ms
+Stage0 before last layer: 0.50400000000000000355ms
+ ->block 0 time: 0.14599999999999999090ms
+ ->block 1 time: 0.40999999999999997558ms
+ ->block 2 time: 0.20100000000000001199ms
+ ->block 3 time: 0.19100000000000000311ms
+Stage0 last layer: 1.28899999999999992362ms
+ -> _run_forward elapsed: 1.88100000000000000533ms
+
+forward_minibatch_id 47
+ -> recv elapsed: 443.69600000000002637535ms
+Stage0 before last layer: 0.77300000000000002043ms
+ ->block 0 time: 0.30699999999999999512ms
+ ->block 1 time: 0.14999999999999999445ms
+ ->block 2 time: 0.11400000000000000411ms
+ ->block 3 time: 0.13600000000000000977ms
+Stage0 last layer: 0.98999999999999999112ms
+ -> _run_forward elapsed: 1.84499999999999997335ms
+
+forward_minibatch_id 48
+ -> recv elapsed: 0.30899999999999999689ms
+Stage0 before last layer: 1.04499999999999992895ms
+ ->block 0 time: 0.38200000000000000622ms
+ ->block 1 time: 0.22100000000000000200ms
+ ->block 2 time: 0.18699999999999999956ms
+ ->block 3 time: 0.22300000000000000377ms
+Stage0 last layer: 1.45100000000000006750ms
+ -> _run_forward elapsed: 2.61200000000000009948ms
+
+forward_minibatch_id 49
+ -> recv elapsed: 0.54700000000000004174ms
+Stage0 before last layer: 0.64300000000000001599ms
+ ->block 0 time: 0.20799999999999999045ms
+ ->block 1 time: 0.26500000000000001332ms
+ ->block 2 time: 0.23300000000000001266ms
+ ->block 3 time: 0.18499999999999999778ms
+Stage0 last layer: 1.49500000000000010658ms
+ -> _run_forward elapsed: 2.40700000000000002842ms
+
+forward_minibatch_id 50
+ -> recv elapsed: 0.40500000000000002665ms
+Stage0 before last layer: 0.85499999999999998224ms
+ ->block 0 time: 0.18699999999999999956ms
+ ->block 1 time: 0.16800000000000001044ms
+ ->block 2 time: 0.16400000000000000688ms
+ ->block 3 time: 0.16300000000000000600ms
+Stage0 last layer: 1.36499999999999999112ms
+ -> _run_forward elapsed: 2.50499999999999989342ms
+
+forward_minibatch_id 51
+ -> recv elapsed: 0.45100000000000001199ms
+Stage0 before last layer: 0.68700000000000005507ms
+ ->block 0 time: 0.17199999999999998623ms
+ ->block 1 time: 0.37900000000000000355ms
+ ->block 2 time: 0.19600000000000000755ms
+ ->block 3 time: 0.20300000000000001377ms
+Stage0 last layer: 1.35200000000000009059ms
+ -> _run_forward elapsed: 2.14500000000000001776ms
+
+Epoch: [0][50/1562]	Memory: 8.167 (13.724)
+Backward Stats:
+	 compute_time 0.000 seconds
+	 receive_tensors 0.000 seconds
+	 receive_tensors_size 411041792.000 bytes
+	 send_tensors 0.000 seconds
+	 send_tensors_size 0.000 bytes
+Optimizer step took: 0.001
+forward_minibatch_id 52
+ -> recv elapsed: 0.31500000000000000222ms
+Stage0 before last layer: 0.59799999999999997602ms
+ ->block 0 time: 0.16000000000000000333ms
+ ->block 1 time: 0.14499999999999999001ms
+ ->block 2 time: 0.13700000000000001066ms
+ ->block 3 time: 0.18399999999999999689ms
+Stage0 last layer: 0.93999999999999994671ms
+ -> _run_forward elapsed: 1.62500000000000000000ms
+
+forward_minibatch_id 53
+ -> recv elapsed: 1.07200000000000006395ms
+Stage0 before last layer: 0.67200000000000004174ms
+ ->block 0 time: 0.19700000000000000844ms
+ ->block 1 time: 0.18099999999999999423ms
+ ->block 2 time: 0.77000000000000001776ms
+ ->block 3 time: 0.37800000000000000266ms
+Stage0 last layer: 2.04099999999999992539ms
+ -> _run_forward elapsed: 2.94099999999999983658ms
+
+forward_minibatch_id 54
+ -> recv elapsed: 0.18199999999999999512ms
+Stage0 before last layer: 511.17599999999998772182ms
+ ->block 0 time: 0.15299999999999999711ms
+ ->block 1 time: 0.27400000000000002132ms
+ ->block 2 time: 0.11999999999999999556ms
+ ->block 3 time: 0.13000000000000000444ms
+Stage0 last layer: 0.96599999999999996980ms
+ -> _run_forward elapsed: 512.23699999999996634870ms
+
+forward_minibatch_id 55
+ -> recv elapsed: 0.33900000000000002354ms
+Stage0 before last layer: 0.66800000000000003819ms
+ ->block 0 time: 0.17899999999999999245ms
+ ->block 1 time: 0.43399999999999999689ms
+ ->block 2 time: 0.18699999999999999956ms
+ ->block 3 time: 0.16400000000000000688ms
+Stage0 last layer: 1.28699999999999992184ms
+ -> _run_forward elapsed: 2.04300000000000014921ms
+
+forward_minibatch_id 56
+ -> recv elapsed: 0.28799999999999997824ms
+Stage0 before last layer: 0.46300000000000002265ms
+ ->block 0 time: 0.15299999999999999711ms
+ ->block 1 time: 0.17899999999999999245ms
+ ->block 2 time: 0.12399999999999999911ms
+ ->block 3 time: 0.09600000000000000200ms
+Stage0 last layer: 0.81499999999999994671ms
+ -> _run_forward elapsed: 1.35499999999999998224ms
+
+forward_minibatch_id 57
+ -> recv elapsed: 444.44099999999997407940ms
+Stage0 before last layer: 0.73599999999999998757ms
+ ->block 0 time: 0.21900000000000000022ms
+ ->block 1 time: 0.17599999999999998979ms
+ ->block 2 time: 0.18800000000000000044ms
+ ->block 3 time: 0.30299999999999999156ms
+Stage0 last layer: 1.42900000000000004796ms
+ -> _run_forward elapsed: 2.31800000000000006040ms
+
+forward_minibatch_id 58
+ -> recv elapsed: 0.93899999999999994582ms
+Stage0 before last layer: 0.91900000000000003908ms
+ ->block 0 time: 0.22000000000000000111ms
+ ->block 1 time: 0.21900000000000000022ms
+ ->block 2 time: 0.20599999999999998868ms
+ ->block 3 time: 0.19400000000000000577ms
+Stage0 last layer: 1.20300000000000006928ms
+ -> _run_forward elapsed: 2.21499999999999985789ms
+
+forward_minibatch_id 59
+ -> recv elapsed: 1.10699999999999998401ms
+Stage0 before last layer: 1.57200000000000006395ms
+ ->block 0 time: 0.21499999999999999667ms
+ ->block 1 time: 0.42499999999999998890ms
+ ->block 2 time: 0.58799999999999996714ms
+ ->block 3 time: 0.57799999999999995826ms
+Stage0 last layer: 3.03500000000000014211ms
+ -> _run_forward elapsed: 9.20299999999999940314ms
+
+forward_minibatch_id 60
+ -> recv elapsed: 0.36799999999999999378ms
+Stage0 before last layer: 0.54700000000000004174ms
+ ->block 0 time: 0.19900000000000001021ms
+ ->block 1 time: 0.18800000000000000044ms
+ ->block 2 time: 0.18299999999999999600ms
+ ->block 3 time: 0.17999999999999999334ms
+Stage0 last layer: 1.10699999999999998401ms
+ -> _run_forward elapsed: 1.75099999999999988987ms
+
+forward_minibatch_id 61
+ -> recv elapsed: 0.27300000000000002043ms
+Stage0 before last layer: 0.61799999999999999378ms
+ ->block 0 time: 0.18900000000000000133ms
+ ->block 1 time: 0.16700000000000000955ms
+ ->block 2 time: 0.15800000000000000155ms
+ ->block 3 time: 0.15800000000000000155ms
+Stage0 last layer: 1.00000000000000000000ms
+ -> _run_forward elapsed: 1.70799999999999996270ms
+
+Epoch: [0][60/1562]	Memory: 8.270 (13.724)
+Backward Stats:
+	 compute_time 0.000 seconds
+	 receive_tensors 0.000 seconds
+	 receive_tensors_size 411041792.000 bytes
+	 send_tensors 0.000 seconds
+	 send_tensors_size 0.000 bytes
+Optimizer step took: 0.001
+forward_minibatch_id 62
+ -> recv elapsed: 0.29999999999999998890ms
+Stage0 before last layer: 0.70599999999999996092ms
+ ->block 0 time: 0.18900000000000000133ms
+ ->block 1 time: 0.17399999999999998801ms
+ ->block 2 time: 0.16500000000000000777ms
+ ->block 3 time: 0.17100000000000001310ms
+Stage0 last layer: 1.05299999999999993605ms
+ -> _run_forward elapsed: 1.85200000000000009059ms
+
+forward_minibatch_id 63
+ -> recv elapsed: 0.28199999999999997291ms
+Stage0 before last layer: 0.64700000000000001954ms
+ ->block 0 time: 0.19200000000000000400ms
+ ->block 1 time: 0.20399999999999998690ms
+ ->block 2 time: 0.17599999999999998979ms
+ ->block 3 time: 0.17599999999999998979ms
+Stage0 last layer: 1.12299999999999999822ms
+ -> _run_forward elapsed: 1.87400000000000011013ms
+
+forward_minibatch_id 64
+ -> recv elapsed: 0.30999999999999999778ms
+Stage0 before last layer: 536.97799999999995179678ms
+ ->block 0 time: 0.29999999999999998890ms
+ ->block 1 time: 0.21099999999999999312ms
+ ->block 2 time: 0.15499999999999999889ms
+ ->block 3 time: 0.11100000000000000144ms
+Stage0 last layer: 1.11499999999999999112ms
+ -> _run_forward elapsed: 538.19700000000000272848ms
+
+forward_minibatch_id 65
+ -> recv elapsed: 0.22700000000000000733ms
+Stage0 before last layer: 1.03200000000000002842ms
+ ->block 0 time: 0.26300000000000001155ms
+ ->block 1 time: 0.29099999999999998090ms
+ ->block 2 time: 0.23200000000000001177ms
+ ->block 3 time: 0.16600000000000000866ms
+Stage0 last layer: 1.42999999999999993783ms
+ -> _run_forward elapsed: 2.75300000000000011369ms
+
+forward_minibatch_id 66
+ -> recv elapsed: 0.19900000000000001021ms
+Stage0 before last layer: 507.01799999999997226041ms
+ ->block 0 time: 0.20899999999999999134ms
+ ->block 1 time: 0.18900000000000000133ms
+ ->block 2 time: 0.17100000000000001310ms
+ ->block 3 time: 0.16400000000000000688ms
+Stage0 last layer: 1.10400000000000009237ms
+ -> _run_forward elapsed: 508.23300000000000409273ms
+
+forward_minibatch_id 67
+ -> recv elapsed: 0.26700000000000001510ms
+Stage0 before last layer: 0.59799999999999997602ms
+ ->block 0 time: 0.19400000000000000577ms
+ ->block 1 time: 0.12500000000000000000ms
+ ->block 2 time: 0.10100000000000000644ms
+ ->block 3 time: 0.09600000000000000200ms
+Stage0 last layer: 0.75300000000000000266ms
+ -> _run_forward elapsed: 1.43399999999999994138ms
+
+forward_minibatch_id 68
+ -> recv elapsed: 445.19999999999998863132ms
+Stage0 before last layer: 0.54500000000000003997ms
+ ->block 0 time: 0.16900000000000001132ms
+ ->block 1 time: 0.30299999999999999156ms
+ ->block 2 time: 0.22100000000000000200ms
+ ->block 3 time: 0.20499999999999998779ms
+Stage0 last layer: 1.35000000000000008882ms
+ -> _run_forward elapsed: 1.99799999999999999822ms
+
+forward_minibatch_id 69
+ -> recv elapsed: 0.69899999999999995470ms
+Stage0 before last layer: 2.33199999999999985079ms
+ ->block 0 time: 0.18299999999999999600ms
+ ->block 1 time: 0.17399999999999998801ms
+ ->block 2 time: 0.16500000000000000777ms
+ ->block 3 time: 0.16100000000000000422ms
+Stage0 last layer: 1.01400000000000001243ms
+ -> _run_forward elapsed: 3.44899999999999984368ms
+
+forward_minibatch_id 70
+ -> recv elapsed: 0.23899999999999999023ms
+Stage0 before last layer: 0.59599999999999997424ms
+ ->block 0 time: 0.14899999999999999356ms
+ ->block 1 time: 0.16600000000000000866ms
+ ->block 2 time: 0.32300000000000000933ms
+ ->block 3 time: 0.22700000000000000733ms
+Stage0 last layer: 1.27099999999999990763ms
+ -> _run_forward elapsed: 1.96599999999999996980ms
+
+forward_minibatch_id 71
+ -> recv elapsed: 0.53900000000000003464ms
+Stage0 before last layer: 0.69399999999999995026ms
+ ->block 0 time: 4.95199999999999995737ms
+ ->block 1 time: 557.00999999999999090505ms
+ ->block 2 time: 0.89700000000000001954ms
+ ->block 3 time: 0.38100000000000000533ms
+Stage0 last layer: 563.73800000000005638867ms
+ -> _run_forward elapsed: 564.54100000000005366019ms
+
+Epoch: [0][70/1562]	Memory: 8.167 (13.724)
+Backward Stats:
+	 compute_time 0.000 seconds
+	 receive_tensors 0.000 seconds
+	 receive_tensors_size 411041792.000 bytes
+	 send_tensors 0.000 seconds
+	 send_tensors_size 0.000 bytes
+Optimizer step took: 0.001
+forward_minibatch_id 72
+ -> recv elapsed: 0.34000000000000002442ms
+Stage0 before last layer: 0.59199999999999997069ms
+ ->block 0 time: 0.17199999999999998623ms
+ ->block 1 time: 0.17000000000000001221ms
+ ->block 2 time: 0.16700000000000000955ms
+ ->block 3 time: 0.16600000000000000866ms
+Stage0 last layer: 1.03000000000000002665ms
+ -> _run_forward elapsed: 1.72199999999999997513ms
+
+forward_minibatch_id 73
+ -> recv elapsed: 0.23499999999999998668ms
+Stage0 before last layer: 0.70199999999999995737ms
+ ->block 0 time: 0.22200000000000000289ms
+ ->block 1 time: 0.13700000000000001066ms
+ ->block 2 time: 0.11799999999999999378ms
+ ->block 3 time: 0.11500000000000000500ms
+Stage0 last layer: 0.89000000000000001332ms
+ -> _run_forward elapsed: 1.68700000000000005507ms
+
+forward_minibatch_id 74
+ -> recv elapsed: 0.32100000000000000755ms
+Stage0 before last layer: 0.54700000000000004174ms
+ ->block 0 time: 0.17199999999999998623ms
+ ->block 1 time: 0.17799999999999999156ms
+ ->block 2 time: 0.24599999999999999645ms
+ ->block 3 time: 0.17299999999999998712ms
+Stage0 last layer: 1.17199999999999993072ms
+ -> _run_forward elapsed: 1.82000000000000006217ms
+
+forward_minibatch_id 75
+ -> recv elapsed: 0.60199999999999997957ms
+Stage0 before last layer: 0.91100000000000003197ms
+ ->block 0 time: 0.19900000000000001021ms
+ ->block 1 time: 0.29999999999999998890ms
+ ->block 2 time: 0.32700000000000001288ms
+ ->block 3 time: 0.29899999999999998801ms
+Stage0 last layer: 2.39000000000000012434ms
+ -> _run_forward elapsed: 3.54499999999999992895ms
+
+forward_minibatch_id 76
+ -> recv elapsed: 0.73499999999999998668ms
+Stage0 before last layer: 459.63499999999999090505ms
+ ->block 0 time: 0.33800000000000002265ms
+ ->block 1 time: 0.22900000000000000910ms
+ ->block 2 time: 0.21699999999999999845ms
+ ->block 3 time: 0.21699999999999999845ms
+Stage0 last layer: 1.46100000000000007638ms
+ -> _run_forward elapsed: 461.30900000000002592060ms
+
+forward_minibatch_id 77
+ -> recv elapsed: 0.27900000000000002576ms
+Stage0 before last layer: 0.70599999999999996092ms
+ ->block 0 time: 0.23300000000000001266ms
+ ->block 1 time: 0.25100000000000000089ms
+ ->block 2 time: 0.20999999999999999223ms
+ ->block 3 time: 0.18599999999999999867ms
+Stage0 last layer: 1.30400000000000004796ms
+ -> _run_forward elapsed: 2.13600000000000012079ms
+
+forward_minibatch_id 78
+ -> recv elapsed: 0.15900000000000000244ms
+Stage0 before last layer: 0.81899999999999995026ms
+ ->block 0 time: 0.18099999999999999423ms
+ ->block 1 time: 0.16800000000000001044ms
+ ->block 2 time: 0.15800000000000000155ms
+ ->block 3 time: 0.15700000000000000067ms
+Stage0 last layer: 1.37500000000000000000ms
+ -> _run_forward elapsed: 2.48300000000000009592ms
+
+forward_minibatch_id 79
+ -> recv elapsed: 0.44400000000000000577ms
+Stage0 before last layer: 0.64300000000000001599ms
+ ->block 0 time: 0.20100000000000001199ms
+ ->block 1 time: 0.22800000000000000822ms
+ ->block 2 time: 0.21799999999999999933ms
+ ->block 3 time: 0.23000000000000000999ms
+Stage0 last layer: 2.01100000000000012079ms
+ -> _run_forward elapsed: 2.91400000000000014566ms
+
+forward_minibatch_id 80
+ -> recv elapsed: 435.82100000000002637535ms
+Stage0 before last layer: 0.74199999999999999289ms
+ ->block 0 time: 0.19700000000000000844ms
+ ->block 1 time: 0.21399999999999999578ms
+ ->block 2 time: 0.22400000000000000466ms
+ ->block 3 time: 0.20200000000000001288ms
+Stage0 last layer: 1.79800000000000004263ms
+ -> _run_forward elapsed: 2.95599999999999996092ms
+
+forward_minibatch_id 81
+ -> recv elapsed: 0.58699999999999996625ms
+Stage0 before last layer: 0.70199999999999995737ms
+ ->block 0 time: 0.17899999999999999245ms
+ ->block 1 time: 0.16700000000000000955ms
+ ->block 2 time: 0.17699999999999999067ms
+ ->block 3 time: 0.16600000000000000866ms
+Stage0 last layer: 1.01299999999999990052ms
+ -> _run_forward elapsed: 1.80499999999999993783ms
+
+Epoch: [0][80/1562]	Memory: 8.269 (13.724)
+Backward Stats:
+	 compute_time 0.000 seconds
+	 receive_tensors 0.000 seconds
+	 receive_tensors_size 411041792.000 bytes
+	 send_tensors 0.000 seconds
+	 send_tensors_size 0.000 bytes
+Optimizer step took: 0.001
+forward_minibatch_id 82
+ -> recv elapsed: 0.31500000000000000222ms
+Stage0 before last layer: 0.66800000000000003819ms
+ ->block 0 time: 0.20000000000000001110ms
+ ->block 1 time: 0.20799999999999999045ms
+ ->block 2 time: 0.20399999999999998690ms
+ ->block 3 time: 0.22000000000000000111ms
+Stage0 last layer: 1.21599999999999996980ms
+ -> _run_forward elapsed: 1.97799999999999998046ms
+
+forward_minibatch_id 83
+ -> recv elapsed: 0.43900000000000000133ms
+Stage0 before last layer: 0.68400000000000005240ms
+ ->block 0 time: 0.20899999999999999134ms
+ ->block 1 time: 0.26200000000000001066ms
+ ->block 2 time: 0.99299999999999999378ms
+ ->block 3 time: 0.75700000000000000622ms
+Stage0 last layer: 3.11500000000000021316ms
+ -> _run_forward elapsed: 4.03800000000000025580ms
+
+forward_minibatch_id 84
+ -> recv elapsed: 0.83299999999999996270ms
+Stage0 before last layer: 0.63200000000000000622ms
+ ->block 0 time: 0.18800000000000000044ms
+ ->block 1 time: 0.16600000000000000866ms
+ ->block 2 time: 0.15399999999999999800ms
+ ->block 3 time: 0.15199999999999999623ms
+Stage0 last layer: 1.08000000000000007105ms
+ -> _run_forward elapsed: 2.00099999999999988987ms
+
+forward_minibatch_id 85
+ -> recv elapsed: 0.57299999999999995381ms
+Stage0 before last layer: 0.55000000000000004441ms
+ ->block 0 time: 0.17699999999999999067ms
+ ->block 1 time: 0.16700000000000000955ms
+ ->block 2 time: 0.16200000000000000511ms
+ ->block 3 time: 0.15800000000000000155ms
+Stage0 last layer: 0.98799999999999998934ms
+ -> _run_forward elapsed: 1.62900000000000000355ms
+
+forward_minibatch_id 86
+ -> recv elapsed: 0.60499999999999998224ms
+Stage0 before last layer: 0.72299999999999997602ms
+ ->block 0 time: 0.20799999999999999045ms
+ ->block 1 time: 559.93399999999996907718ms
+ ->block 2 time: 0.29199999999999998179ms
+ ->block 3 time: 0.21599999999999999756ms
+Stage0 last layer: 561.27899999999999636202ms
+ -> _run_forward elapsed: 562.10400000000004183676ms
+
+forward_minibatch_id 87
+ -> recv elapsed: 0.29799999999999998712ms
+Stage0 before last layer: 0.82399999999999995470ms
+ ->block 0 time: 0.22100000000000000200ms
+ ->block 1 time: 0.22400000000000000466ms
+ ->block 2 time: 0.21399999999999999578ms
+ ->block 3 time: 0.23799999999999998934ms
+Stage0 last layer: 1.31299999999999994493ms
+ -> _run_forward elapsed: 2.32600000000000006750ms
+
+forward_minibatch_id 88
+ -> recv elapsed: 0.33900000000000002354ms
+Stage0 before last layer: 0.78900000000000003464ms
+ ->block 0 time: 0.21199999999999999400ms
+ ->block 1 time: 0.15800000000000000155ms
+ ->block 2 time: 0.20000000000000001110ms
+ ->block 3 time: 0.13200000000000000622ms
+Stage0 last layer: 1.04200000000000003730ms
+ -> _run_forward elapsed: 1.91900000000000003908ms
+
+forward_minibatch_id 89
+ -> recv elapsed: 1.06299999999999994493ms
+Stage0 before last layer: 0.75900000000000000799ms
+ ->block 0 time: 0.22600000000000000644ms
+ ->block 1 time: 0.19100000000000000311ms
+ ->block 2 time: 0.18099999999999999423ms
+ ->block 3 time: 0.17199999999999998623ms
+Stage0 last layer: 1.14100000000000001421ms
+ -> _run_forward elapsed: 1.99599999999999999645ms
+
+forward_minibatch_id 90
+ -> recv elapsed: 1.11699999999999999289ms
+Stage0 before last layer: 504.13299999999998135536ms
+ ->block 0 time: 0.22300000000000000377ms
+ ->block 1 time: 0.20200000000000001288ms
+ ->block 2 time: 0.18399999999999999689ms
+ ->block 3 time: 0.19000000000000000222ms
+Stage0 last layer: 1.19900000000000006573ms
+ -> _run_forward elapsed: 505.56200000000001182343ms
+
+forward_minibatch_id 91
+ -> recv elapsed: 0.34100000000000002531ms
+Stage0 before last layer: 0.73599999999999998757ms
+ ->block 0 time: 0.19300000000000000488ms
+ ->block 1 time: 0.20799999999999999045ms
+ ->block 2 time: 0.19300000000000000488ms
+ ->block 3 time: 0.17799999999999999156ms
+Stage0 last layer: 1.17399999999999993250ms
+ -> _run_forward elapsed: 2.01500000000000012434ms
+
+Epoch: [0][90/1562]	Memory: 8.167 (13.724)
+Backward Stats:
+	 compute_time 0.000 seconds
+	 receive_tensors 0.000 seconds
+	 receive_tensors_size 411041792.000 bytes
+	 send_tensors 0.000 seconds
+	 send_tensors_size 0.000 bytes
+Optimizer step took: 0.001
+forward_minibatch_id 92
+ -> recv elapsed: 0.33400000000000001910ms
+Stage0 before last layer: 0.65100000000000002309ms
+ ->block 0 time: 0.21499999999999999667ms
+ ->block 1 time: 0.17499999999999998890ms
+ ->block 2 time: 0.16400000000000000688ms
+ ->block 3 time: 0.15900000000000000244ms
+Stage0 last layer: 1.07200000000000006395ms
+ -> _run_forward elapsed: 1.82000000000000006217ms
+
+forward_minibatch_id 93
+ -> recv elapsed: 0.17499999999999998890ms
+Stage0 before last layer: 2.35599999999999987210ms
+ ->block 0 time: 0.76400000000000001243ms
+ ->block 1 time: 0.94299999999999994937ms
+ ->block 2 time: 0.86999999999999999556ms
+ ->block 3 time: 0.94099999999999994760ms
+Stage0 last layer: 594.94000000000005456968ms
+ -> _run_forward elapsed: 597.54700000000002546585ms
+
+forward_minibatch_id 94
+ -> recv elapsed: 0.42099999999999998535ms
+Stage0 before last layer: 0.71999999999999997335ms
+ ->block 0 time: 0.21799999999999999933ms
+ ->block 1 time: 0.22100000000000000200ms
+ ->block 2 time: 0.21699999999999999845ms
+ ->block 3 time: 0.21399999999999999578ms
+Stage0 last layer: 1.32600000000000006750ms
+ -> _run_forward elapsed: 2.19600000000000017408ms
+
+forward_minibatch_id 95
+ -> recv elapsed: 0.34200000000000002620ms
+Stage0 before last layer: 1.14300000000000001599ms
+ ->block 0 time: 0.25500000000000000444ms
+ ->block 1 time: 0.26200000000000001066ms
+ ->block 2 time: 0.27200000000000001954ms
+ ->block 3 time: 0.25400000000000000355ms
+Stage0 last layer: 2.36299999999999998934ms
+ -> _run_forward elapsed: 4.03599999999999958789ms
+
+forward_minibatch_id 96
+ -> recv elapsed: 0.23699999999999998845ms
+Stage0 before last layer: 1.05499999999999993783ms
+ ->block 0 time: 0.31400000000000000133ms
+ ->block 1 time: 0.29299999999999998268ms
+ ->block 2 time: 0.22900000000000000910ms
+ ->block 3 time: 0.28599999999999997646ms
+Stage0 last layer: 1.57899999999999995914ms
+ -> _run_forward elapsed: 2.77199999999999979750ms
+
+forward_minibatch_id 97
+ -> recv elapsed: 0.32600000000000001199ms
+Stage0 before last layer: 0.71099999999999996536ms
+ ->block 0 time: 0.20899999999999999134ms
+ ->block 1 time: 0.20599999999999998868ms
+ ->block 2 time: 0.20000000000000001110ms
+ ->block 3 time: 0.19500000000000000666ms
+Stage0 last layer: 1.20700000000000007283ms
+ -> _run_forward elapsed: 2.02400000000000002132ms
+
+forward_minibatch_id 98
+ -> recv elapsed: 0.29299999999999998268ms
+Stage0 before last layer: 0.55300000000000004707ms
+ ->block 0 time: 0.20200000000000001288ms
+ ->block 1 time: 0.24099999999999999201ms
+ ->block 2 time: 0.21099999999999999312ms
+ ->block 3 time: 0.27200000000000001954ms
+Stage0 last layer: 1.29600000000000004086ms
+ -> _run_forward elapsed: 1.93599999999999994316ms
+
+forward_minibatch_id 99
+ -> recv elapsed: 0.24799999999999999822ms
+Stage0 before last layer: 0.50600000000000000533ms
+ ->block 0 time: 0.21199999999999999400ms
+ ->block 1 time: 0.16700000000000000955ms
+ ->block 2 time: 0.17599999999999998979ms
+ ->block 3 time: 0.17000000000000001221ms
+Stage0 last layer: 1.07099999999999995204ms
+ -> _run_forward elapsed: 1.66900000000000003908ms
+
+forward_minibatch_id 100
+ -> recv elapsed: 0.26600000000000001421ms
+Stage0 before last layer: 0.71399999999999996803ms
+ ->block 0 time: 0.22600000000000000644ms
+ ->block 1 time: 0.21299999999999999489ms
+ ->block 2 time: 0.22000000000000000111ms
+ ->block 3 time: 0.19900000000000001021ms
+Stage0 last layer: 1.23399999999999998579ms
+ -> _run_forward elapsed: 2.04499999999999992895ms
+
+forward_minibatch_id 101
+ -> recv elapsed: 0.24199999999999999289ms
+Stage0 before last layer: 0.95999999999999996447ms
+ ->block 0 time: 0.27700000000000002398ms
+ ->block 1 time: 0.27200000000000001954ms
+ ->block 2 time: 0.27700000000000002398ms
+ ->block 3 time: 0.30299999999999999156ms
+Stage0 last layer: 1.73399999999999998579ms
+ -> _run_forward elapsed: 2.81499999999999994671ms
+
+Epoch: 0 Step 100 	Learning rate: 0.010000
+Epoch: [0][100/1562]	Memory: 8.167 (13.724)
+Backward Stats:
+	 compute_time 0.000 seconds
+	 receive_tensors 0.000 seconds
+	 receive_tensors_size 411041792.000 bytes
+	 send_tensors 0.000 seconds
+	 send_tensors_size 0.000 bytes
+Optimizer step took: 0.001
+forward_minibatch_id 102
+ -> recv elapsed: 0.54500000000000003997ms
+Stage0 before last layer: 449.77300000000002455636ms
+ ->block 0 time: 0.16700000000000000955ms
+ ->block 1 time: 0.11999999999999999556ms
+ ->block 2 time: 0.11500000000000000500ms
+ ->block 3 time: 0.14599999999999999090ms
+Stage0 last layer: 0.93600000000000005418ms
+ -> _run_forward elapsed: 450.83100000000001728040ms
+
+forward_minibatch_id 103
+ -> recv elapsed: 0.83399999999999996358ms
+Stage0 before last layer: 0.57999999999999996003ms
+ ->block 0 time: 0.20000000000000001110ms
+ ->block 1 time: 0.24499999999999999556ms
+ ->block 2 time: 0.20000000000000001110ms
+ ->block 3 time: 0.17599999999999998979ms
+Stage0 last layer: 1.17700000000000004619ms
+ -> _run_forward elapsed: 1.84899999999999997691ms
+
+forward_minibatch_id 104
+ -> recv elapsed: 0.25300000000000000266ms
+Stage0 before last layer: 0.53300000000000002931ms
+ ->block 0 time: 0.22700000000000000733ms
+ ->block 1 time: 0.20999999999999999223ms
+ ->block 2 time: 0.22100000000000000200ms
+ ->block 3 time: 0.22800000000000000822ms
+Stage0 last layer: 1.58899999999999996803ms
+ -> _run_forward elapsed: 2.21899999999999986144ms
+
+forward_minibatch_id 105
+ -> recv elapsed: 0.81799999999999994937ms
+Stage0 before last layer: 0.56399999999999994582ms
+ ->block 0 time: 0.20300000000000001377ms
+ ->block 1 time: 0.17999999999999999334ms
+ ->block 2 time: 0.17599999999999998979ms
+ ->block 3 time: 0.16900000000000001132ms
+Stage0 last layer: 1.10000000000000008882ms
+ -> _run_forward elapsed: 1.76400000000000001243ms
+
+forward_minibatch_id 106
+ -> recv elapsed: 0.21099999999999999312ms
+Stage0 before last layer: 0.66700000000000003730ms
+ ->block 0 time: 0.18399999999999999689ms
+ ->block 1 time: 0.17799999999999999156ms
+ ->block 2 time: 0.16900000000000001132ms
+ ->block 3 time: 0.19600000000000000755ms
+Stage0 last layer: 1.11600000000000010303ms
+ -> _run_forward elapsed: 1.88999999999999990230ms
+
+forward_minibatch_id 107
+ -> recv elapsed: 0.31500000000000000222ms
+Stage0 before last layer: 0.58299999999999996270ms
+ ->block 0 time: 0.17999999999999999334ms
+ ->block 1 time: 0.22700000000000000733ms
+ ->block 2 time: 0.23699999999999998845ms
+ ->block 3 time: 0.21599999999999999756ms
+Stage0 last layer: 1.39999999999999991118ms
+ -> _run_forward elapsed: 2.22400000000000019895ms
+
+forward_minibatch_id 108
+ -> recv elapsed: 0.92100000000000004086ms
+Stage0 before last layer: 0.67100000000000004086ms
+ ->block 0 time: 0.23899999999999999023ms
+ ->block 1 time: 0.23599999999999998757ms
+ ->block 2 time: 0.19300000000000000488ms
+ ->block 3 time: 0.16600000000000000866ms
+Stage0 last layer: 1.19799999999999995381ms
+ -> _run_forward elapsed: 2.14999999999999991118ms
+
+forward_minibatch_id 109
+ -> recv elapsed: 0.30499999999999999334ms
+Stage0 before last layer: 0.52000000000000001776ms
+ ->block 0 time: 0.17599999999999998979ms
+ ->block 1 time: 0.31700000000000000400ms
+ ->block 2 time: 0.18699999999999999956ms
+ ->block 3 time: 0.17899999999999999245ms
+Stage0 last layer: 1.22199999999999997513ms
+ -> _run_forward elapsed: 1.83499999999999996447ms
+
+forward_minibatch_id 110
+ -> recv elapsed: 0.63800000000000001155ms
+Stage0 before last layer: 0.76800000000000001599ms
+ ->block 0 time: 0.21099999999999999312ms
+ ->block 1 time: 0.18599999999999999867ms
+ ->block 2 time: 0.18299999999999999600ms
+ ->block 3 time: 0.21699999999999999845ms
+Stage0 last layer: 1.16199999999999992184ms
+ -> _run_forward elapsed: 2.02800000000000002487ms
+
+forward_minibatch_id 111
+ -> recv elapsed: 0.35899999999999998579ms
+Stage0 before last layer: 0.72399999999999997691ms
+ ->block 0 time: 0.17899999999999999245ms
+ ->block 1 time: 0.45700000000000001732ms
+ ->block 2 time: 0.27700000000000002398ms
+ ->block 3 time: 0.30599999999999999423ms
+Stage0 last layer: 2.06499999999999994671ms
+ -> _run_forward elapsed: 3.06599999999999983658ms
+
+Epoch: [0][110/1562]	Memory: 8.269 (13.724)
+Backward Stats:
+	 compute_time 0.000 seconds
+	 receive_tensors 0.000 seconds
+	 receive_tensors_size 411041792.000 bytes
+	 send_tensors 0.000 seconds
+	 send_tensors_size 0.000 bytes
+Optimizer step took: 0.001
+forward_minibatch_id 112
+ -> recv elapsed: 0.17999999999999999334ms
+Stage0 before last layer: 1.18599999999999994316ms
+ ->block 0 time: 0.27000000000000001776ms
+ ->block 1 time: 0.19400000000000000577ms
+ ->block 2 time: 0.12299999999999999822ms
+ ->block 3 time: 0.11200000000000000233ms
+Stage0 last layer: 1.04200000000000003730ms
+ -> _run_forward elapsed: 2.31099999999999994316ms
+
+forward_minibatch_id 113
+ -> recv elapsed: 0.84299999999999997158ms
+Stage0 before last layer: 0.62500000000000000000ms
+ ->block 0 time: 0.16000000000000000333ms
+ ->block 1 time: 0.15900000000000000244ms
+ ->block 2 time: 0.15099999999999999534ms
+ ->block 3 time: 0.14699999999999999178ms
+Stage0 last layer: 0.93799999999999994493ms
+ -> _run_forward elapsed: 1.65399999999999991473ms
+
+forward_minibatch_id 114
+ -> recv elapsed: 0.90700000000000002842ms
+Stage0 before last layer: 0.62399999999999999911ms
+ ->block 0 time: 0.17999999999999999334ms
+ ->block 1 time: 0.17899999999999999245ms
+ ->block 2 time: 0.16800000000000001044ms
+ ->block 3 time: 0.16300000000000000600ms
+Stage0 last layer: 1.04200000000000003730ms
+ -> _run_forward elapsed: 1.84200000000000008171ms
+
+forward_minibatch_id 115
+ -> recv elapsed: 0.30999999999999999778ms
+Stage0 before last layer: 0.61299999999999998934ms
+ ->block 0 time: 0.17499999999999998890ms
+ ->block 1 time: 0.17799999999999999156ms
+ ->block 2 time: 0.16900000000000001132ms
+ ->block 3 time: 0.33800000000000002265ms
+Stage0 last layer: 1.55200000000000004619ms
+ -> _run_forward elapsed: 2.40700000000000002842ms
+
+forward_minibatch_id 116
+ -> recv elapsed: 0.33200000000000001732ms
+Stage0 before last layer: 0.68899999999999994582ms
+ ->block 0 time: 0.21499999999999999667ms
+ ->block 1 time: 0.17599999999999998979ms
+ ->block 2 time: 0.16700000000000000955ms
+ ->block 3 time: 0.17000000000000001221ms
+Stage0 last layer: 1.11099999999999998757ms
+ -> _run_forward elapsed: 1.91999999999999992895ms
+
+forward_minibatch_id 117
+ -> recv elapsed: 0.26600000000000001421ms
+Stage0 before last layer: 0.40999999999999997558ms
+ ->block 0 time: 0.14199999999999998734ms
+ ->block 1 time: 0.12399999999999999911ms
+ ->block 2 time: 0.09700000000000000289ms
+ ->block 3 time: 0.09199999999999999845ms
+Stage0 last layer: 0.67500000000000004441ms
+ -> _run_forward elapsed: 1.14599999999999990763ms
+
+forward_minibatch_id 118
+ -> recv elapsed: 0.42199999999999998623ms
+Stage0 before last layer: 0.85099999999999997868ms
+ ->block 0 time: 0.22900000000000000910ms
+ ->block 1 time: 0.71199999999999996625ms
+ ->block 2 time: 0.26600000000000001421ms
+ ->block 3 time: 0.18399999999999999689ms
+Stage0 last layer: 1.82099999999999995204ms
+ -> _run_forward elapsed: 2.78299999999999991829ms
+
+forward_minibatch_id 119
+ -> recv elapsed: 1.06000000000000005329ms
+Stage0 before last layer: 1.24399999999999999467ms
+ ->block 0 time: 0.19900000000000001021ms
+ ->block 1 time: 0.16900000000000001132ms
+ ->block 2 time: 0.17299999999999998712ms
+ ->block 3 time: 0.16600000000000000866ms
+Stage0 last layer: 1.06499999999999994671ms
+ -> _run_forward elapsed: 2.40899999999999980815ms
+
+forward_minibatch_id 120
+ -> recv elapsed: 0.38500000000000000888ms
+Stage0 before last layer: 2.60099999999999997868ms
+ ->block 0 time: 0.21599999999999999756ms
+ ->block 1 time: 0.28699999999999997735ms
+ ->block 2 time: 0.24699999999999999734ms
+ ->block 3 time: 0.25500000000000000444ms
+Stage0 last layer: 1.64599999999999990763ms
+ -> _run_forward elapsed: 5.10099999999999997868ms
+
+forward_minibatch_id 121
+ -> recv elapsed: 0.25900000000000000799ms
+Stage0 before last layer: 0.78000000000000002665ms
+ ->block 0 time: 0.19700000000000000844ms
+ ->block 1 time: 0.27900000000000002576ms
+ ->block 2 time: 0.29599999999999998535ms
+ ->block 3 time: 0.29099999999999998090ms
+Stage0 last layer: 1.71700000000000008171ms
+ -> _run_forward elapsed: 2.73200000000000020606ms
+
+Epoch: [0][120/1562]	Memory: 8.167 (13.724)
+Backward Stats:
+	 compute_time 0.000 seconds
+	 receive_tensors 0.000 seconds
+	 receive_tensors_size 411041792.000 bytes
+	 send_tensors 0.000 seconds
+	 send_tensors_size 0.000 bytes
+Optimizer step took: 0.443
+forward_minibatch_id 122
+ -> recv elapsed: 0.26500000000000001332ms
+Stage0 before last layer: 0.48399999999999998579ms
+ ->block 0 time: 0.14399999999999998912ms
+ ->block 1 time: 0.13800000000000001155ms
+ ->block 2 time: 0.10599999999999999700ms
+ ->block 3 time: 0.09400000000000000022ms
+Stage0 last layer: 0.74899999999999999911ms
+ -> _run_forward elapsed: 1.31499999999999994671ms
+
+forward_minibatch_id 123
+ -> recv elapsed: 0.60599999999999998312ms
+Stage0 before last layer: 0.71099999999999996536ms
+ ->block 0 time: 0.26900000000000001688ms
+ ->block 1 time: 0.16900000000000001132ms
+ ->block 2 time: 0.22000000000000000111ms
+ ->block 3 time: 0.31400000000000000133ms
+Stage0 last layer: 1.39100000000000001421ms
+ -> _run_forward elapsed: 2.21700000000000008171ms
+
+forward_minibatch_id 124
+ -> recv elapsed: 0.22300000000000000377ms
+Stage0 before last layer: 0.72099999999999997424ms
+ ->block 0 time: 0.22500000000000000555ms
+ ->block 1 time: 0.23400000000000001354ms
+ ->block 2 time: 0.20100000000000001199ms
+ ->block 3 time: 0.17299999999999998712ms
+Stage0 last layer: 1.23599999999999998757ms
+ -> _run_forward elapsed: 2.06800000000000006040ms
+
+forward_minibatch_id 125
+ -> recv elapsed: 439.37700000000000954969ms
+Stage0 before last layer: 0.58299999999999996270ms
+ ->block 0 time: 0.26700000000000001510ms
+ ->block 1 time: 0.18399999999999999689ms
+ ->block 2 time: 0.24499999999999999556ms
+ ->block 3 time: 0.18199999999999999512ms
+Stage0 last layer: 1.28899999999999992362ms
+ -> _run_forward elapsed: 2.01200000000000001066ms
+
+forward_minibatch_id 126
+ -> recv elapsed: 0.31600000000000000311ms
+Stage0 before last layer: 0.66400000000000003464ms
+ ->block 0 time: 0.21900000000000000022ms
+ ->block 1 time: 0.22000000000000000111ms
+ ->block 2 time: 0.21499999999999999667ms
+ ->block 3 time: 0.22000000000000000111ms
+Stage0 last layer: 1.35299999999999998046ms
+ -> _run_forward elapsed: 2.15600000000000013856ms
+
+forward_minibatch_id 127
+ -> recv elapsed: 0.38200000000000000622ms
+Stage0 before last layer: 0.68000000000000004885ms
+ ->block 0 time: 0.19100000000000000311ms
+ ->block 1 time: 0.19200000000000000400ms
+ ->block 2 time: 0.15599999999999999978ms
+ ->block 3 time: 0.12600000000000000089ms
+Stage0 last layer: 1.02000000000000001776ms
+ -> _run_forward elapsed: 1.83400000000000007461ms
+
+forward_minibatch_id 128
+ -> recv elapsed: 0.31700000000000000400ms
+Stage0 before last layer: 0.70999999999999996447ms
+ ->block 0 time: 0.23499999999999998668ms
+ ->block 1 time: 0.21499999999999999667ms
+ ->block 2 time: 0.22100000000000000200ms
+ ->block 3 time: 0.19400000000000000577ms
+Stage0 last layer: 1.27400000000000002132ms
+ -> _run_forward elapsed: 2.10300000000000020250ms
+
+forward_minibatch_id 129
+ -> recv elapsed: 0.32700000000000001288ms
+Stage0 before last layer: 0.69099999999999994760ms
+ ->block 0 time: 0.21199999999999999400ms
+ ->block 1 time: 0.23300000000000001266ms
+ ->block 2 time: 0.20699999999999998956ms
+ ->block 3 time: 0.17499999999999998890ms
+Stage0 last layer: 1.18799999999999994493ms
+ -> _run_forward elapsed: 1.97799999999999998046ms
+
+forward_minibatch_id 130
+ -> recv elapsed: 0.29399999999999998357ms
+Stage0 before last layer: 0.80800000000000005151ms
+ ->block 0 time: 0.24499999999999999556ms
+ ->block 1 time: 0.23599999999999998757ms
+ ->block 2 time: 0.26000000000000000888ms
+ ->block 3 time: 0.22600000000000000644ms
+Stage0 last layer: 1.43100000000000004974ms
+ -> _run_forward elapsed: 2.35099999999999997868ms
+
+forward_minibatch_id 131
+ -> recv elapsed: 0.33300000000000001821ms
+Stage0 before last layer: 0.87500000000000000000ms
+ ->block 0 time: 0.25000000000000000000ms
+ ->block 1 time: 0.23100000000000001088ms
+ ->block 2 time: 0.22600000000000000644ms
+ ->block 3 time: 0.21499999999999999667ms
+Stage0 last layer: 1.38100000000000000533ms
+ -> _run_forward elapsed: 2.37599999999999988987ms
+
+Epoch: [0][130/1562]	Memory: 8.167 (13.724)
+Backward Stats:
+	 compute_time 0.000 seconds
+	 receive_tensors 0.000 seconds
+	 receive_tensors_size 411041792.000 bytes
+	 send_tensors 0.000 seconds
+	 send_tensors_size 0.000 bytes
+Optimizer step took: 0.001
+forward_minibatch_id 132
+ -> recv elapsed: 0.31300000000000000044ms
+Stage0 before last layer: 0.57099999999999995204ms
+ ->block 0 time: 0.20699999999999998956ms
+ ->block 1 time: 0.21199999999999999400ms
+ ->block 2 time: 0.20799999999999999045ms
+ ->block 3 time: 0.20200000000000001288ms
+Stage0 last layer: 1.29200000000000003730ms
+ -> _run_forward elapsed: 2.33199999999999985079ms
+
+forward_minibatch_id 133
+ -> recv elapsed: 0.39400000000000001688ms
+Stage0 before last layer: 0.56799999999999994937ms
+ ->block 0 time: 0.19900000000000001021ms
+ ->block 1 time: 0.20999999999999999223ms
+ ->block 2 time: 0.20499999999999998779ms
+ ->block 3 time: 0.20300000000000001377ms
+Stage0 last layer: 1.20799999999999996270ms
+ -> _run_forward elapsed: 1.87700000000000000178ms
+
+forward_minibatch_id 134
+ -> recv elapsed: 0.33700000000000002176ms
+Stage0 before last layer: 1.06699999999999994849ms
+ ->block 0 time: 0.22700000000000000733ms
+ ->block 1 time: 0.33100000000000001643ms
+ ->block 2 time: 0.22700000000000000733ms
+ ->block 3 time: 0.22200000000000000289ms
+Stage0 last layer: 2.04499999999999992895ms
+ -> _run_forward elapsed: 3.32699999999999995737ms
+
+forward_minibatch_id 135
+ -> recv elapsed: 0.28299999999999997380ms
+Stage0 before last layer: 0.50700000000000000622ms
+ ->block 0 time: 0.15599999999999999978ms
+ ->block 1 time: 0.15800000000000000155ms
+ ->block 2 time: 0.14299999999999998823ms
+ ->block 3 time: 0.14199999999999998734ms
+Stage0 last layer: 0.91400000000000003464ms
+ -> _run_forward elapsed: 1.51699999999999990408ms
+
+forward_minibatch_id 136
+ -> recv elapsed: 0.28899999999999997913ms
+Stage0 before last layer: 0.56499999999999994671ms
+ ->block 0 time: 0.25300000000000000266ms
+ ->block 1 time: 0.34999999999999997780ms
+ ->block 2 time: 0.32100000000000000755ms
+ ->block 3 time: 0.35299999999999998046ms
+Stage0 last layer: 1.96700000000000008171ms
+ -> _run_forward elapsed: 2.71399999999999996803ms
+
+forward_minibatch_id 137
+ -> recv elapsed: 0.31800000000000000488ms
+Stage0 before last layer: 0.54400000000000003908ms
+ ->block 0 time: 0.18399999999999999689ms
+ ->block 1 time: 0.19300000000000000488ms
+ ->block 2 time: 0.18599999999999999867ms
+ ->block 3 time: 0.17699999999999999067ms
+Stage0 last layer: 1.12200000000000010836ms
+ -> _run_forward elapsed: 1.77000000000000001776ms
+
+forward_minibatch_id 138
+ -> recv elapsed: 0.32500000000000001110ms
+Stage0 before last layer: 0.66700000000000003730ms
+ ->block 0 time: 0.14000000000000001332ms
+ ->block 1 time: 0.10399999999999999523ms
+ ->block 2 time: 0.15800000000000000155ms
+ ->block 3 time: 0.17299999999999998712ms
+Stage0 last layer: 0.91400000000000003464ms
+ -> _run_forward elapsed: 1.67700000000000004619ms
+
+forward_minibatch_id 139
+ -> recv elapsed: 0.23300000000000001266ms
+Stage0 before last layer: 0.52900000000000002576ms
+ ->block 0 time: 0.16600000000000000866ms
+ ->block 1 time: 0.13900000000000001243ms
+ ->block 2 time: 0.16400000000000000688ms
+ ->block 3 time: 0.12500000000000000000ms
+Stage0 last layer: 0.87099999999999999645ms
+ -> _run_forward elapsed: 1.47900000000000009237ms
+
+forward_minibatch_id 140
+ -> recv elapsed: 0.78500000000000003109ms
+Stage0 before last layer: 0.57499999999999995559ms
+ ->block 0 time: 0.19800000000000000933ms
+ ->block 1 time: 0.17899999999999999245ms
+ ->block 2 time: 0.19200000000000000400ms
+ ->block 3 time: 0.17599999999999998979ms
+Stage0 last layer: 1.09099999999999996980ms
+ -> _run_forward elapsed: 1.89799999999999990941ms
+
+forward_minibatch_id 141
+ -> recv elapsed: 445.89699999999999135980ms
+Stage0 before last layer: 0.72899999999999998135ms
+ ->block 0 time: 0.20699999999999998956ms
+ ->block 1 time: 0.16800000000000001044ms
+ ->block 2 time: 0.14899999999999999356ms
+ ->block 3 time: 0.14499999999999999001ms
+Stage0 last layer: 1.17900000000000004796ms
+ -> _run_forward elapsed: 2.03500000000000014211ms
+
+Epoch: [0][140/1562]	Memory: 8.167 (13.724)
+Backward Stats:
+	 compute_time 0.000 seconds
+	 receive_tensors 0.000 seconds
+	 receive_tensors_size 411041792.000 bytes
+	 send_tensors 0.000 seconds
+	 send_tensors_size 0.000 bytes
+Optimizer step took: 0.444
+forward_minibatch_id 142
+ -> recv elapsed: 0.33200000000000001732ms
+Stage0 before last layer: 0.54200000000000003730ms
+ ->block 0 time: 0.23100000000000001088ms
+ ->block 1 time: 0.14699999999999999178ms
+ ->block 2 time: 0.16100000000000000422ms
+ ->block 3 time: 0.17299999999999998712ms
+Stage0 last layer: 1.02899999999999991473ms
+ -> _run_forward elapsed: 1.65399999999999991473ms
+
+forward_minibatch_id 143
+ -> recv elapsed: 0.29899999999999998801ms
+Stage0 before last layer: 0.64300000000000001599ms
+ ->block 0 time: 0.13300000000000000711ms
+ ->block 1 time: 0.10000000000000000555ms
+ ->block 2 time: 0.09299999999999999933ms
+ ->block 3 time: 0.09199999999999999845ms
+Stage0 last layer: 0.63600000000000000977ms
+ -> _run_forward elapsed: 1.35099999999999997868ms
+
+forward_minibatch_id 144
+ -> recv elapsed: 0.29099999999999998090ms
+Stage0 before last layer: 0.85899999999999998579ms
+ ->block 0 time: 0.22000000000000000111ms
+ ->block 1 time: 0.20000000000000001110ms
+ ->block 2 time: 0.19900000000000001021ms
+ ->block 3 time: 0.18199999999999999512ms
+Stage0 last layer: 1.22999999999999998224ms
+ -> _run_forward elapsed: 2.20599999999999996092ms
+
+forward_minibatch_id 145
+ -> recv elapsed: 0.22600000000000000644ms
+Stage0 before last layer: 0.53800000000000003375ms
+ ->block 0 time: 0.18099999999999999423ms
+ ->block 1 time: 0.17199999999999998623ms
+ ->block 2 time: 0.20599999999999998868ms
+ ->block 3 time: 0.17599999999999998979ms
+Stage0 last layer: 1.09699999999999997513ms
+ -> _run_forward elapsed: 1.73100000000000009415ms
+
+forward_minibatch_id 146
+ -> recv elapsed: 0.28699999999999997735ms
+Stage0 before last layer: 0.67000000000000003997ms
+ ->block 0 time: 0.18199999999999999512ms
+ ->block 1 time: 0.16600000000000000866ms
+ ->block 2 time: 0.19200000000000000400ms
+ ->block 3 time: 0.18199999999999999512ms
+Stage0 last layer: 1.03099999999999991651ms
+ -> _run_forward elapsed: 1.78200000000000002842ms
+
+forward_minibatch_id 147
+ -> recv elapsed: 0.29299999999999998268ms
+Stage0 before last layer: 0.76000000000000000888ms
+ ->block 0 time: 0.20000000000000001110ms
+ ->block 1 time: 0.20499999999999998779ms
+ ->block 2 time: 0.19900000000000001021ms
+ ->block 3 time: 0.18800000000000000044ms
+Stage0 last layer: 1.35899999999999998579ms
+ -> _run_forward elapsed: 2.25700000000000011724ms
+
+forward_minibatch_id 148
+ -> recv elapsed: 0.32200000000000000844ms
+Stage0 before last layer: 0.66600000000000003642ms
+ ->block 0 time: 0.17599999999999998979ms
+ ->block 1 time: 0.18499999999999999778ms
+ ->block 2 time: 0.20799999999999999045ms
+ ->block 3 time: 0.19300000000000000488ms
+Stage0 last layer: 1.13300000000000000711ms
+ -> _run_forward elapsed: 1.90999999999999992006ms
+
+forward_minibatch_id 149
+ -> recv elapsed: 0.24299999999999999378ms
+Stage0 before last layer: 0.80300000000000004707ms
+ ->block 0 time: 0.19200000000000000400ms
+ ->block 1 time: 0.20100000000000001199ms
+ ->block 2 time: 0.17199999999999998623ms
+ ->block 3 time: 0.14799999999999999267ms
+Stage0 last layer: 1.10099999999999997868ms
+ -> _run_forward elapsed: 2.00800000000000000711ms
+
+forward_minibatch_id 150
+ -> recv elapsed: 0.24099999999999999201ms
+Stage0 before last layer: 0.48299999999999998490ms
+ ->block 0 time: 0.15199999999999999623ms
+ ->block 1 time: 0.12099999999999999645ms
+ ->block 2 time: 0.11600000000000000588ms
+ ->block 3 time: 0.11400000000000000411ms
+Stage0 last layer: 0.79200000000000003730ms
+ -> _run_forward elapsed: 1.37299999999999999822ms
+
+forward_minibatch_id 151
+ -> recv elapsed: 0.31400000000000000133ms
+Stage0 before last layer: 0.84399999999999997247ms
+ ->block 0 time: 0.16400000000000000688ms
+ ->block 1 time: 0.12199999999999999734ms
+ ->block 2 time: 0.11100000000000000144ms
+ ->block 3 time: 0.10899999999999999967ms
+Stage0 last layer: 0.78500000000000003109ms
+ -> _run_forward elapsed: 1.71999999999999997335ms
+
+Epoch: [0][150/1562]	Memory: 8.167 (13.724)
+Backward Stats:
+	 compute_time 0.000 seconds
+	 receive_tensors 0.000 seconds
+	 receive_tensors_size 411041792.000 bytes
+	 send_tensors 0.000 seconds
+	 send_tensors_size 0.000 bytes
+Optimizer step took: 0.444
+forward_minibatch_id 152
+ -> recv elapsed: 0.19300000000000000488ms
+Stage0 before last layer: 0.99699999999999999734ms
+ ->block 0 time: 0.23400000000000001354ms
+ ->block 1 time: 0.44800000000000000933ms
+ ->block 2 time: 0.19100000000000000311ms
+ ->block 3 time: 0.18299999999999999600ms
+Stage0 last layer: 1.42900000000000004796ms
+ -> _run_forward elapsed: 2.53200000000000002842ms
+
+forward_minibatch_id 153
+ -> recv elapsed: 0.37199999999999999734ms
+Stage0 before last layer: 0.71499999999999996891ms
+ ->block 0 time: 0.15700000000000000067ms
+ ->block 1 time: 0.19300000000000000488ms
+ ->block 2 time: 0.18399999999999999689ms
+ ->block 3 time: 0.18599999999999999867ms
+Stage0 last layer: 1.04899999999999993250ms
+ -> _run_forward elapsed: 1.85499999999999998224ms
+
+forward_minibatch_id 154
+ -> recv elapsed: 1.07600000000000006750ms
+Stage0 before last layer: 0.75300000000000000266ms
+ ->block 0 time: 0.24799999999999999822ms
+ ->block 1 time: 0.22900000000000000910ms
+ ->block 2 time: 0.20799999999999999045ms
+ ->block 3 time: 0.20000000000000001110ms
+Stage0 last layer: 1.29899999999999993250ms
+ -> _run_forward elapsed: 2.14400000000000012790ms
+
+forward_minibatch_id 155
+ -> recv elapsed: 0.88700000000000001066ms
+Stage0 before last layer: 0.70099999999999995648ms
+ ->block 0 time: 0.29099999999999998090ms
+ ->block 1 time: 0.26900000000000001688ms
+ ->block 2 time: 0.24799999999999999822ms
+ ->block 3 time: 0.20999999999999999223ms
+Stage0 last layer: 1.51499999999999990230ms
+ -> _run_forward elapsed: 2.32299999999999995381ms
+
+forward_minibatch_id 156
+ -> recv elapsed: 0.31700000000000000400ms
+Stage0 before last layer: 0.52200000000000001954ms
+ ->block 0 time: 0.17799999999999999156ms
+ ->block 1 time: 0.19600000000000000755ms
+ ->block 2 time: 0.17699999999999999067ms
+ ->block 3 time: 0.17299999999999998712ms
+Stage0 last layer: 1.09000000000000007994ms
+ -> _run_forward elapsed: 1.71599999999999996980ms
+
+forward_minibatch_id 157
+ -> recv elapsed: 0.34999999999999997780ms
+Stage0 before last layer: 0.58999999999999996891ms
+ ->block 0 time: 0.20799999999999999045ms
+ ->block 1 time: 0.14499999999999999001ms
+ ->block 2 time: 0.13600000000000000977ms
+ ->block 3 time: 0.17299999999999998712ms
+Stage0 last layer: 0.97599999999999997868ms
+ -> _run_forward elapsed: 1.65399999999999991473ms
+
+forward_minibatch_id 158
+ -> recv elapsed: 0.25000000000000000000ms
+Stage0 before last layer: 0.49099999999999999201ms
+ ->block 0 time: 0.14499999999999999001ms
+ ->block 1 time: 0.11600000000000000588ms
+ ->block 2 time: 0.11200000000000000233ms
+ ->block 3 time: 0.10799999999999999878ms
+Stage0 last layer: 0.73399999999999998579ms
+ -> _run_forward elapsed: 1.29600000000000004086ms
+
+forward_minibatch_id 159
+ -> recv elapsed: 0.24199999999999999289ms
+Stage0 before last layer: 0.46800000000000002709ms
+ ->block 0 time: 0.16300000000000000600ms
+ ->block 1 time: 0.13300000000000000711ms
+ ->block 2 time: 0.11300000000000000322ms
+ ->block 3 time: 0.11000000000000000056ms
+Stage0 last layer: 0.77300000000000002043ms
+ -> _run_forward elapsed: 1.30800000000000005151ms
+
+forward_minibatch_id 160
+ -> recv elapsed: 0.20799999999999999045ms
+Stage0 before last layer: 0.72699999999999997957ms
+ ->block 0 time: 0.16100000000000000422ms
+ ->block 1 time: 0.27000000000000001776ms
+ ->block 2 time: 0.22200000000000000289ms
+ ->block 3 time: 0.21399999999999999578ms
+Stage0 last layer: 1.31200000000000005507ms
+ -> _run_forward elapsed: 2.13899999999999979039ms
+
+forward_minibatch_id 161
+ -> recv elapsed: 0.64900000000000002132ms
+Stage0 before last layer: 0.65200000000000002398ms
+ ->block 0 time: 0.20100000000000001199ms
+ ->block 1 time: 0.19800000000000000933ms
+ ->block 2 time: 0.18399999999999999689ms
+ ->block 3 time: 0.17599999999999998979ms
+Stage0 last layer: 1.13999999999999990230ms
+ -> _run_forward elapsed: 1.90900000000000003020ms
+
+Epoch: [0][160/1562]	Memory: 8.167 (13.724)
+Backward Stats:
+	 compute_time 0.000 seconds
+	 receive_tensors 0.000 seconds
+	 receive_tensors_size 411041792.000 bytes
+	 send_tensors 0.000 seconds
+	 send_tensors_size 0.000 bytes
+Optimizer step took: 0.001
+forward_minibatch_id 162
+ -> recv elapsed: 0.30899999999999999689ms
+Stage0 before last layer: 0.70499999999999996003ms
+ ->block 0 time: 0.20300000000000001377ms
+ ->block 1 time: 0.19600000000000000755ms
+ ->block 2 time: 0.18499999999999999778ms
+ ->block 3 time: 0.17599999999999998979ms
+Stage0 last layer: 1.18300000000000005151ms
+ -> _run_forward elapsed: 2.00099999999999988987ms
+
+forward_minibatch_id 163
+ -> recv elapsed: 0.33200000000000001732ms
+Stage0 before last layer: 0.47399999999999997691ms
+ ->block 0 time: 0.13500000000000000888ms
+ ->block 1 time: 0.11300000000000000322ms
+ ->block 2 time: 0.19200000000000000400ms
+ ->block 3 time: 0.12600000000000000089ms
+Stage0 last layer: 0.80000000000000004441ms
+ -> _run_forward elapsed: 1.34299999999999997158ms
+
+forward_minibatch_id 164
+ -> recv elapsed: 0.95899999999999996358ms
+Stage0 before last layer: 2.25899999999999989697ms
+ ->block 0 time: 4.58900000000000041211ms
+ ->block 1 time: 553.23099999999999454303ms
+ ->block 2 time: 0.23200000000000001177ms
+ ->block 3 time: 0.17699999999999999067ms
+Stage0 last layer: 560.16300000000001091394ms
+ -> _run_forward elapsed: 562.55700000000001637090ms
+
+forward_minibatch_id 165
+ -> recv elapsed: 6.61300000000000043343ms
+Stage0 before last layer: 441.08600000000001273293ms
+ ->block 0 time: 0.17799999999999999156ms
+ ->block 1 time: 0.28299999999999997380ms
+ ->block 2 time: 0.14699999999999999178ms
+ ->block 3 time: 0.12700000000000000178ms
+Stage0 last layer: 1.67700000000000004619ms
+ -> _run_forward elapsed: 442.97100000000000363798ms
+
+forward_minibatch_id 166
+ -> recv elapsed: 0.16600000000000000866ms
+Stage0 before last layer: 0.43900000000000000133ms
+ ->block 0 time: 0.15700000000000000067ms
+ ->block 1 time: 0.19700000000000000844ms
+ ->block 2 time: 0.15099999999999999534ms
+ ->block 3 time: 0.12299999999999999822ms
+Stage0 last layer: 1.01899999999999990585ms
+ -> _run_forward elapsed: 1.54499999999999992895ms
+
+forward_minibatch_id 167
+ -> recv elapsed: 0.31900000000000000577ms
+Stage0 before last layer: 0.66800000000000003819ms
+ ->block 0 time: 0.20300000000000001377ms
+ ->block 1 time: 0.25700000000000000622ms
+ ->block 2 time: 0.31199999999999999956ms
+ ->block 3 time: 0.27100000000000001865ms
+Stage0 last layer: 1.56000000000000005329ms
+ -> _run_forward elapsed: 2.45599999999999996092ms
+
+forward_minibatch_id 168
+ -> recv elapsed: 0.46999999999999997335ms
+Stage0 before last layer: 0.67500000000000004441ms
+ ->block 0 time: 0.17699999999999999067ms
+ ->block 1 time: 0.17000000000000001221ms
+ ->block 2 time: 0.16500000000000000777ms
+ ->block 3 time: 0.16600000000000000866ms
+Stage0 last layer: 1.01400000000000001243ms
+ -> _run_forward elapsed: 1.77400000000000002132ms
+
+forward_minibatch_id 169
+ -> recv elapsed: 0.21699999999999999845ms
+Stage0 before last layer: 1.11699999999999999289ms
+ ->block 0 time: 0.18199999999999999512ms
+ ->block 1 time: 0.17399999999999998801ms
+ ->block 2 time: 0.17100000000000001310ms
+ ->block 3 time: 0.16600000000000000866ms
+Stage0 last layer: 1.04099999999999992539ms
+ -> _run_forward elapsed: 2.25099999999999988987ms
+
+forward_minibatch_id 170
+ -> recv elapsed: 0.78300000000000002931ms
+Stage0 before last layer: 0.56699999999999994849ms
+ ->block 0 time: 0.18800000000000000044ms
+ ->block 1 time: 0.15800000000000000155ms
+ ->block 2 time: 0.17899999999999999245ms
+ ->block 3 time: 0.14799999999999999267ms
+Stage0 last layer: 1.00800000000000000711ms
+ -> _run_forward elapsed: 1.80200000000000004619ms
+
+forward_minibatch_id 171
+ -> recv elapsed: 0.29999999999999998890ms
+Stage0 before last layer: 0.56799999999999994937ms
+ ->block 0 time: 0.16600000000000000866ms
+ ->block 1 time: 0.14699999999999999178ms
+ ->block 2 time: 0.11000000000000000056ms
+ ->block 3 time: 0.09500000000000000111ms
+Stage0 last layer: 0.80500000000000004885ms
+ -> _run_forward elapsed: 1.45500000000000007105ms
+
+Epoch: [0][170/1562]	Memory: 8.167 (13.724)
+Backward Stats:
+	 compute_time 0.000 seconds
+	 receive_tensors 0.000 seconds
+	 receive_tensors_size 411041792.000 bytes
+	 send_tensors 0.000 seconds
+	 send_tensors_size 0.000 bytes
+Optimizer step took: 0.001
+forward_minibatch_id 172
+ -> recv elapsed: 0.22600000000000000644ms
+Stage0 before last layer: 0.70799999999999996270ms
+ ->block 0 time: 0.26200000000000001066ms
+ ->block 1 time: 0.19600000000000000755ms
+ ->block 2 time: 0.25900000000000000799ms
+ ->block 3 time: 0.22800000000000000822ms
+Stage0 last layer: 1.30200000000000004619ms
+ -> _run_forward elapsed: 2.10599999999999987210ms
+
+forward_minibatch_id 173
+ -> recv elapsed: 0.21900000000000000022ms
+Stage0 before last layer: 0.41699999999999998179ms
+ ->block 0 time: 0.20000000000000001110ms
+ ->block 1 time: 0.16800000000000001044ms
+ ->block 2 time: 0.15900000000000000244ms
+ ->block 3 time: 0.15800000000000000155ms
+Stage0 last layer: 1.03600000000000003197ms
+ -> _run_forward elapsed: 1.54200000000000003730ms
+
+forward_minibatch_id 174
+ -> recv elapsed: 0.23100000000000001088ms
+Stage0 before last layer: 0.49599999999999999645ms
+ ->block 0 time: 0.17499999999999998890ms
+ ->block 1 time: 0.16400000000000000688ms
+ ->block 2 time: 0.16100000000000000422ms
+ ->block 3 time: 0.19100000000000000311ms
+Stage0 last layer: 1.03000000000000002665ms
+ -> _run_forward elapsed: 1.61600000000000010303ms
+
+forward_minibatch_id 175
+ -> recv elapsed: 0.23699999999999998845ms
+Stage0 before last layer: 0.73999999999999999112ms
+ ->block 0 time: 0.16300000000000000600ms
+ ->block 1 time: 0.14299999999999998823ms
+ ->block 2 time: 4.63799999999999990052ms
+ ->block 3 time: 0.16100000000000000422ms
+Stage0 last layer: 5.41600000000000036948ms
+ -> _run_forward elapsed: 6.25600000000000022737ms
+
+forward_minibatch_id 176
+ -> recv elapsed: 0.59299999999999997158ms
+Stage0 before last layer: 0.69999999999999995559ms
+ ->block 0 time: 0.22600000000000000644ms
+ ->block 1 time: 0.23300000000000001266ms
+ ->block 2 time: 0.23000000000000000999ms
+ ->block 3 time: 0.22500000000000000555ms
+Stage0 last layer: 1.45199999999999995737ms
+ -> _run_forward elapsed: 2.31000000000000005329ms
+
+forward_minibatch_id 177
+ -> recv elapsed: 1.16100000000000003197ms
+Stage0 before last layer: 1.21100000000000007638ms
+ ->block 0 time: 0.20599999999999998868ms
+ ->block 1 time: 0.18800000000000000044ms
+ ->block 2 time: 0.17799999999999999156ms
+ ->block 3 time: 0.18099999999999999423ms
+Stage0 last layer: 1.20700000000000007283ms
+ -> _run_forward elapsed: 2.63600000000000012079ms
+
+forward_minibatch_id 178
+ -> recv elapsed: 0.85299999999999998046ms
+Stage0 before last layer: 0.75700000000000000622ms
+ ->block 0 time: 0.23899999999999999023ms
+ ->block 1 time: 0.22500000000000000555ms
+ ->block 2 time: 0.21699999999999999845ms
+ ->block 3 time: 0.22000000000000000111ms
+Stage0 last layer: 1.31400000000000005684ms
+ -> _run_forward elapsed: 2.31599999999999983658ms
+
+forward_minibatch_id 179
+ -> recv elapsed: 0.30699999999999999512ms
+Stage0 before last layer: 0.63100000000000000533ms
+ ->block 0 time: 0.20699999999999998956ms
+ ->block 1 time: 0.20699999999999998956ms
+ ->block 2 time: 0.20399999999999998690ms
+ ->block 3 time: 0.22400000000000000466ms
+Stage0 last layer: 1.23399999999999998579ms
+ -> _run_forward elapsed: 1.96399999999999996803ms
+
+forward_minibatch_id 180
+ -> recv elapsed: 0.32100000000000000755ms
+Stage0 before last layer: 0.63400000000000000799ms
+ ->block 0 time: 0.19300000000000000488ms
+ ->block 1 time: 0.19700000000000000844ms
+ ->block 2 time: 0.19900000000000001021ms
+ ->block 3 time: 0.18399999999999999689ms
+Stage0 last layer: 1.27800000000000002487ms
+ -> _run_forward elapsed: 2.01600000000000001421ms
+
+forward_minibatch_id 181
+ -> recv elapsed: 0.19900000000000001021ms
+Stage0 before last layer: 0.76200000000000001066ms
+ ->block 0 time: 0.19500000000000000666ms
+ ->block 1 time: 0.19600000000000000755ms
+ ->block 2 time: 0.18699999999999999956ms
+ ->block 3 time: 0.16300000000000000600ms
+Stage0 last layer: 1.13100000000000000533ms
+ -> _run_forward elapsed: 2.00300000000000011369ms
+
+Epoch: [0][180/1562]	Memory: 8.167 (13.724)
+Backward Stats:
+	 compute_time 0.000 seconds
+	 receive_tensors 0.000 seconds
+	 receive_tensors_size 411041792.000 bytes
+	 send_tensors 0.000 seconds
+	 send_tensors_size 0.000 bytes
+Optimizer step took: 0.444
+forward_minibatch_id 182
+ -> recv elapsed: 0.32100000000000000755ms
+Stage0 before last layer: 0.72499999999999997780ms
+ ->block 0 time: 0.18099999999999999423ms
+ ->block 1 time: 0.21299999999999999489ms
+ ->block 2 time: 0.18699999999999999956ms
+ ->block 3 time: 0.20599999999999998868ms
+Stage0 last layer: 1.34499999999999997335ms
+ -> _run_forward elapsed: 2.74000000000000021316ms
+
+forward_minibatch_id 183
+ -> recv elapsed: 0.82899999999999995914ms
+Stage0 before last layer: 0.55200000000000004619ms
+ ->block 0 time: 0.25500000000000000444ms
+ ->block 1 time: 0.22600000000000000644ms
+ ->block 2 time: 0.21699999999999999845ms
+ ->block 3 time: 0.18800000000000000044ms
+Stage0 last layer: 1.21199999999999996625ms
+ -> _run_forward elapsed: 2.26600000000000001421ms
+
+forward_minibatch_id 184
+ -> recv elapsed: 0.26100000000000000977ms
+Stage0 before last layer: 1.26200000000000001066ms
+ ->block 0 time: 0.25000000000000000000ms
+ ->block 1 time: 0.22500000000000000555ms
+ ->block 2 time: 0.22400000000000000466ms
+ ->block 3 time: 0.20699999999999998956ms
+Stage0 last layer: 1.33600000000000007638ms
+ -> _run_forward elapsed: 2.71399999999999996803ms
+
+forward_minibatch_id 185
+ -> recv elapsed: 0.29199999999999998179ms
+Stage0 before last layer: 0.80000000000000004441ms
+ ->block 0 time: 0.20100000000000001199ms
+ ->block 1 time: 0.20200000000000001288ms
+ ->block 2 time: 0.20899999999999999134ms
+ ->block 3 time: 0.19900000000000001021ms
+Stage0 last layer: 1.20399999999999995914ms
+ -> _run_forward elapsed: 2.11500000000000021316ms
+
+forward_minibatch_id 186
+ -> recv elapsed: 0.86399999999999999023ms
+Stage0 before last layer: 0.76300000000000001155ms
+ ->block 0 time: 0.26200000000000001066ms
+ ->block 1 time: 0.81299999999999994493ms
+ ->block 2 time: 0.24599999999999999645ms
+ ->block 3 time: 0.23000000000000000999ms
+Stage0 last layer: 2.77400000000000002132ms
+ -> _run_forward elapsed: 4.12199999999999988631ms
+
+forward_minibatch_id 187
+ -> recv elapsed: 0.30799999999999999600ms
+Stage0 before last layer: 0.54300000000000003819ms
+ ->block 0 time: 0.17399999999999998801ms
+ ->block 1 time: 0.19600000000000000755ms
+ ->block 2 time: 0.17999999999999999334ms
+ ->block 3 time: 0.18399999999999999689ms
+Stage0 last layer: 1.10699999999999998401ms
+ -> _run_forward elapsed: 1.75000000000000000000ms
+
+forward_minibatch_id 188
+ -> recv elapsed: 0.27000000000000001776ms
+Stage0 before last layer: 0.56399999999999994582ms
+ ->block 0 time: 0.20899999999999999134ms
+ ->block 1 time: 0.37600000000000000089ms
+ ->block 2 time: 0.21099999999999999312ms
+ ->block 3 time: 0.21900000000000000022ms
+Stage0 last layer: 1.42900000000000004796ms
+ -> _run_forward elapsed: 2.09799999999999986500ms
+
+forward_minibatch_id 189
+ -> recv elapsed: 0.32100000000000000755ms
+Stage0 before last layer: 0.69599999999999995204ms
+ ->block 0 time: 0.20499999999999998779ms
+ ->block 1 time: 0.20200000000000001288ms
+ ->block 2 time: 0.19300000000000000488ms
+ ->block 3 time: 0.20599999999999998868ms
+Stage0 last layer: 1.24399999999999999467ms
+ -> _run_forward elapsed: 2.04800000000000004263ms
+
+forward_minibatch_id 190
+ -> recv elapsed: 0.44900000000000001021ms
+Stage0 before last layer: 0.80600000000000004974ms
+ ->block 0 time: 0.22600000000000000644ms
+ ->block 1 time: 0.21599999999999999756ms
+ ->block 2 time: 0.22700000000000000733ms
+ ->block 3 time: 0.21199999999999999400ms
+Stage0 last layer: 1.29699999999999993072ms
+ -> _run_forward elapsed: 2.21200000000000018829ms
+
+forward_minibatch_id 191
+ -> recv elapsed: 0.21900000000000000022ms
+Stage0 before last layer: 0.57999999999999996003ms
+ ->block 0 time: 0.18599999999999999867ms
+ ->block 1 time: 0.16800000000000001044ms
+ ->block 2 time: 0.17699999999999999067ms
+ ->block 3 time: 0.14999999999999999445ms
+Stage0 last layer: 1.01000000000000000888ms
+ -> _run_forward elapsed: 1.68599999999999994316ms
+
+Epoch: [0][190/1562]	Memory: 8.167 (13.724)
+Backward Stats:
+	 compute_time 0.000 seconds
+	 receive_tensors 0.000 seconds
+	 receive_tensors_size 411041792.000 bytes
+	 send_tensors 0.000 seconds
+	 send_tensors_size 0.000 bytes
+Optimizer step took: 0.001
+forward_minibatch_id 192
+ -> recv elapsed: 5.66300000000000025580ms
+Stage0 before last layer: 443.02100000000001500666ms
+ ->block 0 time: 0.14699999999999999178ms
+ ->block 1 time: 0.10899999999999999967ms
+ ->block 2 time: 0.12900000000000000355ms
+ ->block 3 time: 0.11799999999999999378ms
+Stage0 last layer: 0.80500000000000004885ms
+ -> _run_forward elapsed: 443.93999999999999772626ms
+
+forward_minibatch_id 193
+ -> recv elapsed: 0.50000000000000000000ms
+Stage0 before last layer: 0.67900000000000004796ms
+ ->block 0 time: 0.16400000000000000688ms
+ ->block 1 time: 0.10799999999999999878ms
+ ->block 2 time: 0.09500000000000000111ms
+ ->block 3 time: 0.08999999999999999667ms
+Stage0 last layer: 0.72899999999999998135ms
+ -> _run_forward elapsed: 1.51099999999999989875ms
+
+forward_minibatch_id 194
+ -> recv elapsed: 0.24799999999999999822ms
+Stage0 before last layer: 0.53900000000000003464ms
+ ->block 0 time: 0.17799999999999999156ms
+ ->block 1 time: 0.16400000000000000688ms
+ ->block 2 time: 0.28799999999999997824ms
+ ->block 3 time: 0.17399999999999998801ms
+Stage0 last layer: 1.10699999999999998401ms
+ -> _run_forward elapsed: 1.72999999999999998224ms
+
+forward_minibatch_id 195
+ -> recv elapsed: 0.34300000000000002709ms
+Stage0 before last layer: 0.65200000000000002398ms
+ ->block 0 time: 0.14099999999999998646ms
+ ->block 1 time: 0.13600000000000000977ms
+ ->block 2 time: 0.11600000000000000588ms
+ ->block 3 time: 0.11000000000000000056ms
+Stage0 last layer: 0.77900000000000002576ms
+ -> _run_forward elapsed: 1.51299999999999990052ms
+
+forward_minibatch_id 196
+ -> recv elapsed: 0.29799999999999998712ms
+Stage0 before last layer: 0.58499999999999996447ms
+ ->block 0 time: 0.22400000000000000466ms
+ ->block 1 time: 0.23499999999999998668ms
+ ->block 2 time: 0.20799999999999999045ms
+ ->block 3 time: 0.22100000000000000200ms
+Stage0 last layer: 1.46300000000000007816ms
+ -> _run_forward elapsed: 2.28699999999999992184ms
+
+forward_minibatch_id 197
+ -> recv elapsed: 0.38200000000000000622ms
+Stage0 before last layer: 0.75700000000000000622ms
+ ->block 0 time: 0.25600000000000000533ms
+ ->block 1 time: 0.22700000000000000733ms
+ ->block 2 time: 0.20999999999999999223ms
+ ->block 3 time: 0.22400000000000000466ms
+Stage0 last layer: 1.31600000000000005862ms
+ -> _run_forward elapsed: 2.16800000000000014921ms
+
+forward_minibatch_id 198
+ -> recv elapsed: 0.24199999999999999289ms
+Stage0 before last layer: 0.46899999999999997247ms
+ ->block 0 time: 0.14000000000000001332ms
+ ->block 1 time: 0.11899999999999999467ms
+ ->block 2 time: 0.11600000000000000588ms
+ ->block 3 time: 0.17100000000000001310ms
+Stage0 last layer: 0.82999999999999996003ms
+ -> _run_forward elapsed: 1.37000000000000010658ms
+
+forward_minibatch_id 199
+ -> recv elapsed: 0.25900000000000000799ms
+Stage0 before last layer: 0.57599999999999995648ms
+ ->block 0 time: 0.17799999999999999156ms
+ ->block 1 time: 0.16800000000000001044ms
+ ->block 2 time: 0.15599999999999999978ms
+ ->block 3 time: 0.14899999999999999356ms
+Stage0 last layer: 0.99499999999999999556ms
+ -> _run_forward elapsed: 1.67599999999999993427ms
+
+forward_minibatch_id 200
+ -> recv elapsed: 0.84299999999999997158ms
+Stage0 before last layer: 0.67600000000000004530ms
+ ->block 0 time: 0.21199999999999999400ms
+ ->block 1 time: 0.19200000000000000400ms
+ ->block 2 time: 0.19800000000000000933ms
+ ->block 3 time: 0.17999999999999999334ms
+Stage0 last layer: 1.14799999999999990941ms
+ -> _run_forward elapsed: 2.05600000000000004974ms
+
+forward_minibatch_id 201
+ -> recv elapsed: 0.86399999999999999023ms
+Stage0 before last layer: 0.62399999999999999911ms
+ ->block 0 time: 0.20200000000000001288ms
+ ->block 1 time: 0.18499999999999999778ms
+ ->block 2 time: 0.19100000000000000311ms
+ ->block 3 time: 0.19500000000000000666ms
+Stage0 last layer: 1.17999999999999993783ms
+ -> _run_forward elapsed: 2.04199999999999981526ms
+
+Epoch: 0 Step 200 	Learning rate: 0.010000
+Epoch: [0][200/1562]	Memory: 8.167 (13.724)
+Backward Stats:
+	 compute_time 0.000 seconds
+	 receive_tensors 0.000 seconds
+	 receive_tensors_size 411041792.000 bytes
+	 send_tensors 0.000 seconds
+	 send_tensors_size 0.000 bytes
+Optimizer step took: 0.001
+forward_minibatch_id 202
+ -> recv elapsed: 0.32900000000000001465ms
+Stage0 before last layer: 0.63800000000000001155ms
+ ->block 0 time: 0.21900000000000000022ms
+ ->block 1 time: 0.22800000000000000822ms
+ ->block 2 time: 0.20599999999999998868ms
+ ->block 3 time: 0.17799999999999999156ms
+Stage0 last layer: 1.22799999999999998046ms
+ -> _run_forward elapsed: 1.97700000000000009059ms
+
+forward_minibatch_id 203
+ -> recv elapsed: 0.31500000000000000222ms
+Stage0 before last layer: 0.67000000000000003997ms
+ ->block 0 time: 0.24899999999999999911ms
+ ->block 1 time: 0.18299999999999999600ms
+ ->block 2 time: 0.17499999999999998890ms
+ ->block 3 time: 0.15900000000000000244ms
+Stage0 last layer: 1.12799999999999989164ms
+ -> _run_forward elapsed: 1.89399999999999990585ms
+
+forward_minibatch_id 204
+ -> recv elapsed: 0.30599999999999999423ms
+Stage0 before last layer: 0.70999999999999996447ms
+ ->block 0 time: 0.20000000000000001110ms
+ ->block 1 time: 0.16800000000000001044ms
+ ->block 2 time: 0.16900000000000001132ms
+ ->block 3 time: 0.17299999999999998712ms
+Stage0 last layer: 1.06800000000000006040ms
+ -> _run_forward elapsed: 1.87299999999999999822ms
+
