@@ -72,7 +72,8 @@ class Upstream_Tail(torch.nn.Module):
     def forward(self, inp, forward_minibatch_id, backward_minibatch_id, comm_handler):
         
         block_out_list = []
-                
+        
+        print("Stage0 Upstream_Tail:")
         inp = self.padder(inp)
         h_pad, w_pad = inp.size(2), inp.size(3)
         block_height, block_width = h_pad // 2,  w_pad // 2

@@ -108,6 +108,8 @@ class Downstream_Head(torch.nn.Module):
              
     def forward(self, forward_minibatch_id, backward_minibatch_id, r):
 
+        print("Stage1 Downstream_Head:")
+
         block_num = 4
         block_out_relu = []
         
