@@ -101,7 +101,7 @@ class Stage1(torch.nn.Module):
 
         self._initialize_weights()
 
-    def forward(self, forward_minibatch_id, backward_minibatch_id, r):
+    def forward(self, forward_minibatch_id=-1, backward_minibatch_id=-1, r=None):
         start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
 
         out1 = self.downstream_head(

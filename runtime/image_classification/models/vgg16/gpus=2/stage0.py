@@ -44,9 +44,9 @@ class Stage0(torch.nn.Module):
     def forward(
             self,
             input0,
-            forward_minibatch_id,
-            backward_minibatch_id,
-            comm_handler):
+            forward_minibatch_id=-1,
+            backward_minibatch_id=-1,
+            comm_handler=None):
 
         start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
         out0 = input0.clone()
@@ -202,7 +202,8 @@ class Upstream_Tail(torch.nn.Module):
 
         block_out = self.conv2d(block_inp)
 
-        comm_handler.send_block(tensor_name, block_out,
+        if comm_handler is not None: 
+            comm_handler.send_block(tensor_name, block_out,
                                 forward_minibatch_id=forward_minibatch_id,
                                 backward_minibatch_id=backward_minibatch_id)
 

@@ -1,8 +1,6 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT license.
 
-import sgd
-import runtime_block as runtime
 import argparse
 from collections import OrderedDict
 import importlib
@@ -25,6 +23,9 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 
 sys.path.append("..")
+
+import sgd
+import runtime_block as runtime
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
 parser.add_argument('--data_dir', type=str,
