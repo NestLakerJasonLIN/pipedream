@@ -10,6 +10,7 @@ class Stage1(torch.nn.Module):
     def __init__(self):
         super(Stage1, self).__init__()
         self.downstream_head = Downstream_Head(inplace=True)
+        self.layer1 = torch.nn.ReLU(inplace=True)
         self.layer2 = torch.nn.MaxPool2d(
             kernel_size=2,
             stride=2,
@@ -101,11 +102,16 @@ class Stage1(torch.nn.Module):
 
         self._initialize_weights()
 
-    def forward(self, forward_minibatch_id=-1, backward_minibatch_id=-1, r=None):
+
+    def forward(self, input0, forward_minibatch_id=-1, backward_minibatch_id=-1, r=None):
         start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
 
-        out1 = self.downstream_head(
-            forward_minibatch_id, backward_minibatch_id, r)
+        if r is None:
+            out0 = input0.clone()
+            out1 = self.layer1(out0)
+        else: 
+            out1 = self.downstream_head(
+                forward_minibatch_id, backward_minibatch_id, r)
 
         elapsed = (
             time.clock_gettime(
