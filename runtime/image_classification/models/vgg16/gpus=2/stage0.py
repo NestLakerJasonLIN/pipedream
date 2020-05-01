@@ -175,7 +175,6 @@ class Upstream_Tail(torch.nn.Module):
                                  backward_minibatch_id)
 
             block0_out = b0.result()
-            
             block1_out = b1.result()
             block2_out = b2.result()
             block3_out = b3.result()

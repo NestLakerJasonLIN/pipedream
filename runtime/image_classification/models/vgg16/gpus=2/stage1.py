@@ -182,13 +182,13 @@ class Downstream_Head(torch.nn.Module):
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
             b0 = executor.submit(self.thread_function, "out0_b0",
-                                 r.comm_handler)
+                                 r)
             b1 = executor.submit(self.thread_function, "out0_b1",
-                                 r.comm_handler)
+                                 r)
             b2 = executor.submit(self.thread_function, "out0_b2",
-                                 r.comm_handler)
+                                 r)
             b3 = executor.submit(self.thread_function, "out0_b3",
-                                 r.comm_handler)
+                                 r)
 
             block0_out = b0.result()
             block1_out = b1.result()
@@ -224,9 +224,12 @@ class Downstream_Head(torch.nn.Module):
     def thread_function(
             self,
             tensor_name,
-            comm_handler):
+            r):
 
-        block_in = comm_handler.comm_handler.recv_block(tensor_name)
+        block_in = r.comm_handler.comm_handler.recv_block(tensor_name)
+
+        r.tensors[-1][tensor_name] = block_in
+
         block_out = self.relu(block_in.clone())
         return block_out
 
