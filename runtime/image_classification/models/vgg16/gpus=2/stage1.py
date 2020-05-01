@@ -120,7 +120,7 @@ class Stage1(torch.nn.Module):
             time.clock_gettime(
                 time.CLOCK_THREAD_CPUTIME_ID) - start_time) * 1000
 
-        print(" -> Stage1 1st layer:", "%.20fms" % elapsed)
+        # print(" -> Stage1 1st layer:", "%.20fms" % elapsed)
 
         start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
         out2 = self.layer2(out1)
@@ -159,7 +159,7 @@ class Stage1(torch.nn.Module):
             time.clock_gettime(
                 time.CLOCK_THREAD_CPUTIME_ID) - start_time) * 1000
 
-        print(" -> Stage1 other layers:", "%.20fms" % elapsed)
+        # print(" -> Stage1 other layers:", "%.20fms" % elapsed)
 
         return out32
 
@@ -185,7 +185,7 @@ class Downstream_Head(torch.nn.Module):
 
     def forward(self, forward_minibatch_id, backward_minibatch_id, r):
 
-        print(" -> Stage1 Downstream_Head:")
+        # print(" -> Stage1 Downstream_Head:")
 
         start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
 
@@ -208,7 +208,7 @@ class Downstream_Head(torch.nn.Module):
             time.clock_gettime(
                 time.CLOCK_THREAD_CPUTIME_ID) - start_time) * 1000
 
-        print("  -> time elapsed:", "%.20fms" % elapsed)
+        # print("  -> time elapsed:", "%.20fms" % elapsed)
 
         # Used to track where to receive forward from.
         r.comm_handler.increment_messaging_index(
@@ -226,7 +226,7 @@ class Downstream_Head(torch.nn.Module):
             time.clock_gettime(
                 time.CLOCK_THREAD_CPUTIME_ID) - start_time) * 1000
 
-        print("  ->_combine elapsed:", "%.20fms" % elapsed)
+        # print("  ->_combine elapsed:", "%.20fms" % elapsed)
 
         return relu_out
 
@@ -235,7 +235,7 @@ class Downstream_Head(torch.nn.Module):
             tensor_name,
             r):
 
-        block_in = r.comm_handler.comm_handler.recv_block(tensor_name)
+        block_in = r.comm_handler.recv_block(tensor_name)
 
         r.tensors[-1][tensor_name] = block_in
 

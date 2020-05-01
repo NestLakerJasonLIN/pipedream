@@ -62,7 +62,7 @@ class Stage0(torch.nn.Module):
         elapsed = (
             time.clock_gettime(
                 time.CLOCK_THREAD_CPUTIME_ID) - start_time) * 1000
-        print(" -> Stage0 before last layer:", "%.20fms" % elapsed)
+        # print(" -> Stage0 before last layer:", "%.20fms" % elapsed)
 
         start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
 
@@ -76,7 +76,7 @@ class Stage0(torch.nn.Module):
             time.clock_gettime(
                 time.CLOCK_THREAD_CPUTIME_ID) - start_time) * 1000
 
-        print(" -> Stage0 last layer:", "%.20fms" % elapsed)
+        # print(" -> Stage0 last layer:", "%.20fms" % elapsed)
 
         return out9
 
@@ -120,7 +120,7 @@ class Upstream_Tail(torch.nn.Module):
             backward_minibatch_id,
             comm_handler):
 
-        print(" -> Stage0 Upstream_Tail:")
+        # print(" -> Stage0 Upstream_Tail:")
         start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
 
         inp = self.padder(inp)
@@ -184,7 +184,7 @@ class Upstream_Tail(torch.nn.Module):
                 time.clock_gettime(
                     time.CLOCK_THREAD_CPUTIME_ID) - start_time) * 1000
 
-            print("  -> time elapsed:", "%.20fms" % elapsed)
+            # print("  -> time elapsed:", "%.20fms" % elapsed)
 
             return (block0_out, block1_out, block2_out, block3_out)
 
