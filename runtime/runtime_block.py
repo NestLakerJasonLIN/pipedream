@@ -3,7 +3,9 @@
 
 import collections
 import itertools
-import time
+import sys
+sys.path.append("/home/ubuntu/pipedream/runtime")
+from runtime_utilities import t_start, t_stop
 import torch
 import torch.distributed as dist
 
@@ -506,26 +508,20 @@ class StageRuntime:
         """Run forward pass.
         """
         # Receive tensors from previous worker.
-        from datetime import datetime
-
         print("forward_minibatch_id", self.forward_minibatch_id)
 
-        start_time = datetime.now()
+        start_time = t_start()
         self.receive_tensors_forward()
         tensors = self.tensors[-1]
 
-        dt = datetime.now() - start_time
-        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-        print(" -> recv elapsed:", "%.20fms" % elapsed)
+        t_stop(start_time, " -> recv elapsed:")
 
-        start_time = datetime.now()
+        start_time = t_start()
 
         # Run forward pass.
         self._run_forward(tensors)
 
-        dt = datetime.now() - start_time
-        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-        print(" -> _run_forward elapsed:", "%.20fms" % elapsed)
+        t_stop(start_time, " -> _run_forward elapsed:")
         print("")
 
         # Send tensors forward.
@@ -565,6 +561,7 @@ class StageRuntime:
                 
                 # stage 0
                 if self.loader_iter is not None:
+                    print("run_forward_ input name:", input_names)
                     module_outputs = module(*[tensors[input_name]
                                           for input_name in input_names],
                                           forward_minibatch_id=self.forward_minibatch_id, 

@@ -2,7 +2,9 @@
 # Licensed under the MIT license.
 
 import torch
-from datetime import datetime
+import sys
+sys.path.append("/home/ubuntu/pipedream/runtime")
+from runtime_utilities import t_start, t_stop
 
 class Stage0(torch.nn.Module):
     def __init__(self):
@@ -19,28 +21,47 @@ class Stage0(torch.nn.Module):
         self._initialize_weights()
 
     def forward(self, input0, forward_minibatch_id, backward_minibatch_id, comm_handler):
-        start_time = datetime.now()
+        start_time = t_start()
     
+        start_time_clone = t_start()
         out0 = input0.clone()
+        t_stop(start_time_clone, "clone:")
+
+        start_time_clone = t_start()
         out2 = self.layer2(out0)
+        t_stop(start_time_clone, "out2:")
+
+        start_time_clone = t_start()
         out3 = self.layer3(out2)
+        t_stop(start_time_clone, "out3:")
+
+        start_time_clone = t_start()
         out4 = self.layer4(out3)
+        t_stop(start_time_clone, "out4:")
+
+        start_time_clone = t_start()
         out5 = self.layer5(out4)
+        t_stop(start_time_clone, "out5:")
+
+        start_time_clone = t_start()
         out6 = self.layer6(out5)
+        t_stop(start_time_clone, "out6:")
+
+        start_time_clone = t_start()
         out7 = self.layer7(out6)
+        t_stop(start_time_clone, "out7:")
+
+        start_time_clone = t_start()
         out8 = self.layer8(out7)
+        t_stop(start_time_clone, "out8:")
 
-        dt = datetime.now() - start_time
-        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-        print("Stage0 before last layer:", "%.20fms" % elapsed)
+        t_stop(start_time, "other layers:")
 
-        start_time = datetime.now()
+        start_time = t_start()
         
         out9 = self.upstream_tail(out8, forward_minibatch_id, backward_minibatch_id, comm_handler)
         
-        dt = datetime.now() - start_time
-        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-        print("Stage0 last layer:", "%.20fms" % elapsed)
+        t_stop(start_time, "upstream tail:")
         
         return out9
 
@@ -73,13 +94,13 @@ class Upstream_Tail(torch.nn.Module):
         
         block_out_list = []
         
-        print("Stage0 Upstream_Tail:")
+        print(" -> Stage0 Upstream_Tail:")
         inp = self.padder(inp)
         h_pad, w_pad = inp.size(2), inp.size(3)
         block_height, block_width = h_pad // 2,  w_pad // 2
         
         # block_0
-        start_time = datetime.now()
+        start_time = t_start()
 
         h_start, h_end = 0, block_height + self.kernel_size-1
         w_start, w_end = 0, block_width + self.kernel_size-1
@@ -92,12 +113,10 @@ class Upstream_Tail(torch.nn.Module):
         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
                                      backward_minibatch_id=backward_minibatch_id)
 
-        dt = datetime.now() - start_time
-        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-        print(" ->block 0 time:", "%.20fms" % elapsed)
+        t_stop(start_time, "  -> block 0 time:")
 
         # block_1
-        start_time = datetime.now()
+        start_time = t_start()
 
         h_start, h_end = 0, block_height + self.kernel_size-1
         w_start, w_end = block_width, w_pad
@@ -110,12 +129,10 @@ class Upstream_Tail(torch.nn.Module):
         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
                                      backward_minibatch_id=backward_minibatch_id)
 
-        dt = datetime.now() - start_time
-        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-        print(" ->block 1 time:", "%.20fms" % elapsed)
+        t_stop(start_time, "  -> block 1 time:")
 
         # block_2
-        start_time = datetime.now()
+        start_time = t_start()
 
         h_start, h_end = block_height, h_pad
         w_start, w_end = 0, block_width + self.kernel_size-1
@@ -128,12 +145,10 @@ class Upstream_Tail(torch.nn.Module):
         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
                              backward_minibatch_id=backward_minibatch_id)
         
-        dt = datetime.now() - start_time
-        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-        print(" ->block 2 time:", "%.20fms" % elapsed)
+        t_stop(start_time, "  -> block 2 time:")
 
         # block_3
-        start_time = datetime.now()
+        start_time = t_start()
 
         h_start, h_end = block_height, h_pad
         w_start, w_end = block_width, w_pad
@@ -146,9 +161,7 @@ class Upstream_Tail(torch.nn.Module):
         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
                                      backward_minibatch_id=backward_minibatch_id)
 
-        dt = datetime.now() - start_time
-        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-        print(" ->block 3 time:", "%.20fms" % elapsed)
+        t_stop(start_time, "  -> block 3 time:")
 
         return self._combine(block_out_list)
     
