@@ -99,9 +99,12 @@ class Upstream_Tail(torch.nn.Module):
         h_pad, w_pad = inp.size(2), inp.size(3)
         block_height, block_width = h_pad // 2,  w_pad // 2
         
+        elapsed_bcom = 0
+
         # block_0
         start_time = t_start()
 
+        start_time_bcom = t_start()
         h_start, h_end = 0, block_height + self.kernel_size-1
         w_start, w_end = 0, block_width + self.kernel_size-1
 
@@ -109,6 +112,7 @@ class Upstream_Tail(torch.nn.Module):
         
         block_out = self.conv2d(block_inp)
         block_out_list.append(block_out)
+        elapsed_bcom += t_stop(start_time_bcom, "  -> block 0 compute time:")
         
         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
                                      backward_minibatch_id=backward_minibatch_id)
@@ -118,6 +122,7 @@ class Upstream_Tail(torch.nn.Module):
         # block_1
         start_time = t_start()
 
+        start_time_bcom = t_start()
         h_start, h_end = 0, block_height + self.kernel_size-1
         w_start, w_end = block_width, w_pad
 
@@ -125,6 +130,7 @@ class Upstream_Tail(torch.nn.Module):
 
         block_out = self.conv2d(block_inp)
         block_out_list.append(block_out)
+        elapsed_bcom += t_stop(start_time_bcom, "  -> block 1 compute time:")
 
         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
                                      backward_minibatch_id=backward_minibatch_id)
@@ -134,6 +140,7 @@ class Upstream_Tail(torch.nn.Module):
         # block_2
         start_time = t_start()
 
+        start_time_bcom = t_start()
         h_start, h_end = block_height, h_pad
         w_start, w_end = 0, block_width + self.kernel_size-1
 
@@ -144,12 +151,14 @@ class Upstream_Tail(torch.nn.Module):
 
         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
                              backward_minibatch_id=backward_minibatch_id)
+        elapsed_bcom += t_stop(start_time_bcom, "  -> block 2 compute time:")
         
         t_stop(start_time, "  -> block 2 time:")
 
         # block_3
         start_time = t_start()
 
+        start_time_bcom = t_start()
         h_start, h_end = block_height, h_pad
         w_start, w_end = block_width, w_pad
 
@@ -160,8 +169,11 @@ class Upstream_Tail(torch.nn.Module):
 
         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
                                      backward_minibatch_id=backward_minibatch_id)
+        elapsed_bcom += t_stop(start_time_bcom, "  -> block 3 compute time:")
 
         t_stop(start_time, "  -> block 3 time:")
+
+        print("block computing elapsed time:", elapsed_bcom)
 
         return self._combine(block_out_list)
     
