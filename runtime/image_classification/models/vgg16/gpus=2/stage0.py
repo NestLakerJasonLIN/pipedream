@@ -135,6 +135,7 @@ class Upstream_Tail(torch.nn.Module):
                                  _h_end,
                                  0,
                                  _w_end,
+                                 "out0_b0",
                                  inp,
                                  comm_handler,
                                  forward_minibatch_id,
@@ -145,6 +146,7 @@ class Upstream_Tail(torch.nn.Module):
                                  _h_end,
                                  block_width,
                                  w_pad,
+                                 "out0_b1",
                                  inp,
                                  comm_handler,
                                  forward_minibatch_id,
@@ -155,6 +157,7 @@ class Upstream_Tail(torch.nn.Module):
                                  h_pad,
                                  0,
                                  _w_end,
+                                 "out0_b2",
                                  inp,
                                  comm_handler,
                                  forward_minibatch_id,
@@ -165,12 +168,14 @@ class Upstream_Tail(torch.nn.Module):
                                  h_pad,
                                  block_width,
                                  w_pad,
+                                 "out0_b3",
                                  inp,
                                  comm_handler,
                                  forward_minibatch_id,
                                  backward_minibatch_id)
 
             block0_out = b0.result()
+            
             block1_out = b1.result()
             block2_out = b2.result()
             block3_out = b3.result()
@@ -189,6 +194,7 @@ class Upstream_Tail(torch.nn.Module):
             h_end,
             w_start,
             w_end,
+            tensor_name,
             inp,
             comm_handler,
             forward_minibatch_id,
@@ -197,7 +203,7 @@ class Upstream_Tail(torch.nn.Module):
 
         block_out = self.conv2d(block_inp)
 
-        comm_handler.send_block(block_out,
+        comm_handler.send_block(tensor_name, block_out,
                                 forward_minibatch_id=forward_minibatch_id,
                                 backward_minibatch_id=backward_minibatch_id)
 

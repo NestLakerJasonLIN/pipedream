@@ -641,10 +641,10 @@ class CommunicationHandler(object):
 
     def send_block(
             self,
+            tensor_name,
             tensor,
             forward_minibatch_id,
             backward_minibatch_id):
-        tensor_name = "out0"
         index = (forward_minibatch_id + self.rank_in_stage) % \
             len(self.send_ranks[tensor_name])
         self.forward_send_queues[tensor_name][index].add(tensor)
@@ -654,10 +654,6 @@ def recv_helper_thread(queue, counter, local_rank, tensor_name,
                        src_rank, tag, tensor_shape, dtype,
                        sub_process_group, num_iterations):
     torch.cuda.set_device(local_rank)
-    # This method is to be executed from a helper daemon thread.
-    # Only 4 times sending if downstream out0 recv from upstream
-    if tensor_name == "out0" and src_rank == 0:
-        num_iterations = num_iterations * 4
 
     for i in range(num_iterations):
         tensor = _recv(
@@ -672,10 +668,6 @@ def send_helper_thread(queue, counter, local_rank, tensor_name,
                        src_rank, dst_rank, tag,
                        sub_process_group, num_iterations):
     torch.cuda.set_device(local_rank)
-    # This method is to be executed from a helper daemon thread.
-    # Only 4 times sending if upstream out0 send to downstream
-    if tensor_name == "out0" and src_rank < dst_rank:
-        num_iterations = num_iterations * 4
 
     for i in range(num_iterations):
         tensor = queue.remove()

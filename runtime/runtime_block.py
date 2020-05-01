@@ -449,7 +449,7 @@ class StageRuntime:
             # Receive all required tensors from upstream GPU.
             # TODO: why recv does not need rank?
             for input_name in self.receive_ranks:
-                if input_name == "ack" or input_name == "out0":
+                if input_name == "ack" or input_name.startswith("out0"):
                     continue
 
                 self.tensors[-1][input_name] = \
@@ -470,7 +470,7 @@ class StageRuntime:
     def send_tensors_forward(self):
         # Send all required tensors downstream.
         for output_name in self.send_ranks:
-            if output_name == "ack" or output_name == "out0":
+            if output_name == "ack" or output_name.startswith("out0"):
                 continue
 
             self.comm_handler.send(
