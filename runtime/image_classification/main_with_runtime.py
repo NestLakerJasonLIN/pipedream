@@ -9,6 +9,8 @@ import os
 import shutil
 import sys
 import time
+sys.path.append("/home/ubuntu/pipedream/runtime")
+from runtime_utilities import t_start, t_stop, add_timestamp
 
 import torch
 from torch.autograd import Variable
@@ -92,6 +94,7 @@ parser.add_argument('--recompute', action='store_true',
 # by not applying updates every minibatch.
 parser.add_argument('--macrobatch', action='store_true',
                     help='Macrobatch updates to save memory')
+parser.add_argument('--init_timestamp', default=0, type=float)
 
 best_prec1 = 0
 
@@ -118,7 +121,6 @@ class SyntheticDataset(torch.utils.data.dataset.Dataset):
 
 def main():
     global args, best_prec1
-    args = parser.parse_args()
 
     torch.cuda.set_device(args.local_rank)
 
@@ -580,4 +582,13 @@ def accuracy(output, target, topk=(1,)):
 
 
 if __name__ == '__main__':
+    global args
+    args = parser.parse_args()
+    init_timestamp = float(args.init_timestamp)
+    
+    while(time.time() < init_timestamp):
+        pass
+    
+    add_timestamp("program start time:")
+
     main()
