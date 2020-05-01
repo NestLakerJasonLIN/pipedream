@@ -3,7 +3,7 @@
 'data_dir': '/home/ubuntu/data/imagenet_tiny/'
 'config_file': 'models/vgg16/gpus=2/mp_conf.json'
 'container': 'nvcr.io/nvidia/pytorch:19.05-py3'
-'machines': ['172.31.65.131:0', '172.31.76.4:1']
+'machines': ['172.31.73.214:0', '172.31.71.248:1']
 'batch_size': 64
 'learning_rate': 0.01
 'weight_decay': 0.0005

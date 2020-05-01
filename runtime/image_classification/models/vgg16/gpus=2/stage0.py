@@ -2,7 +2,9 @@
 # Licensed under the MIT license.
 
 import torch
-from datetime import datetime
+import sys
+sys.path.append("/home/ubuntu/pipedream/runtime")
+from runtime_utilities import t_start, t_stop
 
 class Stage0(torch.nn.Module):
     def __init__(self):
@@ -18,28 +20,42 @@ class Stage0(torch.nn.Module):
 
         self._initialize_weights()
 
-    def forward(self, input0):
-        start_time = datetime.now()
+    def forward(self, input0):    
+        start_time_clone = t_start()
         out0 = input0.clone()
+        t_stop(start_time_clone, "clone:")
+
+        start_time_clone = t_start()
         out2 = self.layer2(out0)
+        t_stop(start_time_clone, "out2:")
+
+        start_time_clone = t_start()
         out3 = self.layer3(out2)
+        t_stop(start_time_clone, "out3:")
+
+        start_time_clone = t_start()
         out4 = self.layer4(out3)
+        t_stop(start_time_clone, "out4:")
+
+        start_time_clone = t_start()
         out5 = self.layer5(out4)
+        t_stop(start_time_clone, "out5:")
+
+        start_time_clone = t_start()
         out6 = self.layer6(out5)
+        t_stop(start_time_clone, "out6:")
+
+        start_time_clone = t_start()
         out7 = self.layer7(out6)
+        t_stop(start_time_clone, "out7:")
+
+        start_time_clone = t_start()
         out8 = self.layer8(out7)
+        t_stop(start_time_clone, "out8:")
 
-        dt = datetime.now() - start_time
-        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-        print("Stage0 before last layer:", "%.20fms" % elapsed)
-
-        start_time = datetime.now()
-
+        start_time_clone = t_start()
         out9 = self.layer9(out8)
-
-        dt = datetime.now() - start_time
-        elapsed = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-        print("Stage0 last layer:", "%.20fms" % elapsed)
+        t_stop(start_time_clone, "out9:")
         
         return out9
 

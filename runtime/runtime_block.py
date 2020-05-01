@@ -16,7 +16,9 @@ IMAGE_CLASSIFICATION = "image_classification"
 TRANSLATION = "translation"
 SPEECH_TO_TEXT = "speech_to_text"
 
-
+# modules_with_dependencies:
+# [(stage_class_instance, input_var_name, output_var_name), ...]
+# e.g. [(Stage0(), ["input0"], ["out0"]), ...]
 class ModulesWithDependencies:
     def __init__(self, modules_with_dependencies):
         self._modules = []
@@ -42,7 +44,7 @@ class ModulesWithDependencies:
                 return True
         return False
 
-
+# manage module training, forward, send, backward, send
 class StageRuntime:
     def __init__(self, model, distributed_backend, fp16, loss_scale,
                  training_tensor_shapes, eval_tensor_shapes,
@@ -82,7 +84,12 @@ class StageRuntime:
     def initialize(self, model, inputs_module_destinations,
                    configuration_maps, master_addr, rank,
                    local_rank, num_ranks_in_server):
+        # e.g. self.send_ranks["out3"] = 5
+        #   an tensor output with name out3 will be sent to 
+        #   the downstream GPU with ID 5 
         self.send_ranks = {}
+        # e.g. self.receive_ranks["out3"] = 4
+        #   The upstream GPU with ID 4 produces an tensor output with name out3
         self.receive_ranks = {}
         self.rank = rank
         self.local_rank = local_rank
@@ -191,15 +198,20 @@ class StageRuntime:
                 fp16=self.fp16,
                 backend=self.distributed_backend)
 
+            # For each stage, model[i] = (stagei, inputi, outi)
             for i in range(len(model)):
                 for j in range(i+1, len(model)):
                     for tensor_name in model[i][2]:
+                        # current stage's output appear in next stage's input
                         if tensor_name in model[j][1]:
+                            # current stage and next stage in different machine
                             if module_to_stage_map[i] == \
                                 module_to_stage_map[j]:
                                 continue
                             # For now, assume that each stage is served by only
                             # a single machine.
+                            # stage_to_rank_map[module_to_stage_map[i]]: 
+                            #   the GPU rank running module i
                             if module_to_stage_map[j] == self.stage:
                                 self.receive_ranks[tensor_name] = \
                                     stage_to_rank_map[module_to_stage_map[i]]
@@ -375,11 +387,14 @@ class StageRuntime:
         else:
             self.loader_iter = None
 
+    # recv forward output tensor from upstream GPU
     def receive_tensors_forward(self):
         if self.forward_only and len(self.tensors) > 0:
             self.tensors.pop(0)
         self.tensors.append({})
+        # Stage0 (there is a dataloader)
         if self.loader_iter is not None:
+            # input: a minibatch
             input = next(self.loader_iter)
             if self.model_type == TRANSLATION:
                 (input, target) = input
@@ -408,10 +423,12 @@ class StageRuntime:
                 self.tensors[-1]["target"] = target.cuda(non_blocking=True)
                 self.tensors[-1]["target_length"] = target_sizes.cuda(
                     non_blocking=True)
+        # Other Stages (there is no dataloader)
         else:
-            # Receive all required tensors from upstream machines.
+            # Receive all required tensors from upstream GPU.
+            # TODO: why recv does not need rank?
             for input_name in self.receive_ranks:
-                if input_name == "ack":
+                if input_name == "ack" or input_name == "out0":
                     continue
 
                 self.tensors[-1][input_name] = \
@@ -425,14 +442,14 @@ class StageRuntime:
                     (self.tensors[-1][input_name].element_size() *
                      self.tensors[-1][input_name].nelement())
 
-            # Used to track where to receive forward from.
-            self.comm_handler.increment_messaging_index(
-                sending=False)
+            # # Used to track where to receive forward from.
+            # self.comm_handler.increment_messaging_index(
+            #     sending=False)
 
     def send_tensors_forward(self):
         # Send all required tensors downstream.
         for output_name in self.send_ranks:
-            if output_name == "ack":
+            if output_name == "ack" or output_name == "out0":
                 continue
 
             self.comm_handler.send(
@@ -502,7 +519,6 @@ class StageRuntime:
         start_time = t_start()
 
         # Run forward pass.
-        
         self._run_forward(tensors)
 
         t_stop(start_time, " -> _run_forward elapsed:")
@@ -510,9 +526,9 @@ class StageRuntime:
 
         # Send tensors forward.
         self.send_tensors_forward()
-        if self.verbose_freq > 0 and self.forward_minibatch_id % self.verbose_freq == 0:
-            self.forward_stats.print_stats()
-        self.forward_stats.reset_stats()
+        # if self.verbose_freq > 0 and self.forward_minibatch_id % self.verbose_freq == 0:
+        #     self.forward_stats.print_stats()
+        # self.forward_stats.reset_stats()
 
         self.forward_minibatch_id += 1
 
@@ -540,11 +556,27 @@ class StageRuntime:
                     module_outputs = [sum(module_outputs)]
             else:
                 # If layer is non-criterion.
-                module_outputs = module(*[tensors[input_name]
-                                          for input_name in input_names])
+                # module_outputs = module(*[tensors[input_name]
+                #                           for input_name in input_names])
+                
+                # stage 0
+                if self.loader_iter is not None:
+                    print("run_forward_ input name:", input_names)
+                    module_outputs = module(*[tensors[input_name]
+                                          for input_name in input_names],
+                                          forward_minibatch_id=self.forward_minibatch_id, 
+                                          backward_minibatch_id=self.backward_minibatch_id, 
+                                          comm_handler=self.comm_handler)
+                # other stages
+                else:
+                    module_outputs = module(forward_minibatch_id=self.forward_minibatch_id, 
+                                          backward_minibatch_id=self.backward_minibatch_id, 
+                                          r=self)
+                
                 if not isinstance(module_outputs, tuple):
                     module_outputs = (module_outputs,)
                 module_outputs = list(module_outputs)
+
 
             for (output_name, module_output) in zip(output_names, module_outputs):
                 tensors[output_name] = module_output
