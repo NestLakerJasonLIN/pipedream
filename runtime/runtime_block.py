@@ -599,7 +599,6 @@ class StageRuntime:
                 # stage 0
                 if self.loader_iter is not None:
                     module_outputs = module(
-                        *
                         [tensors[input_name] for input_name in input_names],
                         forward_minibatch_id=self.forward_minibatch_id,
                         backward_minibatch_id=self.backward_minibatch_id,

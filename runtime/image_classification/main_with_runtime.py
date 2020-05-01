@@ -175,7 +175,7 @@ def main():
                                        dtype=torch.float32)
             input_tensors.append(input_tensor)
         with torch.no_grad():
-            output_tensors = stage(*tuple(input_tensors))
+            output_tensors = stage(tuple(input_tensors))
         if not isinstance(output_tensors, tuple):
             output_tensors = [output_tensors]
         for output, output_tensor in zip(outputs,

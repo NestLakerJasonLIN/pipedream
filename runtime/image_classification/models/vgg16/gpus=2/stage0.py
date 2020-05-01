@@ -49,7 +49,8 @@ class Stage0(torch.nn.Module):
             comm_handler=None):
 
         start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
-        out0 = input0.clone()
+        assert (len(input0) == 1)
+        out0 = input0[0].clone()
         out2 = self.layer2(out0)
         out3 = self.layer3(out2)
         out4 = self.layer4(out3)
@@ -185,7 +186,7 @@ class Upstream_Tail(torch.nn.Module):
 
             print("  -> time elapsed:", "%.20fms" % elapsed)
 
-            return [block0_out, block1_out, block2_out, block3_out]
+            return (block0_out, block1_out, block2_out, block3_out)
 
     def thread_function(
             self,

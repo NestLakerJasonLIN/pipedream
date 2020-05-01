@@ -106,9 +106,12 @@ class Stage1(torch.nn.Module):
     def forward(self, input0, forward_minibatch_id=-1, backward_minibatch_id=-1, r=None):
         start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
 
-        if r is None:
-            out0 = input0.clone()
-            out1 = self.layer1(out0)
+        if r is None: 
+            out0_b0 = input0[0].clone()
+            out0_b1 = input0[1].clone()
+            out0_b2 = input0[2].clone()
+            out0_b3 = input0[3].clone()
+            out1 = self.layer1(_combine(out0_b0, out0_b1, out0_b2, out0_b3))
         else: 
             out1 = self.downstream_head(
                 forward_minibatch_id, backward_minibatch_id, r)
@@ -213,7 +216,7 @@ class Downstream_Head(torch.nn.Module):
 
         start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
 
-        relu_out = self._combine(
+        relu_out = _combine(
             block0_out,
             block1_out,
             block2_out,
@@ -239,9 +242,9 @@ class Downstream_Head(torch.nn.Module):
         block_out = self.relu(block_in.clone())
         return block_out
 
-    def _combine(self, block0_out, block1_out, block2_out, block3_out):
-        block_upper = torch.cat((block0_out, block1_out), dim=3)
-        block_lower = torch.cat((block2_out, block3_out), dim=3)
-        combined_inp = torch.cat((block_upper, block_lower), dim=2)
+def _combine(block0_out, block1_out, block2_out, block3_out):
+    block_upper = torch.cat((block0_out, block1_out), dim=3)
+    block_lower = torch.cat((block2_out, block3_out), dim=3)
+    combined_inp = torch.cat((block_upper, block_lower), dim=2)
 
-        return combined_inp
+    return combined_inp
