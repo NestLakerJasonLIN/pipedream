@@ -8,7 +8,7 @@ sys.path.append("/home/ubuntu/pipedream/runtime")
 from runtime_utilities import t_start, t_stop
 import torch
 import torch.distributed as dist
-
+import time
 import communication
 import runtime_utilities
 
@@ -493,20 +493,14 @@ class StageRuntime:
         # Receive tensors from previous worker.
         print("forward_minibatch_id", self.forward_minibatch_id)
 
-        start_time = t_start()
+        start_time_whole = time.time()
+
         self.receive_tensors_forward()
         tensors = self.tensors[-1]
-
-        t_stop(start_time, " -> recv elapsed:")
-
-        start_time = t_start()
 
         # Run forward pass.
         
         self._run_forward(tensors)
-
-        t_stop(start_time, " -> _run_forward elapsed:")
-        print("")
 
         # Send tensors forward.
         self.send_tensors_forward()
@@ -514,6 +508,10 @@ class StageRuntime:
             self.forward_stats.print_stats()
         self.forward_stats.reset_stats()
 
+        elapsed = (time.time() - start_time_whole) * 1000
+        print("-> total time:", elapsed)
+        print("")
+        
         self.forward_minibatch_id += 1
 
     def _run_forward(self, tensors):
