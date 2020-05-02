@@ -543,9 +543,9 @@ class StageRuntime:
 
         # Send tensors forward.
         self.send_tensors_forward()
-        # if self.verbose_freq > 0 and self.forward_minibatch_id % self.verbose_freq == 0:
-        #     self.forward_stats.print_stats()
-        # self.forward_stats.reset_stats()
+        if self.verbose_freq > 0 and self.forward_minibatch_id % self.verbose_freq == 0:
+            self.forward_stats.print_stats()
+            self.forward_stats.reset_stats()
 
         self.forward_minibatch_id += 1
 
