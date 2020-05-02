@@ -555,10 +555,7 @@ class StageRuntime:
 
         # print(" -> _run_forward elapsed:", "%.20fms" % elapsed)
 
-        elapsed = (time.time() - start_time) * 1000
-        print(" -> time elapsed: ", elapsed)
-        print("")
-
+        
         # Send tensors forward.
         self.send_tensors_forward()
         # if self.verbose_freq > 0 and self.forward_minibatch_id % self.verbose_freq == 0:
@@ -566,6 +563,10 @@ class StageRuntime:
         # self.forward_stats.reset_stats()
 
         self.forward_minibatch_id += 1
+
+        elapsed = (time.time() - start_time) * 1000
+        print(" -> time elapsed: ", elapsed)
+        print("")
 
     def _run_forward(self, tensors):
         # Perform forward pass through model (self.modules_with_dependencies already

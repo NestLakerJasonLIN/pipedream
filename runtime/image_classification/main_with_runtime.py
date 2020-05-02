@@ -495,7 +495,7 @@ def train(train_loader, r, optimizer, epoch):
         optimizer.zero_grad()
         optimizer.load_old_params()
         r.run_backward()
-        optimizer.load_new_params()
+        optimizer.load_new_para
         optimizer.step()
 
     # wait for all helper threads to complete
