@@ -707,7 +707,10 @@ def _recv(tensor_name, src_rank, tensor_shape=None, dtype=torch.float32,
                   src=src_rank,
                   tag=tag)
         add_timestamp("finish recv: {} tag: {}:".format(tensor_name, tag))
+
+        cp_start = t_start()
         tensor = tensor.cuda()
+        t_stop(cp_start, "c2g copy for {}".format(tensor_name))
 
     assert tensor.is_cuda
     return tensor
@@ -734,7 +737,9 @@ def _send(tensor, tensor_name, src_rank, dst_rank, tag, sub_process_group=None):
                        group=sub_process_group)
     else:
         assert tensor.is_cuda
+        cp_start = t_start()
         tensor = tensor.cpu()
+        t_stop(cp_start, "g2c copy for {}".format(tensor_name))
 
         # Send tensor shape.
         tensor_shape = torch.tensor(tensor.shape, dtype=torch.int)
