@@ -81,102 +81,39 @@ class Stage0(torch.nn.Module):
 class Upstream_Tail(torch.nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size, stride, padding):
         super(Upstream_Tail, self).__init__()
-        self.orig_padding = padding
-        self.kernel_size = kernel_size[0]
         self.conv2d = torch.nn.Conv2d(in_channels=in_channels, 
                                       out_channels=out_channels, 
                                       kernel_size=kernel_size,
-                                      stride=stride)
-
-        self.padder = torch.nn.ZeroPad2d(padding[0])
+                                      stride=stride,
+                                      padding=padding)
     
-    def forward(self, inp, forward_minibatch_id, backward_minibatch_id, comm_handler):
-        
-        block_out_list = []
-        
+    def forward(self, inp, forward_minibatch_id, backward_minibatch_id, comm_handler):        
         print(" -> Stage0 Upstream_Tail:")
-        inp = self.padder(inp)
-        h_pad, w_pad = inp.size(2), inp.size(3)
-        block_height, block_width = h_pad // 2,  w_pad // 2
-        
-        elapsed_bcom = 0
 
-        # block_0
         start_time = t_start()
+        out9 = self.conv2d(inp)
+        t_stop(start_time, "out9:")
 
-        start_time_bcom = t_start()
-        h_start, h_end = 0, block_height + self.kernel_size-1
-        w_start, w_end = 0, block_width + self.kernel_size-1
-
-        block_inp = inp[:, :, h_start:h_end, w_start:w_end]
-        
-        block_out = self.conv2d(block_inp)
-        block_out_list.append(block_out)
-        elapsed_bcom += t_stop(start_time_bcom, "  -> block 0 compute time:")
-        
-        comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
-                                     backward_minibatch_id=backward_minibatch_id)
-
-        t_stop(start_time, "  -> block 0 time:")
-
-        # block_1
         start_time = t_start()
-
-        start_time_bcom = t_start()
-        h_start, h_end = 0, block_height + self.kernel_size-1
-        w_start, w_end = block_width, w_pad
-
-        block_inp = inp[:, :, h_start:h_end, w_start:w_end]
-
-        block_out = self.conv2d(block_inp)
-        block_out_list.append(block_out)
-        elapsed_bcom += t_stop(start_time_bcom, "  -> block 1 compute time:")
-
+        block_out = out9[:, :, :57, :57]
         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
-                                     backward_minibatch_id=backward_minibatch_id)
-
-        t_stop(start_time, "  -> block 1 time:")
-
-        # block_2
-        start_time = t_start()
-
-        start_time_bcom = t_start()
-        h_start, h_end = block_height, h_pad
-        w_start, w_end = 0, block_width + self.kernel_size-1
-
-        block_inp = inp[:, :, h_start:h_end, w_start:w_end]
-
-        block_out = self.conv2d(block_inp)
-        block_out_list.append(block_out)
-
-        comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
-                             backward_minibatch_id=backward_minibatch_id)
-        elapsed_bcom += t_stop(start_time_bcom, "  -> block 2 compute time:")
+                                    backward_minibatch_id=backward_minibatch_id)
         
-        t_stop(start_time, "  -> block 2 time:")
-
-        # block_3
-        start_time = t_start()
-
-        start_time_bcom = t_start()
-        h_start, h_end = block_height, h_pad
-        w_start, w_end = block_width, w_pad
-
-        block_inp = inp[:, :, h_start:h_end, w_start:w_end]
-
-        block_out = self.conv2d(block_inp)
-        block_out_list.append(block_out)
-
+        block_out = out9[:, :, :57, 57:]
         comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
-                                     backward_minibatch_id=backward_minibatch_id)
-        elapsed_bcom += t_stop(start_time_bcom, "  -> block 3 compute time:")
+                                    backward_minibatch_id=backward_minibatch_id)
 
-        t_stop(start_time, "  -> block 3 time:")
+        block_out = out9[:, :, 57:, :57]
+        comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
+                                    backward_minibatch_id=backward_minibatch_id)
 
-        print("block computing elapsed time:", elapsed_bcom)
+        block_out = out9[:, :, 57:, 57:]
+        comm_handler.send_block(block_out, forward_minibatch_id=forward_minibatch_id,
+                                    backward_minibatch_id=backward_minibatch_id)
+        t_stop(start_time, "block send total time:")
 
-        return self._combine(block_out_list)
-    
+        return out9
+
     def _combine(self, block_list):
         block_upper = torch.cat((block_list[0], block_list[1]), dim=3)
         block_lower = torch.cat((block_list[2], block_list[3]), dim=3)

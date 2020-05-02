@@ -11,6 +11,7 @@ import torch.distributed as dist
 
 import communication
 import runtime_utilities
+import time
 
 IMAGE_CLASSIFICATION = "image_classification"
 TRANSLATION = "translation"
@@ -510,6 +511,8 @@ class StageRuntime:
         # Receive tensors from previous worker.
         print("forward_minibatch_id", self.forward_minibatch_id)
 
+        start_time_whole = time.time()
+
         start_time = t_start()
         self.receive_tensors_forward()
         tensors = self.tensors[-1]
@@ -529,6 +532,9 @@ class StageRuntime:
         # if self.verbose_freq > 0 and self.forward_minibatch_id % self.verbose_freq == 0:
         #     self.forward_stats.print_stats()
         # self.forward_stats.reset_stats()
+
+        elapsed = (time.time() - start_time_whole) * 1000
+        print("whole run_forward time %.3fms" % elapsed)
 
         self.forward_minibatch_id += 1
 

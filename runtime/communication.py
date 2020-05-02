@@ -10,7 +10,7 @@ sys.path.append("/home/ubuntu/pipedream/runtime")
 from runtime_utilities import t_start, t_stop, add_timestamp
 import threadsafe_counter
 import threadsafe_queue
-
+import time
 
 NCCL='nccl'
 GLOO='gloo'
@@ -649,18 +649,60 @@ def recv_helper_thread(queue, counter, local_rank, tensor_name,
 def send_helper_thread(queue, counter, local_rank, tensor_name,
                        src_rank, dst_rank, tag,
                        sub_process_group, num_iterations):
-    torch.cuda.set_device(local_rank)
-    # This method is to be executed from a helper daemon thread.
-    # Only 4 times sending if upstream out0 send to downstream
-    if tensor_name == "out0" and src_rank < dst_rank:
-        num_iterations = num_iterations*4
+    if (tensor_name != "out0"):
+        torch.cuda.set_device(local_rank)
+        # This method is to be executed from a helper daemon thread.
+        # Only 4 times sending if upstream out0 send to downstream
+        if tensor_name == "out0" and src_rank < dst_rank:
+            num_iterations = num_iterations*4
 
-    for i in range(num_iterations):
-        tensor = queue.remove()
-        _send(tensor, tensor_name, src_rank, dst_rank,
-              tag=tag,
-              sub_process_group=sub_process_group)
-    counter.decrement()
+        for i in range(num_iterations):
+            tensor = queue.remove()
+            _send(tensor, tensor_name, src_rank, dst_rank,
+                tag=tag,
+                sub_process_group=sub_process_group)
+        counter.decrement()
+    else:
+        torch.cuda.set_device(local_rank)
+        request_obj = None
+        # This method is to be executed from a helper daemon thread.
+        # Only 4 times sending if upstream out0 send to downstream
+        if tensor_name == "out0" and src_rank < dst_rank:
+            num_iterations = num_iterations*4
+
+        for i in range(num_iterations):
+            tensor = queue.remove()
+            request_obj = _send_block(tensor, tensor_name, src_rank, dst_rank,
+                                        tag=tag,
+                                        request_obj=request_obj)
+        counter.decrement()
+
+        if (not request_obj.is_completed()):
+            request_obj.wait()
+        print("send finished")
+
+def _send_block(tensor, tensor_name, src_rank, dst_rank, tag, request_obj=None):
+    assert tensor.is_cuda
+
+    cp_start = t_start()
+    tensor = tensor.cpu()
+    t_stop(cp_start, "g2c copy for {}".format(tensor_name))
+
+    elapsed = time.time()
+    if (request_obj is not None):
+        request_obj.wait()
+    print("wait elapsed %0.3f" % ((time.time()-elapsed)*1000) + "ms")
+
+    # Send tensor shape.
+    tensor_shape = torch.tensor(tensor.shape, dtype=torch.int)
+    dist.send(tensor=tensor_shape, dst=dst_rank, tag=tag)
+
+    # Send tensor.
+    elapsed = time.time()
+    request_obj = dist.isend(tensor=tensor, dst=dst_rank, tag=tag)
+    print("isend elapsed %0.3f" % ((time.time()-elapsed)*1000) + "ms")
+
+    return request_obj
 
 def _recv(tensor_name, src_rank, tensor_shape=None, dtype=torch.float32,
           tensor=None, tag=None, sub_process_group=None):
@@ -737,6 +779,8 @@ def _send(tensor, tensor_name, src_rank, dst_rank, tag, sub_process_group=None):
                        group=sub_process_group)
     else:
         assert tensor.is_cuda
+
+
         cp_start = t_start()
         tensor = tensor.cpu()
         t_stop(cp_start, "g2c copy for {}".format(tensor_name))
