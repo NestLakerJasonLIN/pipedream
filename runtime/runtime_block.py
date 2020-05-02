@@ -533,24 +533,13 @@ class StageRuntime:
 
         print("forward_minibatch_id", self.forward_minibatch_id)
 
-        start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
+        start_time = time()
 
         self.receive_tensors_forward()
         tensors = self.tensors[-1]
 
-        # elapsed = (
-        #     time.clock_gettime(
-        #         time.CLOCK_THREAD_CPUTIME_ID) - start_time) * 1000
-
-        # print(" -> recv elapsed:", "%.20fms" % elapsed)
-
-        # start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
-
         # Run forward pass.
         self._run_forward(tensors)
-
-        # print(" -> _run_forward elapsed:", "%.20fms" % elapsed)
-
 
         # Send tensors forward.
         self.send_tensors_forward()
@@ -560,10 +549,8 @@ class StageRuntime:
 
         self.forward_minibatch_id += 1
 
-        elapsed = (
-            time.clock_gettime(
-                time.CLOCK_THREAD_CPUTIME_ID) - start_time) * 1000
-        
+        elapsed = (time.time() - start_time) * 1000
+
         print(" -> time elapsed: ", elapsed)
         print("")
 
