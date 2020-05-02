@@ -104,7 +104,6 @@ class Stage1(torch.nn.Module):
 
 
     def forward(self, input0, forward_minibatch_id=-1, backward_minibatch_id=-1, r=None):
-        start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
 
         if r is None: 
             out0_b0 = input0[0].clone()
@@ -116,13 +115,8 @@ class Stage1(torch.nn.Module):
             out1 = self.downstream_head(
                 forward_minibatch_id, backward_minibatch_id, r)
 
-        elapsed = (
-            time.clock_gettime(
-                time.CLOCK_THREAD_CPUTIME_ID) - start_time) * 1000
-
-        print(" -> Stage1 1st layer:", "%.20fms" % elapsed)
-
         start_time = time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
+
         out2 = self.layer2(out1)
         out3 = self.layer3(out2)
         out4 = self.layer4(out3)
