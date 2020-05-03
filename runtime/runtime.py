@@ -491,25 +491,21 @@ class StageRuntime:
         """Run forward pass.
         """
         # Receive tensors from previous worker.
-        print("forward_minibatch_id", self.forward_minibatch_id)
-
-        start_time_whole = time.time()
+        start_time = t_start(threadTime=False)
 
         self.receive_tensors_forward()
         tensors = self.tensors[-1]
 
         # Run forward pass.
-        
         self._run_forward(tensors)
 
         # Send tensors forward.
         self.send_tensors_forward()
         if self.verbose_freq > 0 and self.forward_minibatch_id % self.verbose_freq == 0:
             self.forward_stats.print_stats()
-        self.forward_stats.reset_stats()
+            self.forward_stats.reset_stats()
 
-        elapsed = (time.time() - start_time_whole) * 1000
-        print("-> total time:", elapsed)
+        t_stop(start_time, "run_forward for batch {}".format(self.forward_minibatch_id), threadTime=False)
         print("")
         
         self.forward_minibatch_id += 1
