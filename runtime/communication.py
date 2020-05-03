@@ -674,9 +674,11 @@ def _recv(tensor_name, src_rank, tensor_shape=None, dtype=torch.float32,
 
         # Receive tensor.
         tensor = torch.zeros(received_tensor_shape, dtype=dtype)
+        start_time = t_start(threadTime=False)
         dist.recv(tensor=tensor,
                   src=src_rank,
                   tag=tag)
+        t_stop(start_time, "recv for {}".format(tensor_name), threadTime=False)
 
         start_time = t_start()
         tensor = tensor.cuda()
@@ -717,4 +719,6 @@ def _send(tensor, tensor_name, src_rank, dst_rank, tag, sub_process_group=None):
         dist.send(tensor=tensor_shape, dst=dst_rank, tag=tag)
 
         # Send tensor.
+        start_time = t_start(threadTime=False)
         dist.send(tensor=tensor, dst=dst_rank, tag=tag)
+        t_stop(start_time, "send for {}".format(tensor_name), threadTime=False)
