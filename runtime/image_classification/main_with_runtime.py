@@ -92,7 +92,7 @@ parser.add_argument('--recompute', action='store_true',
 # by not applying updates every minibatch.
 parser.add_argument('--macrobatch', action='store_true',
                     help='Macrobatch updates to save memory')
-
+parser.add_argument('--init_timestamp', default=0, type=float)
 best_prec1 = 0
 
 
@@ -575,4 +575,13 @@ def accuracy(output, target, topk=(1,)):
 
 
 if __name__ == '__main__':
+    global args
+    args = parser.parse_args()
+    init_timestamp = float(args.init_timestamp)
+    
+    while(time.time() < init_timestamp):
+        pass
+    
+    printt("program start time:")
+
     main()

@@ -296,6 +296,7 @@ if __name__ == "__main__":
     # If launching in a single container per node, use launch utility to spawn
     # required number of processes in the same container.
     if args.launch_single_container:
+        init_timestamp = time.time() + 10
         all_runtime_cmds = []
         for node_rank, (node_ip, workers) in \
             enumerate(nodes_to_workers_mapping.items()):
@@ -327,6 +328,8 @@ if __name__ == "__main__":
                     "node_rank": node_rank,
                     "nproc_per_node": num_ranks_in_server
                 }
+            
+            runtime_cmd_list.append('--init_timestamp %.20f' % init_timestamp)
 
             runtime_cmd_list = runtime_cmd_preamble_list + [launch_module] + runtime_cmd_list
             runtime_cmd_list.append('2>&1 | tee %s' % log_file_path)
