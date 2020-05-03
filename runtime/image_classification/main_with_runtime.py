@@ -25,6 +25,8 @@ import torchvision.datasets as datasets
 sys.path.append("..")
 import runtime
 import sgd
+sys.path.append("/home/ubuntu/pipedream/runtime")
+from runtime_utilities import printt
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
 parser.add_argument('--data_dir', type=str,
