@@ -6,7 +6,8 @@ import threading
 import torch
 import torch.distributed as dist
 import sys
-
+sys.path.append("/home/ubuntu/pipedream/runtime")
+from runtime_utilities import t_start, t_stop
 import threadsafe_counter
 import threadsafe_queue
 
@@ -664,6 +665,7 @@ def _recv(tensor_name, src_rank, tensor_shape=None, dtype=torch.float32,
         # Receive tensor shape.
         received_tensor_shape = torch.zeros(len(tensor_shape),
                                             dtype=torch.int)
+        
         dist.recv(tensor=received_tensor_shape,
                   src=src_rank,
                   tag=tag)
@@ -675,7 +677,10 @@ def _recv(tensor_name, src_rank, tensor_shape=None, dtype=torch.float32,
         dist.recv(tensor=tensor,
                   src=src_rank,
                   tag=tag)
+
+        start_time = t_start()
         tensor = tensor.cuda()
+        t_stop(start_time, "c2g copy for {}".format(tensor_name))
 
     assert tensor.is_cuda
     return tensor
@@ -702,7 +707,10 @@ def _send(tensor, tensor_name, src_rank, dst_rank, tag, sub_process_group=None):
                        group=sub_process_group)
     else:
         assert tensor.is_cuda
+
+        start_time = t_start()
         tensor = tensor.cpu()
+        t_stop(start_time, "g2c copy for {}".format(tensor_name))
 
         # Send tensor shape.
         tensor_shape = torch.tensor(tensor.shape, dtype=torch.int)
