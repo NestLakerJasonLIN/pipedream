@@ -35,7 +35,7 @@ def t_start():
 def t_stop(start_time, prefix="", print_info=True):
     elapsed = (time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID) - start_time) * 1000
     if print_info:
-        print(prefix, "%.20fms" % elapsed)
+        printt(prefix + " elapsed: %.3fms" % elapsed)
     return elapsed
 
 def printt(msg=""):
