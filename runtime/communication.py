@@ -7,7 +7,7 @@ import torch
 import torch.distributed as dist
 import sys
 sys.path.append("/home/ubuntu/pipedream/runtime")
-from runtime_utilities import t_start, t_stop, add_timestamp
+from runtime_utilities import t_start, t_stop
 import threadsafe_counter
 import threadsafe_queue
 import time
@@ -677,30 +677,29 @@ def send_helper_thread(queue, counter, local_rank, tensor_name,
                                         request_obj=request_obj)
         counter.decrement()
 
+        start_time_wait = t_start(thread=False)
         if (not request_obj.is_completed()):
             request_obj.wait()
-        print("send finished")
+        t_stop(start_time_wait, "send wait for {}".format(tensor_name), thread=False)
 
 def _send_block(tensor, tensor_name, src_rank, dst_rank, tag, request_obj=None):
     assert tensor.is_cuda
 
-    cp_start = t_start()
+    start_time_cp = t_start()
     tensor = tensor.cpu()
-    t_stop(cp_start, "g2c copy for {}".format(tensor_name))
+    t_stop(start_time_cp, "g2c copy for {}".format(tensor_name))
 
-    elapsed = time.time()
+    start_time_wait = t_start(thread=False)
     if (request_obj is not None):
         request_obj.wait()
-    print("wait elapsed %0.3f" % ((time.time()-elapsed)*1000) + "ms")
+    t_stop(start_time_wait, "send wait for {}".format(tensor_name), thread=False)
 
     # Send tensor shape.
     tensor_shape = torch.tensor(tensor.shape, dtype=torch.int)
     dist.send(tensor=tensor_shape, dst=dst_rank, tag=tag)
 
     # Send tensor.
-    elapsed = time.time()
     request_obj = dist.isend(tensor=tensor, dst=dst_rank, tag=tag)
-    print("isend elapsed %0.3f" % ((time.time()-elapsed)*1000) + "ms")
 
     return request_obj
 
@@ -744,15 +743,16 @@ def _recv(tensor_name, src_rank, tensor_shape=None, dtype=torch.float32,
 
         # Receive tensor.
         tensor = torch.zeros(received_tensor_shape, dtype=dtype)
-        add_timestamp("start recv: {} tag: {}:".format(tensor_name, tag))
+        start_time_recv = t_start(thread=False)
         dist.recv(tensor=tensor,
                   src=src_rank,
                   tag=tag)
-        add_timestamp("finish recv: {} tag: {}:".format(tensor_name, tag))
+        t_stop(start_time_recv, "recv for {}".format(tensor_name), thread=False)
 
-        cp_start = t_start()
+        start_time_cp = t_start()
         tensor = tensor.cuda()
-        t_stop(cp_start, "c2g copy for {}".format(tensor_name))
+        t_stop(start_time_cp, "c2g copy for {}".format(tensor_name))
+        
 
     assert tensor.is_cuda
     return tensor
@@ -781,15 +781,15 @@ def _send(tensor, tensor_name, src_rank, dst_rank, tag, sub_process_group=None):
         assert tensor.is_cuda
 
 
-        cp_start = t_start()
+        start_time_cp = t_start()
         tensor = tensor.cpu()
-        t_stop(cp_start, "g2c copy for {}".format(tensor_name))
+        t_stop(start_time_cp, "g2c copy for {}".format(tensor_name))
 
         # Send tensor shape.
         tensor_shape = torch.tensor(tensor.shape, dtype=torch.int)
         dist.send(tensor=tensor_shape, dst=dst_rank, tag=tag)
 
-        add_timestamp("start send: {} tag: {}:".format(tensor_name, tag))
         # Send tensor.
+        start_time_send = t_start(thread=False)
         dist.send(tensor=tensor, dst=dst_rank, tag=tag)
-        add_timestamp("finish send: {} tag: {}:".format(tensor_name, tag))
+        t_stop(start_time_send, "send for {}".format(tensor_name), thread=False)

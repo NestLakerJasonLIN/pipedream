@@ -508,33 +508,24 @@ class StageRuntime:
     def run_forward(self, recompute_step=False):
         """Run forward pass.
         """
+        start_time_whole = t_start(thread=False)
+
         # Receive tensors from previous worker.
-        print("forward_minibatch_id", self.forward_minibatch_id)
-
-        start_time_whole = time.time()
-
-        start_time = t_start()
         self.receive_tensors_forward()
         tensors = self.tensors[-1]
-
-        t_stop(start_time, " -> recv elapsed:")
-
-        start_time = t_start()
 
         # Run forward pass.
         self._run_forward(tensors)
 
-        t_stop(start_time, " -> _run_forward elapsed:")
-        print("")
-
         # Send tensors forward.
         self.send_tensors_forward()
-        # if self.verbose_freq > 0 and self.forward_minibatch_id % self.verbose_freq == 0:
-        #     self.forward_stats.print_stats()
-        # self.forward_stats.reset_stats()
+        if self.verbose_freq > 0 and self.forward_minibatch_id % self.verbose_freq == 0:
+            self.forward_stats.print_stats()
+            self.forward_stats.reset_stats()
 
-        elapsed = (time.time() - start_time_whole) * 1000
-        print("whole run_forward time %.3fms" % elapsed)
+        t_stop(start_time_whole, "run_forward for batch {}".format(self.forward_minibatch_id), thread=False)
+
+        print("")
 
         self.forward_minibatch_id += 1
 
@@ -567,7 +558,6 @@ class StageRuntime:
                 
                 # stage 0
                 if self.loader_iter is not None:
-                    print("run_forward_ input name:", input_names)
                     module_outputs = module(*[tensors[input_name]
                                           for input_name in input_names],
                                           forward_minibatch_id=self.forward_minibatch_id, 

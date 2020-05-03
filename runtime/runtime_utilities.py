@@ -29,16 +29,24 @@ class RuntimeStats:
         for i in self.stats.keys():
             self.stats[i] = 0.0
 
-def t_start():
-    return time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
+def t_start(thread=True):
+    if thread:
+        return time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID)
+    else:
+        return time.time()
 
-def t_stop(start_time, prefix="", print_info=True):
-    elapsed = (time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID) - start_time) * 1000
+def t_stop(start_time, prefix="", print_info=True, thread=True):
+    if (thread):
+        elapsed = (time.clock_gettime(time.CLOCK_THREAD_CPUTIME_ID) - start_time) * 1000
+    else:
+        elapsed = (time.time() - start_time) * 1000
+
     if print_info:
-        print(prefix, "%.20fms" % elapsed)
+        printt(prefix + " elapsed: %.3fms" % elapsed)
     return elapsed
 
-def add_timestamp(prefix=""):
+def printt(msg=""):
     timestamp = time.time()
-    print(prefix, "%0.3fms" % (timestamp * 1000))
+    times_str = "[%.3f] " % (timestamp * 1000)
+    print(times_str, msg)
     return timestamp

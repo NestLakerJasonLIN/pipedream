@@ -10,7 +10,7 @@ import shutil
 import sys
 import time
 sys.path.append("/home/ubuntu/pipedream/runtime")
-from runtime_utilities import t_start, t_stop, add_timestamp
+from runtime_utilities import t_start, t_stop, printt
 
 import torch
 from torch.autograd import Variable
@@ -73,7 +73,7 @@ parser.add_argument('--local_rank', default=0, type=int,
                     help="Local rank of worker")
 parser.add_argument('--forward_only', action='store_true',
                     help="Run forward pass only")
-parser.add_argument('--num_minibatches', default=None, type=int,
+parser.add_argument('--num_minibatches', default=100, type=int,
                     help="Number of minibatches to run")
 parser.add_argument('--resume', default='', type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
@@ -589,6 +589,6 @@ if __name__ == '__main__':
     while(time.time() < init_timestamp):
         pass
     
-    add_timestamp("program start time:")
+    printt("program start time:")
 
     main()

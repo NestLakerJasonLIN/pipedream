@@ -43,13 +43,11 @@ class Stage1(torch.nn.Module):
         self._initialize_weights()
 
     def forward(self, forward_minibatch_id, backward_minibatch_id, r):
-        start_time = t_start()
-        
+        start_time_head = t_start()
         out1 = self.downstream_head(forward_minibatch_id, backward_minibatch_id, r)
-        
-        t_stop(start_time, " -> Stage1 1st layer:")
+        t_stop(start_time_head, "Stage1 head computing")
 
-        start_time = t_start()
+        start_time_others = t_start()
         out2 = self.layer2(out1)
         out3 = self.layer3(out2)
         out4 = self.layer4(out3)
@@ -81,8 +79,7 @@ class Stage1(torch.nn.Module):
         out30 = self.layer30(out29)
         out31 = self.layer31(out30)
         out32 = self.layer32(out31)
-
-        t_stop(start_time, " -> Stage1 other layers:")
+        t_stop(start_time_others, "Stage1 others computing")
 
         return out32
 
@@ -105,16 +102,11 @@ class Downstream_Head(torch.nn.Module):
         self.relu = torch.nn.ReLU(inplace=inplace)
              
     def forward(self, forward_minibatch_id, backward_minibatch_id, r):
-
-        print(" -> Stage1 Downstream_Head:")
-
         block_num = 4
         block_out_relu = []
         
         for block_id in range(block_num):
-            start_time = t_start()
             block_inp_relu = r.comm_handler.recv_block(forward_minibatch_id, backward_minibatch_id)
-            t_stop(start_time, "  -> bid: {} recv elapsed:".format(block_id))
 
             # store block_inp_relu into buffer
             # slice and clone buffer and pass into ReLU
@@ -138,7 +130,7 @@ class Downstream_Head(torch.nn.Module):
                 block_buffer[:, :, 57:, 57:] = block_inp_relu
                 block_out_relu.append(self.relu(block_buffer[:, :, 57:, 57:].clone()))
 
-            t_stop(start_time, "  -> bid: {} fill elapsed:".format(block_id))
+            t_stop(start_time, "Stage1 bid: {} fill".format(block_id))
 
 
         # Used to track where to receive forward from.
@@ -147,7 +139,7 @@ class Downstream_Head(torch.nn.Module):
         
         start_time = t_start()
         relu_out = self._combine(block_out_relu)
-        t_stop(start_time, " -> combine elapsed:".format(block_id))
+        t_stop(start_time, "Stage1 combine")
 
         r.tensors[-1]["out0"] = block_buffer
 
