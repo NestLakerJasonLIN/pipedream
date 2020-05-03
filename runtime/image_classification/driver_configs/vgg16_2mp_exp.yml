@@ -7,9 +7,9 @@
 'batch_size': 64
 'learning_rate': 0.01
 'weight_decay': 0.0005
-'epochs': 60
-'print_frequency': 10
-'verbose_frequency': 10
+'epochs': 5
+'print_frequency': 50
+'verbose_frequency': 50
 'compress_activations': False
 'compress_in_gpu': False
 'learning_rate_policy': 'polynomial'
