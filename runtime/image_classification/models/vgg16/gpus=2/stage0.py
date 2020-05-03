@@ -21,42 +21,21 @@ class Stage0(torch.nn.Module):
         self._initialize_weights()
 
     def forward(self, input0):    
-        start_time_clone = t_start()
+        start_time = t_start()
         out0 = input0.clone()
-        t_stop(start_time_clone, "clone:")
-
-        start_time_clone = t_start()
         out2 = self.layer2(out0)
-        t_stop(start_time_clone, "out2:")
-
-        start_time_clone = t_start()
         out3 = self.layer3(out2)
-        t_stop(start_time_clone, "out3:")
-
-        start_time_clone = t_start()
         out4 = self.layer4(out3)
-        t_stop(start_time_clone, "out4:")
-
-        start_time_clone = t_start()
         out5 = self.layer5(out4)
-        t_stop(start_time_clone, "out5:")
-
-        start_time_clone = t_start()
         out6 = self.layer6(out5)
-        t_stop(start_time_clone, "out6:")
-
-        start_time_clone = t_start()
         out7 = self.layer7(out6)
-        t_stop(start_time_clone, "out7:")
-
-        start_time_clone = t_start()
         out8 = self.layer8(out7)
-        t_stop(start_time_clone, "out8:")
+        t_stop(start_time, "Stage0 out0-8")
 
-        start_time_clone = t_start()
+        start_time = t_start()
         out9 = self.layer9(out8)
-        t_stop(start_time_clone, "out9:")
-        
+        t_stop(start_time, "Stage0 out9")
+
         return out9
 
     def _initialize_weights(self):
