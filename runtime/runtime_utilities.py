@@ -37,3 +37,9 @@ def t_stop(start_time, prefix="", print_info=True):
     if print_info:
         print(prefix, "%.20fms" % elapsed)
     return elapsed
+
+def printt(msg=""):
+    timestamp = time.time()
+    time_str = "[%0.3f] " % (timestamp * 1000)
+    print(time_str, msg)
+    return timestamp
