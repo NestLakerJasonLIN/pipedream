@@ -46,7 +46,7 @@ class Stage1(torch.nn.Module):
         start_time = t_start()
         out0 = input0.clone()
         out1 = self.layer1(out0)
-        t_stop(start_time, " -> Stage1 out0-1 layer:")
+        t_stop(start_time, "Stage1 head computing")
 
         start_time = t_start()
         out2 = self.layer2(out1)
@@ -80,9 +80,7 @@ class Stage1(torch.nn.Module):
         out30 = self.layer30(out29)
         out31 = self.layer31(out30)
         out32 = self.layer32(out31)
-
-        t_stop(start_time, " -> Stage1 other layers:")
-
+        t_stop(start_time, "Stage1 others computing")
 
         return out32
 

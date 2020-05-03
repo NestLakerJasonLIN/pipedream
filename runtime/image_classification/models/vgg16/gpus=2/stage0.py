@@ -30,11 +30,11 @@ class Stage0(torch.nn.Module):
         out6 = self.layer6(out5)
         out7 = self.layer7(out6)
         out8 = self.layer8(out7)
-        t_stop(start_time, "Stage0 out0-8")
+        t_stop(start_time, "Stage0 others computing")
 
         start_time = t_start()
         out9 = self.layer9(out8)
-        t_stop(start_time, "Stage0 out9")
+        t_stop(start_time, "Stage0 tail computing")
 
         return out9
 
