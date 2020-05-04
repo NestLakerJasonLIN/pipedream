@@ -411,7 +411,7 @@ def train(train_loader, r, optimizer, epoch):
         optimizer.load_new_params()
         optimizer.step()
 
-        t_stop(batch_start_time_thread, "compute time for batch".format(i))
+        t_stop(batch_start_time_thread, "train compute time for batch".format(i))
 
     # finish remaining backward passes
     for i in range(num_warmup_minibatches):
@@ -424,10 +424,10 @@ def train(train_loader, r, optimizer, epoch):
     # wait for all helper threads to complete
     r.wait()
 
-    t_stop(epoch_start_time_thread, "compute time for epoch {}".format(epoch))
+    t_stop(epoch_start_time_thread, "train compute time for epoch {}".format(epoch))
     
-    print("Epoch %d: %.3f seconds" % (epoch, time.time() - epoch_start_time))
-    print("Epoch start time: %.3f, epoch end time: %.3f" % (epoch_start_time, time.time()))
+    print("train Epoch %d: %.3f seconds" % (epoch, time.time() - epoch_start_time))
+    print("train Epoch start time: %.3f, epoch end time: %.3f" % (epoch_start_time, time.time()))
 
 
 def validate(val_loader, r, epoch):
@@ -446,6 +446,7 @@ def validate(val_loader, r, epoch):
 
     end = time.time()
     epoch_start_time = time.time()
+    epoch_start_time_thread = t_start()
 
     if args.no_input_pipelining:
         num_warmup_minibatches = 0
@@ -461,6 +462,7 @@ def validate(val_loader, r, epoch):
             r.run_forward()
 
         for i in range(n - num_warmup_minibatches):
+            batch_start_time_thread = t_start()
             # perform forward pass
             r.run_forward()
             r.run_ack()
@@ -490,6 +492,8 @@ def validate(val_loader, r, epoch):
                            memory=(float(torch.cuda.memory_allocated()) / 10**9),
                            cached_memory=(float(torch.cuda.memory_cached()) / 10**9)))
                     import sys; sys.stdout.flush()
+            
+            t_stop(batch_start_time_thread, "validate compute time for batch".format(i))
 
         if is_last_stage():
             print(' * Prec@1 {top1.avg:.3f} Prec@5 {top5.avg:.3f}'
@@ -501,8 +505,10 @@ def validate(val_loader, r, epoch):
         # wait for all helper threads to complete
         r.wait()
 
-        print('Epoch %d: %.3f seconds' % (epoch, time.time() - epoch_start_time))
-        print("Epoch start time: %.3f, epoch end time: %.3f" % (epoch_start_time, time.time()))
+        t_stop(epoch_start_time_thread, "validate compute time for epoch {}".format(epoch))
+
+        print('validate Epoch %d: %.3f seconds' % (epoch, time.time() - epoch_start_time))
+        print("validate Epoch start time: %.3f, epoch end time: %.3f" % (epoch_start_time, time.time()))
 
     return top1.avg
 
