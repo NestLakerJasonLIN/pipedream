@@ -347,6 +347,7 @@ def train(train_loader, r, optimizer, epoch):
 
     end = time.time()
     epoch_start_time = time.time()
+    start_time_compute_epoch = t_start()
 
     if args.no_input_pipelining:
         num_warmup_minibatches = 0
@@ -362,6 +363,7 @@ def train(train_loader, r, optimizer, epoch):
         r.run_forward()
 
     for i in range(n - num_warmup_minibatches):
+        start_time_compute_batch = t_start()
         # perform forward pass
         r.run_forward()
 
@@ -413,6 +415,8 @@ def train(train_loader, r, optimizer, epoch):
         optimizer.load_new_params()
         optimizer.step()
 
+        t_stop(start_time_compute_batch, "train compute time for batch {}".format(i))
+
     # finish remaining backward passes
     for i in range(num_warmup_minibatches):
         optimizer.zero_grad()
@@ -424,9 +428,10 @@ def train(train_loader, r, optimizer, epoch):
     # wait for all helper threads to complete
     r.wait()
 
-    print("Epoch %d: %.3f seconds" % (epoch, time.time() - epoch_start_time))
-    print("Epoch start time: %.3f, epoch end time: %.3f" % (epoch_start_time, time.time()))
+    t_stop(start_time_compute_epoch, "train compute time for epoch {}".format(epoch))
 
+    print("train Epoch %d: %.3f seconds" % (epoch, time.time() - epoch_start_time))
+    print("train Epoch start time: %.3f, epoch end time: %.3f" % (epoch_start_time, time.time()))
 
 def validate(val_loader, r, epoch):
     batch_time = AverageMeter()
@@ -444,6 +449,7 @@ def validate(val_loader, r, epoch):
 
     end = time.time()
     epoch_start_time = time.time()
+    start_time_compute_epoch = t_start()
 
     if args.no_input_pipelining:
         num_warmup_minibatches = 0
@@ -459,6 +465,7 @@ def validate(val_loader, r, epoch):
             r.run_forward()
 
         for i in range(n - num_warmup_minibatches):
+            start_time_compute_batch = t_start()
             # perform forward pass
             r.run_forward()
             r.run_ack()
@@ -489,6 +496,8 @@ def validate(val_loader, r, epoch):
                            cached_memory=(float(torch.cuda.memory_cached()) / 10**9)))
                     import sys; sys.stdout.flush()
 
+            t_stop(start_time_compute_batch, "validate compute time for batch {}".format(i))
+
         if is_last_stage():
             print(' * Prec@1 {top1.avg:.3f} Prec@5 {top5.avg:.3f}'
               .format(top1=top1, top5=top5))
@@ -499,8 +508,10 @@ def validate(val_loader, r, epoch):
         # wait for all helper threads to complete
         r.wait()
 
-        print('Epoch %d: %.3f seconds' % (epoch, time.time() - epoch_start_time))
-        print("Epoch start time: %.3f, epoch end time: %.3f" % (epoch_start_time, time.time()))
+        t_stop(start_time_compute_epoch, "validate compute time for epoch {}".format(epoch))
+
+        print('validate Epoch %d: %.3f seconds' % (epoch, time.time() - epoch_start_time))
+        print("validate Epoch start time: %.3f, epoch end time: %.3f" % (epoch_start_time, time.time()))
 
     return top1.avg
 
