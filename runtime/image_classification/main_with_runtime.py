@@ -424,7 +424,7 @@ def train(train_loader, r, optimizer, epoch):
     # wait for all helper threads to complete
     r.wait()
 
-    t_stop(epoch_start_time_thread, "compute whole time for epoch {}".format(epoch))
+    t_stop(epoch_start_time_thread, "compute time for epoch {}".format(epoch))
     
     print("Epoch %d: %.3f seconds" % (epoch, time.time() - epoch_start_time))
     print("Epoch start time: %.3f, epoch end time: %.3f" % (epoch_start_time, time.time()))
