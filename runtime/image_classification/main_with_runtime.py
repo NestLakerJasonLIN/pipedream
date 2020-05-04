@@ -26,7 +26,7 @@ sys.path.append("..")
 import runtime
 import sgd
 sys.path.append("/home/ubuntu/pipedream/runtime")
-from runtime_utilities import printt
+from runtime_utilities import printt, t_start, t_stop
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
 parser.add_argument('--data_dir', type=str,
@@ -342,6 +342,7 @@ def train(train_loader, r, optimizer, epoch):
 
     end = time.time()
     epoch_start_time = time.time()
+    epoch_start_time_thread = t_start()
 
     if args.no_input_pipelining:
         num_warmup_minibatches = 0
@@ -358,6 +359,7 @@ def train(train_loader, r, optimizer, epoch):
 
     for i in range(n - num_warmup_minibatches):
         # perform forward pass
+        batch_start_time_thread = t_start()
         r.run_forward()
 
         # Adjust learning rate
@@ -375,6 +377,7 @@ def train(train_loader, r, optimizer, epoch):
             batch_time.update(time.time() - end)
             end = time.time()
             epoch_time = (end - epoch_start_time) / 3600.0
+            
             full_epoch_time = (epoch_time / float(i+1)) * float(n)
 
             if i % args.print_freq == 0:
@@ -408,6 +411,8 @@ def train(train_loader, r, optimizer, epoch):
         optimizer.load_new_params()
         optimizer.step()
 
+        t_stop(batch_start_time_thread, "compute time for batch".format(i))
+
     # finish remaining backward passes
     for i in range(num_warmup_minibatches):
         optimizer.zero_grad()
@@ -419,6 +424,8 @@ def train(train_loader, r, optimizer, epoch):
     # wait for all helper threads to complete
     r.wait()
 
+    t_stop(epoch_start_time_thread, "compute whole time for epoch {}".format(epoch))
+    
     print("Epoch %d: %.3f seconds" % (epoch, time.time() - epoch_start_time))
     print("Epoch start time: %.3f, epoch end time: %.3f" % (epoch_start_time, time.time()))
 
