@@ -73,7 +73,7 @@ parser.add_argument('--local_rank', default=0, type=int,
                     help="Local rank of worker")
 parser.add_argument('--forward_only', action='store_true',
                     help="Run forward pass only")
-parser.add_argument('--num_minibatches', default=100, type=int,
+parser.add_argument('--num_minibatches', default=None, type=int,
                     help="Number of minibatches to run")
 parser.add_argument('--resume', default='', type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
